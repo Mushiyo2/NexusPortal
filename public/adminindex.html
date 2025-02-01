@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="style/adminstyle.css">
+
+	<title>Intern Portal: Nexus | Admin</title>
+</head>
+<body>
+
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<i class='bx bxl-kubernetes'></i>
+			<span class="text">NEXUS</span>
+		</a>
+		<ul class="side-menu top">
+			<li class="active">
+				<a href="adminindex.html">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="adminrequest.html">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Request</span>
+				</a>
+			</li>
+			<li>
+				<a href="adminmessage.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Message</span>
+				</a>
+			</li>
+			<li>
+				<a href="adminusers.html">
+					<i class='bx bxs-group' ></i>
+					<span class="text">Users</span>
+				</a>
+			</li>
+			
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="#" class="logout">
+					<i class='bx bxs-log-out-circle' ></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<a href="#" class="nav-link">Admin</a>
+			<form action="#">
+			</form>
+			<a href="#" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num">8</span>
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Dashboard</h1>
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">Dashboard</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="#">Home</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<br>
+			<h2>Users</h2>
+			<ul class="box-info">
+				<li>
+					<i class='bx bxs-face'></i>
+					<span class="text">
+						<h3 id="internUserCount">0</h3>
+						<p>Interns</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-buildings'></i>
+					<span class="text">
+						<h3 id="companyUserCount">0</h3> 
+						<p>Company</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-school'></i>
+					<span class="text">
+						<h3 id="schoolUserCount">0</h3> 
+						<p>School</p>
+					</span>
+				</li>
+			</ul>
+<br>
+			<h2>Request</h2>
+			<ul class="box-info2">
+				<li>
+					<i class='bx bxs-buildings'></i>
+					<span class="text">
+						<h3 id="companyRequestCount">0</h3> 
+						<p>Company</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-school'></i>
+					<span class="text">
+						<h3 id="schoolRequestCount">0</h3> <!-- Added id to target this element -->
+						<p>School</p>
+					</span>
+				</li>
+			</ul>
+
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Recent Users Approved</h3>
+						<i class='bx bx-search' ></i>
+						<i class='bx bx-filter' ></i>
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>User</th>
+								<th>Date Order</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<img src="img/kerwin2.jpg">
+									<p>Kerwin Company</p>
+								</td>
+								<td>01-10-2021</td>
+								<td><span class="status completed">Completed</span></td>
+							</tr>
+								<td>
+									<img src="img/image.png">
+									<p>Kerwin School</p>
+								</td>
+								<td>01-10-2021</td>
+								<td><span class="status completed">Completed</span></td>
+							</tr>
+						</tr>
+						<td>
+							<img src="img/kerwin2.jpg">
+							<p>Kerwin Company</p>
+						</td>
+						<td>01-10-2021</td>
+						<td><span class="status completed">Completed</span></td>
+					</tr>
+						</tbody>
+					</table>
+				</div>
+			
+		</main>
+		<!-- MAIN -->
+	</section>
+
+	
+	<script>
+
+async function fetchSchoolCount() {
+        try {
+            const response = await fetch('/api/schools/count');
+            const data = await response.json();
+
+            // Update the count of school users
+            document.querySelector('#schoolUserCount').textContent = data.total;
+        } catch (error) {
+            console.error('Error fetching school count:', error);
+        }
+    }
+	async function fetchCompanyCount() {
+        try {
+            const response = await fetch('/api/company/count');
+            const data = await response.json();
+
+            // Update the count of school users
+            document.querySelector('#companyUserCount').textContent = data.total;
+        } catch (error) {
+            console.error('Error fetching company count:', error);
+        }
+    }
+    // Call the function to fetch the school count when the page loads
+    document.addEventListener('DOMContentLoaded', fetchSchoolCount);
+	document.addEventListener('DOMContentLoaded', fetchCompanyCount);
+		// Fetch and count school requests
+		async function fetchSchoolRequests() {
+			const response = await fetch('/admin/school-requests');
+			const requests = await response.json();
+		
+			// Update the count of school requests
+			document.querySelector('#schoolRequestCount').textContent = requests.length;
+		}
+		
+		// Fetch and count company requests
+		async function fetchCompanyRequests() {
+			const response = await fetch('/admin/company-requests');
+			const requests = await response.json();
+		
+			// Update the count of company requests
+			document.querySelector('#companyRequestCount').textContent = requests.length;
+		}
+		
+		// Fetch both school and company requests when the page loads
+		fetchSchoolRequests();
+		fetchCompanyRequests();
+		async function fetchInternCount() {
+        try {
+            const response = await fetch('/api/intern/count');
+            const data = await response.json();
+            document.querySelector('#internUserCount').textContent = data.total;
+        } catch (error) {
+            console.error('Error fetching intern count:', error);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', fetchInternCount);
+		</script>
+	<script src="adminscript.js"></script>
+	<script src="script.js"></script>
+</body>
+</html>

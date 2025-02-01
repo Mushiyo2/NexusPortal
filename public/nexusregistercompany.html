@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flat Login Form</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<style>
+    /* Main Colors */
+:root {
+  --accent: #33b5e5;
+  --white: #ffffff;
+  --black: #000000;
+  --dark-gray: #333333;
+  --gray: #666666;
+  --light-gray: #999999;
+  --lighter-gray: #cccccc;
+  --module-width: 320px;
+}
+
+body {
+    background-image: url('loading_p_bg.54a70f.jpg');
+    background-position: center top; /* Centers the image horizontally and aligns it to the top */
+    background-repeat: no-repeat;
+    background-size: cover; /* Ensures the image scales to cover the viewport */
+    background-attachment: fixed; /* Keeps the image fixed during scrolling */
+    color: var(--gray);
+    font-family: 'RobotoDraft', 'Roboto', sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Pen Title */
+.pen-title {
+  padding: 50px 0;
+  text-align: center;
+  font-family: 'Source Han Sans', sans-serif;
+    font-size: 3.375rem;
+    line-height: 3rem;
+color: #ffffff;
+}
+
+.pen-title h1 {
+  margin: 0 0 20px;
+  font-size: 48px;
+  font-weight: 300;
+}
+
+.pen-title span {
+  font-size: 12px;
+}
+
+.pen-title span .fa {
+  color: var(--accent);
+}
+
+.pen-title span a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Form Module */
+.form-module {
+  position: relative;
+  background: var(--white);
+  max-width: var(--module-width);
+  width: 100%;
+  border-top: 5px solid var(--accent);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+.form-module .toggle {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--accent);
+  width: 30px;
+  height: 30px;
+  margin: -5px 0 0;
+  color: var(--white);
+  font-size: 12px;
+  line-height: 30px;
+  text-align: center;
+}
+
+.form-module .toggle .tooltip {
+  position: absolute;
+  top: 5px;
+  right: -65px;
+  display: block;
+  background: rgba(0, 0, 0, 0.6);
+  width: auto;
+  padding: 5px;
+  font-size: 10px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.form-module .toggle .tooltip::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: -5px;
+  display: block;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid rgba(0, 0, 0, 0.6);
+}
+
+.form-module .form {
+  display: none;
+  padding: 40px;
+}
+
+.form-module .form:nth-child(2) {
+  display: block;
+}
+
+.form-module h2 {
+  margin: 0 0 20px;
+  color: var(--accent);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.form-module input {
+  outline: none;
+  display: block;
+  width: 100%;
+  border: 1px solid #e6e6e6;
+  margin: 0 0 20px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+.form-module input:focus {
+  border: 1px solid var(--accent);
+  color: var(--dark-gray);
+}
+
+.form-module button {
+  cursor: pointer;
+  background: var(--accent);
+  width: 100%;
+  border: 0;
+  padding: 10px 15px;
+  color: var(--white);
+  transition: all 0.3s ease;
+}
+
+.form-module button:hover {
+  background: #0099cc; /* 15% darker accent */
+}
+
+.form-module .cta {
+  background: #f2f2f2;
+  width: 100%;
+  padding: 15px 40px;
+  box-sizing: border-box;
+  color: var(--gray);
+  font-size: 12px;
+  text-align: center;
+}
+
+.form-module .cta a {
+  color: var(--dark-gray);
+  text-decoration: none;
+}
+.forced-vertical-text {
+    font-size: 50px; /* Medium-big size */
+    font-weight: bold;
+    color: transparent; /* Transparent text */
+    text-transform: uppercase; /* Uppercase text */
+    text-orientation: upright; /* Keep letters upright */
+    display: inline-block; /* Prevent block-level conflicts */
+    pointer-events: none; /* Prevents interaction */
+    position: fixed; /* Fixes the position on the screen */
+    top: 59%; /* Center vertically */
+    writing-mode: vertical-lr; /* Force vertical layout */
+    left: 550px; /* Position slightly to the left */
+    transform: translateY(-50%); /* Ensures true vertical centering */
+    z-index: 10; /* Keeps it on top of other elements */
+    -webkit-text-stroke: 2px #6366f1;
+    
+}
+.forced-vertical-text2 {
+    font-size: 50px; /* Medium-big size */
+    font-weight: bold;
+  
+    text-transform: uppercase; /* Uppercase text */
+    text-orientation: upright; /* Keep letters upright */
+    display: inline-block; /* Prevent block-level conflicts */
+    pointer-events: none; /* Prevents interaction */
+    position: fixed; /* Fixes the position on the screen */
+    top: 59%; /* Center vertically */
+    writing-mode: vertical-lr; /* Force vertical layout */
+    left: 980px; /* Position slightly to the left */
+    transform: translateY(-50%); /* Ensures true vertical centering */
+    z-index: 10; /* Keeps it on top of other elements */
+   color: #6366f1;
+    
+}
+.cta-link {
+    display: block; /* Makes the entire div clickable */
+    text-decoration: none; /* Removes underline from the link */
+  }
+
+  .cta {
+    text-align: center;
+    background-color: var(--accent);
+    color: var(--white);
+    padding: 15px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .cta:hover {
+    background-color: #0099cc; /* Changes background color on hover */
+    color: #ffffff;
+  }
+</style>
+<body>
+    
+  <!-- Pen Title -->
+  <div class="pen-title" >
+    <h1>Intern Portal <font style="color: #6366f1;">Nexus</font></h1>
+    <span>
+        <font style="color: #6366f1;">| </font>Bridging the Gap Between Talent and Opportunity
+    </span>
+  </div>
+  <!-- Form Module -->
+  <div class="forced-vertical-text">REGISTER</div>
+  <div class="forced-vertical-text2">COMPANY</div>
+
+  
+  <div class="module form-module">
+    <div >
+    </div>
+
+    <div class="form">
+      <h2>Register as Company</h2>
+      <form id="companyRegisterForm">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="name" placeholder="Company Name" required>
+        <div style="position: relative;">
+          <input type="password" name="password" id="password" placeholder="Password" required>
+          <i class="fas fa-eye" id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
+      </div>
+        <input type="text" name="address" placeholder="Address" required>
+        <input type="tel" name="contact" placeholder="Business Number" required pattern="\d{11}" maxlength="11" title="Please enter exactly 11 digits" id="contact">
+
+
+        <button type="submit">Register</button>
+      </form>
+    </div>
+    
+    <div class="cta">
+      <a href="nexuslogin.html">Click here to Login</a>
+    </div>
+    
+  </div>
+</body>
+<script>
+  document.getElementById('contact').addEventListener('input', function(event) {
+    // Remove non-numeric characters
+    this.value = this.value.replace(/\D/g, '');
+
+    // If more than 11 digits are entered, trim the excess
+    if (this.value.length > 11) {
+        this.value = this.value.slice(0, 11);
+    }
+});
+
+</script>
+<script src="script.js"></script>
+</html>

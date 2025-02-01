@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style/schoolstyle/schoolstyle.css">
+
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>Nexus|School (Dashboard)</title>
+</head>
+
+<body>
+    <!-- start: Sidebar -->
+    <div class="sidebar-overlay" data-dismiss="sidebar"></div>
+    <div class="sidebar">
+        <div class="sidebar-brand-wrapper">
+            <a href="#" class="sidebar-brand">
+                <img src="style/schoolstyle/logo.jpg" alt="" class="sidebar-brand-image" />
+                <span class="sidebar-brand-name">NEXUS </span>
+            </a>
+        </div>
+        <div class="sidebar-menu-wrapper">
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item-title">
+                    <span class="sidebar-menu-item-title-expanded">ADMIN</span>
+                    <span class="sidebar-menu-item-title-collapsed">
+                        <i class="ri-more-fill"></i>
+                    </span>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="adminmainindex.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bxs-dashboard'></i></i></span>
+                        <span class="sidebar-menu-item-link-text">Dashboard</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="adminmainusers.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-group"  style="color: #6366f1;"></i></span>
+                        <span class="sidebar-menu-item-link-text"  style="color: #6366f1;">User List</span>
+                    </a>
+                </li>
+                    
+                
+                <li class="sidebar-menu-item">
+                    <a href="https://dashboard.sendbird.com/E36B0FE7-C481-4327-B8B2-715E0B1F4F76" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-message-dots"></i></span>
+                        <span class="sidebar-menu-item-link-text">Message</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-user-plus' ></i></span>
+                        <span class="sidebar-menu-item-link-text">Requests</span>
+                        <span class="sidebar-menu-item-link-arrow"><i class="ri-arrow-right-s-line"></i></span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li class="sidebar-submenu-item">
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li class="sidebar-submenu-item">
+                                    <a href="#" class="sidebar-submenu-item-link">
+                                        <span class="sidebar-submenu-item-link-text">Test</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="adminmainrequestsschool.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">School</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="adminmainrequestscompany.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Company</span>
+                            </a>
+                        </li>
+                </li>
+            </ul>
+
+        </div>
+        <div class="forced-vertical-text">NEXUS</div>
+    </div>
+    <!-- end: Sidebar -->
+
+    <!-- start: Main -->
+    <div class="main">
+        <div class="topbar">
+            <a href="#" class="topbar-brand">
+                <img src="https://placehold.co/32x32" alt="" class="topbar-brand-image" />
+            </a>
+            <button type="button" class="topbar-button topbar-toggle" data-toggle="sidebar">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="topbar-search-form-wrapper" id="topbar-search-form-wrapper">
+                <form action="" class="topbar-search-form">
+                    <span class="topbar-search-form-icon"></i></span>
+                    <div class="topbar-search-form-autocomplete" id="topbar-search-autocomplete">
+                        <div class="topbar-search-form-autocomplete-wrapper">
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Recent Searches
+                                </p>
+                                <div class="topbar-search-form-autocomplete-recent">
+                                </div>
+                            </div>
+                            <!--invisible-->
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p>Products
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>
+                                    Users
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="topbar-right">
+                <div class="dropdown">
+                    <button type="button" class="topbar-button" data-toggle="dropdown">
+                        <i class="ri-notification-3-line"></i>
+                        <span class="topbar-button-total topbar-button-total-notification">3</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-notification">
+                        <div class="dropdown-menu-header">
+                            <p class="dropdown-menu-title">Notifications</p>
+                        </div>
+                        <div class="dropdown-menu-notification-wrapper">
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon success">
+                                    <i class="ri-check-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon danger">
+                                    <i class="ri-alert-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon warning">
+                                    <i class="ri-alarm-warning-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <!-- Your code here -->
+            <section id="content">
+
+                <main>
+                    <div class="head-title">
+                        <div class="left">
+                            <h1><i class="bx bxs-group" style="color:  #6366f1; "></i> | User List </h1>
+                            <ul class="breadcrumb">
+                                <li>
+                                    <a href="#">User List</a>
+                                </li>
+                                <li><i class='bx bx-chevron-right'></i><i class='bx bx-chevron-right'></i></li>
+                                <li>
+                                    <a class="active" href="#"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i> 
+                    </div>
+                    <br>
+                    
+                    <ul class="box-info">
+                        <li>
+                        
+                            <i class='bx bxs-face'></i>
+                            <span class="text">
+                                <h3 id="internUserCount">0</h3>
+                                <p>Interns</p>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="users-label">Users</span>
+                            <i class='bx bxs-school'></i>
+                            <span class="text">
+                                <h3 id="companyUserCount">0</h3>
+                                <p>Company</p>
+                            </span>
+                        </li>
+                        <li>
+                            <i class='bx bxs-school'></i>
+                            <span class="text">
+                                <h3 id="schoolUserCount">0</h3> 
+                                <p>School</p>
+                            </span>
+                        </li>
+                    </ul>
+                    <br>
+                    <div class="table-data">
+                        <div class="order">
+                            <div class="head">
+                                <h3>School</h3>
+                                <i class='bx bx-search'></i>
+                                <i class='bx bx-filter'></i>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="schoolTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                
+                    <div class="table-data">
+                        <div class="order">
+                            <div class="head">
+                                <h3>Company</h3>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>Contact</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="companyTableBody"> <!-- Changed this ID -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                
+                    <div class="table-data">
+                        <div class="order">
+                            <div class="head">
+                                <h3>Intern</h3>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>School ID</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="internTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        </div>
+
+        </main>
+        <!-- MAIN -->
+        </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    </div>
+    <script>
+		// User Total
+async function fetchSchoolCount() {
+        try {
+            const response = await fetch('/api/schools/count');
+            const data = await response.json();
+            document.querySelector('#schoolUserCount').textContent = data.total;
+        } catch (error) {
+            console.error('Error fetching school count:', error);
+        }
+    }
+	async function fetchCompanyCount() {
+        try {
+            const response = await fetch('/api/company/count');
+            const data = await response.json();
+            document.querySelector('#companyUserCount').textContent = data.total;
+        } catch (error) {
+            console.error('Error fetching company count:', error);
+        }
+    }
+    // Call the function to fetch the school count when the page loads
+    document.addEventListener('DOMContentLoaded', fetchSchoolCount);
+	document.addEventListener('DOMContentLoaded', fetchCompanyCount);
+	// User Total
+
+// Fetch school users and display them in the table
+async function fetchSchoolUsers() {
+    try {
+        const response = await fetch('/api/schools');
+        const schoolUsers = await response.json();
+
+        const schoolTableBody = document.getElementById('schoolTableBody');
+        schoolTableBody.innerHTML = ''; // Clear existing rows
+
+        schoolUsers.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.address}</td>
+                 <td><button class="view-button" class="action-btn" onclick="viewProfile3('${user.email}')">View</button></td>
+            `;
+            schoolTableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching school users:', error);
+    }
+}
+// Call the function to fetch school users when the page loads
+document.addEventListener('DOMContentLoaded', fetchSchoolUsers);
+
+
+async function fetchCompanyUsers() {
+    try {
+        const response = await fetch('/api/company');
+        const companyUsers = await response.json();
+
+        const companyTableBody = document.getElementById('companyTableBody');
+        companyTableBody.innerHTML = ''; // Clear existing rows
+
+        companyUsers.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.address}</td>
+                 <td>${user.contact}</td>
+                <td><button class="view-button" class="action-btn" onclick="viewProfile2('${user.email}')">View</button></td>
+            `;
+            companyTableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching company users:', error);
+    }
+}
+document.addEventListener('DOMContentLoaded', fetchCompanyUsers);
+async function fetchInternCount() {
+        try {
+            const response = await fetch('/api/intern/count');
+            const data = await response.json();
+            document.querySelector('#internUserCount').textContent = data.total;
+        } catch (error) {
+            console.error('Error fetching intern count:', error);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', fetchInternCount);
+
+	async function fetchInternUsers() {
+    try {
+        const response = await fetch('/api/intern');
+        const internUsers = await response.json();
+
+        const internTableBody = document.getElementById('internTableBody');
+        internTableBody.innerHTML = ''; // Clear existing rows
+        internUsers.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.address}</td>
+				<td>${user.school_id}</td>
+				<td><button class="view-button" class="action-btn" onclick="viewProfile('${user.email}')">View</button></td>
+            `;
+            internTableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching intern users:', error);
+    }
+}
+document.addEventListener('DOMContentLoaded', fetchInternUsers);
+
+
+function viewProfile(internEmail) {
+        window.location.href = `/adminviewprofileintern.html?email=${internEmail}`; // Redirect to intern's profile page with email query parameter
+    }
+
+	function viewProfile2	(companyEmail) {
+    window.location.href = `/adminmainuserscompany.html?email=${companyEmail}`; 
+}
+
+function viewProfile3	(schoolEmail) {
+    window.location.href = `/adminmainusersschool.html?email=${schoolEmail}`; 
+}
+		</script>
+    <!-- end: Main -->
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>
+    <script src="style/schoolstyle/script.js"></script>
+    <script src="adminscript.js"></script>
+    <script src="style/schoolstyle/usertablecount.js"></script>
+</body>
+
+</html>

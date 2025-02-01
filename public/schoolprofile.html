@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style/schoolstyle/schoolstyle.css" />
+    <link rel="stylesheet" href="style/schoolstyle/profile.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>Nexus|School (Profile)</title>
+</head>
+
+<body>
+    <!-- start: Sidebar -->
+    <div class="sidebar-overlay" data-dismiss="sidebar"></div>
+    <div class="sidebar">
+        <div class="sidebar-brand-wrapper">
+            <a href="#" class="sidebar-brand">
+                <img src="style/schoolstyle/logo.jpg" alt="" class="sidebar-brand-image" />
+                <span class="sidebar-brand-name">NEXUS </span>
+            </a>
+        </div>
+        <div class="sidebar-menu-wrapper">
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item-title">
+                    <span class="sidebar-menu-item-title-expanded">Menu</span>
+                    <span class="sidebar-menu-item-title-collapsed">
+                        <i class="ri-more-fill"></i>
+                    </span>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolindex.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bxs-dashboard'></i></i></span>
+                        <span class="sidebar-menu-item-link-text">Dashboard</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-group"></i></span>
+                        <span class="sidebar-menu-item-link-text">User List</span>
+                        <span class="sidebar-menu-item-link-arrow"><i class="ri-arrow-right-s-line"></i></span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li class="sidebar-submenu-item">
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li class="sidebar-submenu-item">
+                                    <a href="#" class="sidebar-submenu-item-link">
+                                        <span class="sidebar-submenu-item-link-text">Test</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="schooluserintern.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Interns</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="schoolusercomp.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Company</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                <li class="sidebar-menu-item">
+                    <a href="schoolfeed.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-book-open'></i></span>
+                        <span class="sidebar-menu-item-link-text">Feed</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolrequestintern.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon">  <i class='bx bxs-user-plus' ></i></span>
+                        <span class="sidebar-menu-item-link-text">Intern Requests</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="/chat/index.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-message-dots"></i></span>
+                        <span class="sidebar-menu-item-link-text">Message</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolprofile.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-happy-alt' style="color:  #6366f1; "></i></span>
+                        <span class="sidebar-menu-item-link-text" style="color:  #6366f1; ;">Profile</span>
+                    </a>
+                </li>
+                </li>
+            </ul>
+
+        </div>
+        <div class="forced-vertical-text">NEXUS</div>
+    </div>
+    <!-- end: Sidebar -->
+
+    <!-- start: Main -->
+    <div class="main">
+        <div class="topbar">
+            <a href="#" class="topbar-brand">
+                <img src="style/schoolstyle/logo.jpg" alt="" class="topbar-brand-image" />
+            </a>
+            <button type="button" class="topbar-button topbar-toggle" data-toggle="sidebar">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="topbar-search-form-wrapper" id="topbar-search-form-wrapper">
+                <form action="" class="topbar-search-form">
+                    <h3 class="username">Name : ? ? ? </h3>
+                    <span class="topbar-search-form-icon"></i></span>
+                    <div class="topbar-search-form-autocomplete" id="topbar-search-autocomplete">
+                        <div class="topbar-search-form-autocomplete-wrapper">
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Recent Searches
+                                </p>
+                                <div class="topbar-search-form-autocomplete-recent">
+                                </div>
+                            </div>
+                            <!--invisible-->
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p>Products
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>
+                                    Users
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="topbar-right">
+                <div class="dropdown">
+                    <button type="button" class="topbar-button" data-toggle="dropdown">
+                        <i class="ri-notification-3-line"></i>
+                        <span class="topbar-button-total topbar-button-total-notification">3</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-notification">
+                        <div class="dropdown-menu-header">
+                            <p class="dropdown-menu-title">Notifications</p>
+                            <span class="badge badge-primary">3 items</span>
+                        </div>
+                        <div class="dropdown-menu-notification-wrapper">
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon success">
+                                    <i class="ri-check-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon danger">
+                                    <i class="ri-alert-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon warning">
+                                    <i class="ri-alarm-warning-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Your code here -->
+
+        <div class="container">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <span>User ID: 0</span>
+                </div>
+                <div class="profile-content">
+                    <div class="banner"></div>
+                    <div class="profile-info">
+                        <div class="avatar" style="color: green;"></div>
+                        <div class="school-details">
+                            <h2>School Name</h2>
+                            <p>Department</p>
+                        </div>
+                        <button class="edit-button">Edit</button>
+                        <button class="logout-button">Logout</button>
+                    </div>
+                    <form class="profile-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="school-name"><font style="color: #6366f1;">| </font>School Name</label>
+                                <input type="text" id="school-name" placeholder="Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact"> <font style="color: #6366f1;">| </font>Contact</label>
+                                <input type="text" id="contact" placeholder="Contact No.">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address"><font style="color: #6366f1;">| </font> Address</label>
+                            <input type="text" id="address" placeholder="Address">
+                        </div>
+                        <div class="form-group">
+                            <label for="email"><font style="color: #6366f1;">| </font> Email</label>
+                            <input type="email" id="email" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="description"><font style="color: #6366f1;">| </font>Description</label>
+                            <textarea id="description" placeholder="Description"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- MAIN -->
+    </div>
+
+    <!-- end: Main -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/school-profile', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.querySelector('.profile-header span').textContent = `User ID: ${data.id}`;
+                    document.querySelector('.school-details h2').textContent = data.name;
+                    document.querySelector('.school-details p').textContent = data.email;
+                    document.querySelector('.username').textContent = data.name;
+                    document.querySelector('#email').value = data.email;
+                    document.querySelector('#school-name').value = data.name;
+                    document.querySelector('#contact').value = data.contact;
+                    document.querySelector('#address').value = data.address;
+                    document.querySelector('#description').value = data.description;
+                } else {
+                    console.error('Failed to load profile data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        document.querySelector('.logout-button').addEventListener('click', async () => {
+            await fetch('/logout', { method: 'POST' });
+            window.location.href = '/nexuslogin.html';
+        });
+
+        // Function to toggle edit mode
+        const toggleEditMode = (isEditing) => {
+            const formFields = document.querySelectorAll('.profile-form input, .profile-form textarea');
+            formFields.forEach(field => {
+                field.disabled = !isEditing;
+            });
+            document.querySelector('.edit-button').textContent = isEditing ? 'Save' : 'Edit';
+        };
+
+        // Initial state - form fields are disabled
+        toggleEditMode(false);
+
+        // Edit/Save button event listener
+        document.querySelector('.edit-button').addEventListener('click', async () => {
+            const isEditing = document.querySelector('.edit-button').textContent === 'Edit';
+
+            if (isEditing) {
+                // Enter edit mode
+                toggleEditMode(true);
+            } else {
+                // Save changes
+                toggleEditMode(false);
+
+                // Gather form data
+                const formData = {
+                    name: document.querySelector('#school-name').value,
+                    contact: document.querySelector('#contact').value,
+                    address: document.querySelector('#address').value,
+                    email: document.querySelector('#email').value,
+                    description: document.querySelector('#description').value
+                };
+
+                console.log('Sending updated profile data:', formData);
+
+                // Send the updated data to the server
+                try {
+                    const response = await fetch('/api/update-school-profile', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (response.ok) {
+                        alert('Profile updated successfully!');
+                    } else {
+                        const errorData = await response.json();
+                        console.error('Failed to update profile:', errorData);
+                        alert('Failed to update profile: ' + errorData.error);
+                    }
+                } catch (error) {
+                    console.error('Error updating profile:', error);
+                    alert('An error occurred while updating the profile.');
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/api/school-profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            document.querySelector('.sidebar-menu-item-title-expanded').textContent = `SCHOOL ID: ${data.id}`;
+        } else {
+            console.error('Failed to load profile data');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>
+    <script src="style/schoolstyle/script.js"></script>
+    <script src="style/schoolstyle/schoolscript.js"></script>
+</body>
+
+</html>

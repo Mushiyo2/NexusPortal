@@ -1,0 +1,75 @@
+body {
+    background: 
+        linear-gradient(180deg, #23211b, #2e2d27 51.17%, #26241d), 
+        rgba(255, 255, 255, 0.1) url('bg.png'); /* Background image with 10% opacity */
+    background-blend-mode: overlay; /* Blend the image and gradient */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 110vh;
+    margin: 0;
+}
+
+.navbar-nav{
+    padding-right: 20px;
+    color: #d9d9d9;
+}
+.navbar-brand{
+    font-family: 'Inria Sans', sans-serif;
+    color: #902486;
+    font-size: 2em;
+   padding-left: 30px;
+}
+
+.intern-portal-container {
+    top: 100px;
+    left: calc(50% - 130px);
+    font-size: 3em;
+    color: #d9d9d9;
+    font-family: 'Inria Sans', sans-serif;
+    text-align: center;
+  }
+  .tagline{
+    text-align: center;
+    color: #d9d9d9;
+  }
+
+
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+.login-form {
+    width: 100%;
+    max-width: 320px;
+    padding: 15px;
+}
+.button{
+    color: #902486;;
+}
+.btn-custom {
+    width: 50%; /* Half the width of the container */
+    display: block;
+    margin: 0 auto; /* Center the button */
+    background-color: #007bff;
+}
+::placeholder {
+    font-family: 'Roboto', sans-serif;
+}
+#signupwho{
+    font-family: 'Roboto', sans-serif;
+    font-size: medium;
+}
+
+.btn-custom1 {
+    background-color: #007bff; /* Custom button color */
+    padding: 0.5rem 1rem; /* Padding for better button appearance */
+    border-radius: 0.25rem; /* Rounded corners for the button */
+    text-decoration: none; /* Remove underline from the link */
+    display: inline-block; /* Ensure the button does not stack vertically */
+}
+.btn-custom1:hover {
+    background-color: #0056b3; /* Darken the button color on hover */
+}

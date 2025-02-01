@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style/companystyle/style.css">
+    <link rel="stylesheet" href="style/companystyle/profile.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>Nexus|Company (Profile)</title>
+</head>
+<style>
+    /* From Uiverse.io by Shoh2008 */ 
+.checkbox-wrapper-4 * {
+  box-sizing: border-box;
+  color: black;
+}
+.checkbox-wrapper-4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Ensure it spans the full width */
+  margin-top: 10px; /* Optional: Adjust spacing */
+}
+
+.checkbox-wrapper-4 .cbx {
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.checkbox-wrapper-4 .cbx:not(:last-child) {
+  margin-right: 6px;
+}
+
+.checkbox-wrapper-4 .cbx:hover {
+  background: rgba(0,119,255,0.06);
+}
+
+.checkbox-wrapper-4 .cbx span {
+  float: left;
+  vertical-align: middle;
+  transform: translate3d(0, 0, 0);
+}
+
+.checkbox-wrapper-4 .cbx span:first-child {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  transform: scale(1);
+  border: 1px solid #cccfdb;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 1px rgba(0,16,75,0.05);
+}
+
+.checkbox-wrapper-4 .cbx span:first-child svg {
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16px;
+  stroke-dashoffset: 16px;
+  transition: all 0.3s ease;
+  transition-delay: 0.1s;
+  transform: translate3d(0, 0, 0);
+}
+
+.checkbox-wrapper-4 .cbx span:last-child {
+  padding-left: 8px;
+  line-height: 18px;
+}
+
+.checkbox-wrapper-4 .cbx:hover span:first-child {
+  border-color: #07f;
+}
+
+.checkbox-wrapper-4 .inp-cbx {
+  position: absolute;
+  visibility: hidden;
+}
+
+.checkbox-wrapper-4 .inp-cbx:checked + .cbx span:first-child {
+  background: #07f;
+  border-color: #07f;
+  animation: wave-4 0.4s ease;
+}
+
+.checkbox-wrapper-4 .inp-cbx:checked + .cbx span:first-child svg {
+  stroke-dashoffset: 0;
+}
+
+.checkbox-wrapper-4 .inline-svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media screen and (max-width: 640px) {
+  .checkbox-wrapper-4 .cbx {
+    width: 100%;
+    display: inline-block;
+  }
+}
+
+@-moz-keyframes wave-4 {
+  50% {
+    transform: scale(0.9);
+  }
+}
+
+@-webkit-keyframes wave-4 {
+  50% {
+    transform: scale(0.9);
+  }
+}
+
+@-o-keyframes wave-4 {
+  50% {
+    transform: scale(0.9);
+  }
+}
+
+@keyframes wave-4 {
+  50% {
+    transform: scale(0.9);
+  }
+}
+</style>
+<body>
+    <!-- start: Sidebar -->
+    <div class="sidebar-overlay" data-dismiss="sidebar"></div>
+    <div class="sidebar">
+        <div class="sidebar-brand-wrapper">
+            <a href="#" class="sidebar-brand">
+                <img src="style/companystyle/logo.jpg" alt="" class="sidebar-brand-image" />
+                <span class="sidebar-brand-name">NEXUS  </span>
+            </a>
+        </div>
+        <div class="sidebar-menu-wrapper">
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item-title">
+                    <span class="sidebar-menu-item-title-expanded">COMPANY ID: </span>
+                    <span class="sidebar-menu-item-title-collapsed">
+                        <i class="ri-more-fill"></i>
+                    </span>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="companyindex.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bxs-dashboard' ></i></i></span>
+                        <span class="sidebar-menu-item-link-text"  >Dashboard</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="companyinternshiprequest.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-user-plus' ></i></span>
+                        <span class="sidebar-menu-item-link-text">Internship</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="companyfeed.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-book-open'></i></span>
+                        <span class="sidebar-menu-item-link-text">Feed</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="/chat/index.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-message-dots"></i></span>
+                        <span class="sidebar-menu-item-link-text">Message</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="companyprofile.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-happy-alt' style="color: #6366f1;"></i></span>
+                        <span class="sidebar-menu-item-link-text" style="color: #6366f1;">Profile</span>
+                    </a>
+                </li>
+                </li>
+            </ul>
+
+        </div>
+        <div class="forced-vertical-text">NEXUS</div>
+    </div>
+    <!-- end: Sidebar -->
+
+    <!-- start: Main -->
+    <div class="main">
+        <div class="topbar">
+            <a href="#" class="topbar-brand">
+                <img src="https://placehold.co/32x32" alt="" class="topbar-brand-image" />
+            </a>
+            <button type="button" class="topbar-button topbar-toggle" data-toggle="sidebar">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="topbar-search-form-wrapper" id="topbar-search-form-wrapper">
+                <form action="" class="topbar-search-form">
+                    <h3 class="username">Name : ? ? ? </h3>
+                    <span class="topbar-search-form-icon"></i></span>
+                    <div class="topbar-search-form-autocomplete" id="topbar-search-autocomplete">
+                        <div class="topbar-search-form-autocomplete-wrapper">
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Recent Searches
+                                </p>
+                                <div class="topbar-search-form-autocomplete-recent">
+                                </div>
+                            </div>
+                            <!--invisible-->
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p>Products
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>
+                                    Users
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="topbar-right">
+                <div class="dropdown">
+                    <button type="button" class="topbar-button" data-toggle="dropdown">
+                        <i class="ri-notification-3-line"></i>
+                        <span class="topbar-button-total topbar-button-total-notification">5</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-notification">
+                        <div class="dropdown-menu-header">
+                            <p class="dropdown-menu-title">Notifications</p>
+                        </div>
+                        <div class="dropdown-menu-notification-wrapper">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Your code here -->
+
+        <div class="container">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <span>ID: 0</span>
+                </div>
+                <div class="profile-content">
+                    <div class="banner"></div>
+                    <div class="profile-info">
+                        <div class="avatar" style="background-color: #FD7238;"></div>
+                        <div class="school-details">
+                            <h2>Company</h2>
+                            <p>company@email.com</p>
+                        </div>
+                        <button class="edit-button">Edit</button>
+                        <button class="logout-button">Logout</button>
+                    </div>
+                    <form class="profile-form">
+                        <div class="checkbox-wrapper-4"><font style="color: #6366f1;">| </font>
+                            <input class="inp-cbx" id="morning" type="checkbox">
+                            <label class="cbx" for="morning"><span>
+                            <svg width="12px" height="10px">
+                              
+                            </svg></span><span>Open for Internship</span></label>
+                            <svg class="inline-svg">
+                              <symbol id="check-4" viewBox="0 0 12 10">
+                                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                              </symbol>
+                            </svg>
+                          </div>
+                          <br>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="school-name"><font style="color: #6366f1;">| </font>Company Name</label>
+                                <input type="text" id="school-name" placeholder="Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact"><font style="color: #6366f1;">| </font>Contact</label>
+                                <input type="text" id="contact" placeholder="Contact No.">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="address"><font style="color: #6366f1;">| </font>Address</label>
+                                <input type="text" id="address" placeholder="Address">
+                            </div>
+                            <div class="form-group">
+                                <label for="specialization"><font style="color: #6366f1;">| </font>Specialization</label>
+                                <input type="text" id="specialization" placeholder="Role">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email"><font style="color: #6366f1;">| </font>Email</label>
+                                <input type="email" id="email" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <label for="department"><font style="color: #6366f1;">| </font>Department</label>
+                                <select id="department" name="department" class="custom-select">
+                                    <option value="">Select Department</option>
+                                    <option value="Information Technology" <%=department==='Information Technology'
+                                        ? 'selected' : '' %>Information Technology</option>
+                                    <option value="Industrial Technology" <%=department==='Industrial Technology'
+                                        ? 'selected' : '' %>Industrial Technology</option>
+                                    <option value="Computer Engineering" <%=department==='Computer Engineering'
+                                        ? 'selected' : '' %>Computer Engineering</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description"><font style="color: #6366f1;">| </font>Description</label>
+                            <textarea id="description" placeholder="Description"></textarea>
+                        </div>
+                        <!-- From Uiverse.io by Shoh2008 --> 
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- MAIN -->
+    </div>
+
+    <!-- end: Main -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token'); // Retrieve the JWT from local storage
+    
+            try {
+                const response = await fetch('/api/company-profile', {
+                    method: 'GET',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` // Include token in request
+                    },
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+                    document.querySelector('.profile-header span').textContent = `Company ID: ${data.id}`;
+                    document.querySelector('.school-details h2').textContent = data.name;
+                    document.querySelector('.school-details p').textContent = data.email;
+                    document.querySelector('.username').textContent = data.name;
+                    document.querySelector('#email').value = data.email;
+                    document.querySelector('#school-name').value = data.name;
+                    document.querySelector('#address').value = data.address;
+                    document.querySelector('#department').value = data.department;
+                    document.querySelector('#contact').value = data.contact;
+                    document.querySelector('#specialization').value = data.role;
+                    document.querySelector('#description').value = data.description;
+                } else {
+                    console.error('Failed to load profile data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    
+        document.querySelector('.logout-button').addEventListener('click', () => {
+            localStorage.removeItem('token'); // Clear the token on logout
+            window.location.href = '/nexuslogin.html';
+        });
+    
+        const toggleEditMode = (isEditing) => {
+            const formFields = document.querySelectorAll('.profile-form input, .profile-form textarea');
+            formFields.forEach(field => {
+                field.disabled = !isEditing;
+            });
+            document.querySelector('.edit-button').textContent = isEditing ? 'Save' : 'Edit';
+        };
+    
+        toggleEditMode(false);
+    
+        document.querySelector('.edit-button').addEventListener('click', async () => {
+            const isEditing = document.querySelector('.edit-button').textContent === 'Edit';
+    
+            if (isEditing) {
+                toggleEditMode(true);
+            } else {
+                toggleEditMode(false);
+    
+                const formData = {
+                    name: document.querySelector('#school-name').value,
+                    contact: document.querySelector('#contact').value,
+                    address: document.querySelector('#address').value,
+                    email: document.querySelector('#email').value,
+                    role: document.querySelector('#specialization').value,
+                    department: document.querySelector('#department').value,
+                    description: document.querySelector('#description').value,
+                };
+    
+                const token = localStorage.getItem('token');
+    
+                try {
+                    const response = await fetch('/api/update-company-profile', {
+                        method: 'PUT',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}` // Include token in request
+                        },
+                        body: JSON.stringify(formData)
+                    });
+    
+                    if (response.ok) {
+                        alert('Profile updated successfully!');
+                    } else {
+                        const errorData = await response.json();
+                        console.error('Failed to update profile:', errorData);
+                        alert('Failed to update profile: ' + errorData.error);
+                    }
+                } catch (error) {
+                    console.error('Error updating profile:', error);
+                    alert('An error occurred while updating the profile.');
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/api/company-profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            document.querySelector('.sidebar-menu-item-title-expanded').textContent = `COMPANY ID: ${data.id}`;
+        } else {
+            console.error('Failed to load profile data');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>
+    <script src="style/companystyle/script.js"></script>
+    <script src="style/companystyle/companyscript.js"></script>
+</body>
+
+</html>

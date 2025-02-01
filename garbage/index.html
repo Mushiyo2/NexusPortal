@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Portal</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <h1>Welcome to the Intern Portal</h1>
+    <nav>
+        <ul>
+            <li><a href="#register">Register School</a></li>
+            <li><a href="login.html">School Login</a></li>
+            <li><a href="admin.html">Admin Area</a></li>
+        </ul>
+    </nav>
+                                    <!--REGISTER-->
+    <!-- <section id="register">
+        <h2>Register School</h2>
+        <form id="registerForm">
+            <input type="text" name="name" placeholder="School Name" required>
+            <input type="email" name="email" placeholder="School Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Register</button>
+        </form>
+    </section> -->
+                                    <!--LOGIN-->
+    <section id="login">
+        <h2>School Login</h2>
+        <form id="loginForm">
+            <input type="email" name="email" placeholder="School Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </section>
+
+
+
+
+
+
+    <section id="admin">
+        <h2>Admin Area</h2>
+        <button id="fetchRequests">Fetch Pending Requests</button>
+        <ul id="requestsList"></ul>
+    </section>
+
+    <script src="script.js"></script> <!-- Link to your JavaScript file -->
+</body>
+</html>

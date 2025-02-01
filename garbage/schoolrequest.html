@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="public/style/adminstyle.css">
+
+	<title>Intern Portal: Nexus | School</title>
+</head>
+<body>
+
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<i class='bx bxl-kubernetes'></i>
+			<span class="text">NEXUS</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="adminindex.html">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li class="active"  >
+				<a href="adminrequest.html">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Interns Request</span>
+				</a>
+			</li>
+			<li>
+				<a href="adminmessage.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Message</span>
+				</a>
+			</li>
+			<li>
+				<a href="adminusers.html">
+					<i class='bx bxs-group' ></i>
+					<span class="text">Interns</span>
+				</a>
+			</li>
+			<li>
+				<a href="adminusers.html">
+					<i class='bx bxs-group' ></i>
+					<span class="text">Company</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="#">
+					<i class='bx bxs-cog' ></i>
+					<span class="text">Settings</span>
+				</a>
+			</li>
+			<li>
+				<a href="#" class="logout">
+					<i class='bx bxs-log-out-circle' ></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<a href="#" class="nav-link">School</a>
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search...">
+					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="#" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num">0</span>
+			</a>
+			<a href="#" class="profile">
+				<img src="images/usericon.jpg">
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Intern Request</h1>
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">Intern Request</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="#">Home</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<br>	
+			<h2>Request</h2>
+			<ul class="box-info2">
+				<li>
+					<i class='bx bxs-school'></i>
+					<span class="text">
+						<h3 id="schoolRequestCount">0</h3> <!-- Added id to target this element -->
+						<p>Interns</p>
+					</span>
+				</li>
+			</ul>
+<!--Company Request-->
+<br>
+<h1>Approve / Request</h1>
+
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Intern Request</h3>
+						<i class='bx bx-search' ></i>
+						<i class='bx bx-filter' ></i>
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>ID</th>
+								<th>Email</th>
+								<th>Address</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<!-- <tbody>
+							<tr>
+								<td>
+									<img src="img/image.png">
+									<p>Kerwin School</p>
+								</td>
+								<td>school@email.com</td>
+								<td>Catbalogan City</td>
+								<td><span class="status completed">Approve</span><span class="status pending">Reject</span></td>
+							</tr>
+						</tbody> -->
+						<tbody id="requestTableBody">
+							<!-- Requests will be populated here -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- <h1>School Registration Requests</h1>
+			<table id="requestsTable">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Status</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</main> -->
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+	<script>
+		async function fetchRequests() {
+			const response = await fetch('/admin/requests');
+			const requests = await response.json();
+			const tbody = document.querySelector('#requestTableBody'); // The body of the table
+			tbody.innerHTML = ''; // Clear existing rows
+	
+			requests.forEach(request => {
+				const row = document.createElement('tr');
+				row.innerHTML = `
+					<td>${request.name}</td>
+					<td>${request.id}</td>
+					<td>${request.email}</td>
+					<td>${request.address}</td>
+					<td>
+						<button onclick="updateRequest(${request.id}, 'approved')">Approve</button>
+						<button onclick="updateRequest(${request.id}, 'rejected')">Reject</button>
+					</td>
+				`;
+				tbody.appendChild(row);
+			});
+		}	
+	
+		// Call fetchRequests when the page loads
+		fetchRequests();
+
+		async function updateRequest(id, status) {
+    console.log(`Updating request ${id} with status ${status}`);
+    await fetch(`/admin/requests/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status })
+    });
+    fetchRequests(); // Refresh the request list
+}
+async function fetchRequests() {
+    const response = await fetch('/admin/requests');
+    const requests = await response.json();
+    const tbody = document.querySelector('#requestTableBody'); // The body of the table
+    tbody.innerHTML = ''; // Clear existing rows
+
+    requests.forEach(request => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${request.name}</td>
+            <td>${request.email}</td>
+            <td>${request.address}</td>
+            <td>
+                <button onclick="updateRequest(${request.id}, 'approved')">Approve</button>
+                <button onclick="updateRequest(${request.id}, 'rejected')">Reject</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // Update the total count of school requests
+    const schoolRequestCount = document.querySelector('#schoolRequestCount');
+    schoolRequestCount.textContent = requests.length; // Set the total count
+}
+
+	</script>
+	
+	<!-- <script>
+		// Fetch pending requests and populate the table
+		fetch('/api/v1/requests') // You may need to create a route to fetch requests
+			.then(response => response.json())
+			.then(data => {
+				const requestTableBody = document.getElementById('requestTableBody');
+				data.forEach(request => {
+					const row = document.createElement('tr');
+					row.innerHTML = `
+						<td>${request.school_name}</td>
+						<td>${request.status}</td>
+						<td>
+							<button class="btn btn-success" onclick="approveRequest(${request.id})">Approve</button>
+							<button class="btn btn-danger" onclick="rejectRequest(${request.id})">Reject</button>
+						</td>
+					`;
+					requestTableBody.appendChild(row);
+				});
+			});
+	
+		function approveRequest(id) {
+			// Send a request to approve the school
+		}
+	
+		function rejectRequest(id) {
+			// Send a request to reject the school
+		}
+	</script>
+	<script src="script.js"></script> -->
+	<!-- <script src="path/to/admin-requests.js"></script> -->
+
+</body>
+</html>

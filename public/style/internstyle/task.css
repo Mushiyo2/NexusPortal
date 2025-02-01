@@ -1,0 +1,293 @@
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    transition: color 0.3s ease;
+
+  }
+
+  h1:hover {
+    color: #007bff;
+  }
+  .task-done {
+    text-decoration: line-through;
+    background-color: var(--neutral-200);
+    color: var(--neutral-600);
+}
+
+  /* Card Styling */
+  .card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transform: translateY(-10px);
+  }
+
+  .card-title {
+    margin-bottom: 20px;
+    color: #1da1f2;
+    font-size: 24px;
+  }
+
+  /* Form Styling with focus animation */
+  .form-label {
+    font-size: 0.9rem;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #eef7ff;
+  }
+
+  /* Button Styling with hover effect */
+  .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+
+  /* Task List Styling */
+  .task-list {
+    margin-top: 20px;
+  }
+
+  .task-item {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    animation: slideIn 0.5s forwards;
+  }
+
+  .task-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Slide-in animation */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .task-item h5 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .task-item p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+  }
+
+  /* Badge Styling */
+  .badge {
+    display: inline-block;
+    padding: 6px 10px;
+    font-size: 0.875rem;
+    border-radius: 10px;
+    color: white;
+    margin-right: 5px;
+  }
+
+  .bg-info {
+    background-color: #17a2b8;
+  }
+
+  .bg-secondary {
+    background-color: #6c757d;
+  }
+
+  .deadline-badge {
+    background-color: #f39c12;
+  }
+
+  /* Delete Button Styling */
+  .delete-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .delete-btn:hover {
+    background-color: #c82333;
+    transform: scale(1.1);
+  }
+
+  /* Loader Animation */
+  .loader {
+    border: 6px solid #f3f4f6;
+    border-top: 6px solid #007bff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 0.8s linear infinite;
+    margin: 20px auto;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .done-btn {
+    position: absolute;
+    top: 15px;
+    right: 80px; /* Adjust position relative to Delete button */
+    background-color: #28a745; /* Green color */
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.done-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+    transform: scale(1.1);
+}
+
+/* Progress Bar Styling */
+.task-progress {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.task-progress h5 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.progress-bar {
+  height: 10px;
+  width: 100%;
+  background-color: #e5e5e5;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background-color: #28a745;
+  transition: width 0.3s ease;
+}
+
+/* Task List Styling */
+.task-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.task-item h5 {
+  font-size: 1.2rem;
+  color: #007bff;
+  margin-bottom: 5px;
+}
+
+.task-item p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.task-item.completed {
+  text-decoration: line-through;
+  background-color: #f5f5f5;
+  color: #888;
+}
+
+/* Button Alignment */
+.task-item-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.done-btn, .delete-btn {
+  font-size: 0.875rem;
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.done-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.done-btn:hover {
+  background-color: #218838;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}

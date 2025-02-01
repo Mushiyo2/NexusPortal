@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style/internstyle/style.css">
+    <link rel="stylesheet" href="style/internstyle/profile.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>Nexus|Intern (Portal)</title>
+</head>
+<style>
+    .edit-button.disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+    /* Apply this style to the entire form to keep the cursor normal */
+.profile-form,
+.profile-form input[readonly],
+.profile-form select[disabled] {
+    cursor: default;
+}
+/* Ensure the readonly fields keep the normal cursor */
+input[readonly], textarea[readonly], select[readonly] {
+    cursor: default; /* Set cursor to normal */
+    background-color: #f5f5f5; /* Optional: To visually distinguish readonly fields */
+    border: 1px solid #ccc;  /* Optional: Add a border to match the readonly state */
+}
+
+/* Optional: Optional styling for the readonly fields */
+input[readonly]:hover, textarea[readonly]:hover, select[readonly]:hover {
+    cursor: default; /* Keep cursor normal when hovering */
+    background-color: #f5f5f5; /* Ensure no change in background color on hover */
+}
+.forced-vertical-text{
+    font-family: "Onest", sans-serif;
+}
+</style>
+<body>
+    <!-- start: Sidebar -->
+    <div class="sidebar-overlay" data-dismiss="sidebar"></div>
+    <div class="sidebar">
+        <div class="sidebar-brand-wrapper">
+            <a href="#" class="sidebar-brand">
+                <img src="style/internstyle/logo.jpg" alt="" class="sidebar-brand-image" />
+                <span class="sidebar-brand-name">NEXUS </span>
+            </a>
+        </div>
+        <div class="sidebar-menu-wrapper">
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item-title">
+                    <span class="sidebar-menu-item-title-expanded">INTERN ID:</span>
+                    <span class="sidebar-menu-item-title-collapsed">
+                        <i class="ri-more-fill"></i>
+                    </span>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="internindex.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bxs-dashboard'></i></i></span>
+                        <span class="sidebar-menu-item-link-text">Dashboard</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-search-alt-2' style="color: #6366f1;"></i></i></span>
+                        <span class="sidebar-menu-item-link-text" style="color: #6366f1;">Portal</span>
+                        <span class="sidebar-menu-item-link-arrow"><i class="ri-arrow-right-s-line" style="color: #6366f1;"></i></span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li class="sidebar-submenu-item">
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li class="sidebar-submenu-item">
+                                    <a href="#" class="sidebar-submenu-item-link">
+                                        <span class="sidebar-submenu-item-link-text">Test</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="internportalinfotech.html" class="sidebar-submenu-item-link" style="color: #6366f1;">
+                                <span class="sidebar-submenu-item-link-text" style="color: #6366f1;">Information Tech</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="internportalindustrialtech.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Industrial Technology </span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="internportalcomputerengin.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Computer Engineering </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                <li class="sidebar-menu-item">
+                    <a href="internfeed.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-book-open'></i></span>
+                        <span class="sidebar-menu-item-link-text">Feed</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="interntask.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-task'></i></i></span>
+                        <span class="sidebar-menu-item-link-text">Task</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-message-dots"></i></span>
+                        <span class="sidebar-menu-item-link-text">Message</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="internprofile.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-happy-alt'></i></span>
+                        <span class="sidebar-menu-item-link-text">Profile</span>
+                    </a>
+                </li>
+                </li>
+            </ul>
+
+        </div>
+        <div class="forced-vertical-text">NEXUS</div>
+    </div>
+    <!-- end: Sidebar -->
+
+    <!-- start: Main -->
+    <div class="main">
+        <div class="topbar">
+            <a href="#" class="topbar-brand">
+                <img src="style/internstyle/logo.jpg" alt="" class="topbar-brand-image" />
+            </a>
+            <button type="button" class="topbar-button topbar-toggle" data-toggle="sidebar">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="topbar-search-form-wrapper" id="topbar-search-form-wrapper">
+                <form action="" class="topbar-search-form">
+                    <h3 class="username">Name : ? ? ? </h3>
+                    <span class="topbar-search-form-icon"></i></span>
+                    <div class="topbar-search-form-autocomplete" id="topbar-search-autocomplete">
+                        <div class="topbar-search-form-autocomplete-wrapper">
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Recent Searches
+                                </p>
+                                <div class="topbar-search-form-autocomplete-recent">
+                                </div>
+                            </div>
+                            <!--invisible-->
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p>Products
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>
+                                    Users
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="topbar-right">
+                <div class="dropdown">
+                    <button type="button" class="topbar-button" data-toggle="dropdown">
+                        <i class="ri-notification-3-line"></i>
+                        <span class="topbar-button-total topbar-button-total-notification">3</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-notification">
+                        <div class="dropdown-menu-header">
+                            <p class="dropdown-menu-title">Notifications</p>
+                            <span class="badge badge-primary">3 items</span>
+                        </div>
+                        <div class="dropdown-menu-notification-wrapper">
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon success">
+                                    <i class="ri-check-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon danger">
+                                    <i class="ri-alert-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon warning">
+                                    <i class="ri-alarm-warning-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Your code here -->
+
+        <div class="container">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <span>Viewing Company Profile</span>
+                </div>
+                <div class="profile-content">
+                    <div class="banner"></div>
+                    <div class="profile-info">
+                        <div class="avatar" style="background-color: #FD7238;"></div>
+                        <div class="school-details">
+                            <h2 id="companyName">Company</h2>
+                            <p id="companyEmail">company@email.com</p>
+                        </div>
+                        <button class="edit-button" >Apply</button>
+                    </div>
+                    <form class="profile-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="school-name"><font style="color: #6366f1;">| </font>Company Name</label>
+                                <input type="text" id="school-name" placeholder="Name" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact"><font style="color: #6366f1;">| </font>Contact</label>
+                                <input type="text" id="contact" placeholder="Contact No." readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="address"><font style="color: #6366f1;">| </font>Address</label>
+                                <input type="text" id="address" placeholder="Address" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="specialization"><font style="color: #6366f1;">| </font>Specialization</label>
+                                <input type="text" id="specialization" placeholder="Role" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email"><font style="color: #6366f1;">| </font>Email</label>
+                                <input type="email" id="companyEmail2" placeholder="Email" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="department"><font style="color: #6366f1;">| </font>Department</label>
+                                <select id="department" name="department" class="custom-select"  disabled>
+                                    <option value="">Select Department</option>
+                                    <option value="Information Technology">Information Technology</option>
+                                    <option value="Industrial Technology">Industrial Technology</option>
+                                    <option value="Computer Engineering">Computer Engineering</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description"><font style="color: #6366f1;">| </font>Description</label>
+                            <textarea id="description" placeholder="Description" readonly></textarea>
+                        </div>
+                        <div class="form-group file-upload-group">
+                            <label for="fileUpload" class="file-upload-label">
+                                <i class="ri-upload-cloud-2-line"></i> Upload Your Files
+                            </label>
+                            <input type="file" id="fileUpload" name="files" multiple class="file-upload-input">
+                            <p class="file-upload-note">You can upload multiple files. Supported formats: PDF, DOCX, Images.</p>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- MAIN -->
+    </div>
+    <!-- end: Main -->
+    <script>
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+    
+        document.addEventListener('DOMContentLoaded', async () => {
+            let internId;
+            try {
+                // Fetch session data to get the intern ID
+                const sessionResponse = await fetch('/api/session');
+                if (!sessionResponse.ok) throw new Error('Failed to fetch session data.');
+                const sessionData = await sessionResponse.json();
+                internId = sessionData.internId;
+            } catch (error) {
+                console.error('Error fetching session data:', error);
+                alert('Failed to retrieve session information. Please log in again.');
+                return;
+            }
+    
+            const companyEmail = encodeURIComponent(getQueryParam('email'));
+            if (companyEmail && internId) {
+                try {
+                    // Fetch company profile
+                    const response = await fetch(`/api/company-profile/${companyEmail}`);
+                    if (!response.ok) throw new Error(`API error: ${response.status} ${response.statusText}`);
+    
+                    const companyData = await response.json();
+                    if (companyData && companyData.id) {
+                        const companyId = companyData.id;
+                        document.querySelector('#companyName').textContent = companyData.name;
+                        document.querySelector('#companyEmail').textContent = companyData.email;
+                        document.querySelector('#companyEmail2').value = companyData.email;
+                        document.querySelector('#address').value = companyData.address;
+                        document.querySelector('#contact').value = companyData.contact;
+                        document.querySelector('#school-name').value = companyData.name;
+                        document.querySelector('#department').value = companyData.department;
+                        document.querySelector('#specialization').value = companyData.role;
+                        document.querySelector('#description').value = companyData.description;
+    
+                        const applyButton = document.querySelector('.edit-button');
+                        applyButton.dataset.companyId = companyId;
+    
+                        // Check if the intern is already assigned to the company
+                        const assignedResponse = await fetch(`/api/company-assignment-status/${internId}/${companyId}`);
+                        if (!assignedResponse.ok) throw new Error(`API error: ${assignedResponse.status} ${assignedResponse.statusText}`);
+    
+                        const { assigned } = await assignedResponse.json();
+    
+                        if (assigned) {
+                            applyButton.textContent = 'Assigned';
+                            applyButton.disabled = true;
+                            applyButton.classList.add('disabled');
+                        } else {
+                            // Check internship application status
+                            const statusResponse = await fetch(`/api/company-internship-status/${companyId}`);
+                            if (!statusResponse.ok) throw new Error(`API error: ${statusResponse.status} ${statusResponse.statusText}`);
+    
+                            const { applied, applicationId, applicationStatus, canReapply } = await statusResponse.json();
+    
+                            if (applied) {
+                                applyButton.textContent = 'Cancel Application';
+                                applyButton.dataset.applicationId = applicationId;
+                                applyButton.dataset.applied = 'true';
+                            } else if (canReapply) {
+                                applyButton.textContent = 'Apply';
+                                applyButton.dataset.applied = 'false';
+                                applyButton.removeAttribute('data-applicationId');
+                            } else {
+                                applyButton.textContent = 'Apply';
+                                applyButton.dataset.applied = 'false';
+                                applyButton.removeAttribute('data-applicationId');
+                            }
+                        }
+                    } else {
+                        throw new Error('Invalid data received from the API.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching company or assignment status:', error);
+                    alert('There was an error fetching data. Please try again later.');
+                }
+            } else {
+                console.error('No email or intern ID provided.');
+                alert('Missing required data.');
+            }
+        });
+    
+        document.querySelector('.edit-button').addEventListener('click', async (event) => {
+            const button = event.target;
+            const companyId = button.dataset.companyId;
+            const applied = button.dataset.applied === 'true';
+    
+            if (applied) {
+                // Cancel application
+                const applicationId = button.dataset.applicationId;
+                if (!applicationId) {
+                    alert('Application ID is missing. Please refresh the page and try again.');
+                    return;
+                }
+    
+                try {
+                    const response = await fetch(`/api/intern/cancel-application/${applicationId}`, {
+                        method: 'DELETE',
+                    });
+    
+                    if (response.ok) {
+                        alert('Application cancelled successfully.');
+                        button.textContent = 'Apply';
+                        button.dataset.applied = 'false';
+                        button.removeAttribute('data-applicationId');
+                    } else {
+                        const error = await response.json();
+                        alert(error.message || 'Failed to cancel application.');
+                    }
+                } catch (error) {
+                    console.error('Error cancelling application:', error);
+                }
+            } else {
+                // Apply
+                const files = document.getElementById('fileUpload').files;
+    
+                if (!files.length) {
+                    alert('Please select at least one file.');
+                    return;
+                }
+    
+                const formData = new FormData();
+                formData.append('company_id', companyId);
+                for (const file of files) {
+                    formData.append('files', file);
+                }
+    
+                try {
+                    const response = await fetch('/api/intern/upload-files', {
+                        method: 'POST',
+                        body: formData,
+                    });
+    
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('Application submitted successfully!');
+                        button.textContent = 'Cancel Application';
+                        button.dataset.applied = 'true';
+                    } else {
+                        alert(data.error || 'Failed to apply.');
+                    }
+                } catch (error) {
+                    console.error('Error applying:', error);
+                }
+            }
+        });
+        document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/api/intern-profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            document.querySelector('.sidebar-menu-item-title-expanded').textContent = `INTERN ID: ${data.id}`;
+        } else {
+            console.error('Failed to load profile data');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+    </script>
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>
+    <script src="style/internstyle/script.js"></script>
+    <script src="style/internstyle/internscript.js"></script>
+</body>
+
+</html>

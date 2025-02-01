@@ -1,0 +1,203 @@
+.container {
+    max-width: 1500px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #1da1f2;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #e1e8ed;
+    font-size: 16px;
+    background-color: #f7f9fa;
+    transition: all 0.3s ease;
+    resize: none;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #1da1f2;
+    background-color: #ffffff;
+}
+
+button {
+    padding: 14px 18px;
+    background-color: #1da1f2;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0d95e8;
+}
+
+#newsfeed {
+    margin-top: 30px;
+}
+
+.post {
+    background: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 1px solid #e1e8ed;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.post:hover {
+    transform: translateY(-5px);
+}
+
+.post img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.post p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+.post small {
+    color: #657786;
+    font-size: 13px;
+    display: block;
+    margin-top: 10px;
+}
+
+.delete-button {
+    background-color: #f5f8fa;
+    border: 1px solid #e1e8ed;
+    color: #1da1f2;
+    padding: 8px 14px;
+    border-radius: 50px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.delete-button:hover {
+    background-color: #e1e8ed;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.file-label {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: #1da1f2;
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    line-height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.file-label:hover {
+    background-color: #0d95e8;
+}
+
+input[type="file"]:focus + .file-label,
+input[type="file"]:active + .file-label {
+    background-color: #0d95e8;
+}
+
+.image-preview {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    display: none;
+}
+
+.image-preview img {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+.file-label.uploaded {
+    background-color: #28a745;
+}
+
+.file-label.uploaded:hover {
+    background-color: #218838;
+}
+
+.image-preview p {
+    color: #28a745;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 12px 16px;
+    }
+
+    .post {
+        padding: 15px;
+    }
+}
+.post-header {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.post-content {
+    margin: 0 0 10px 20px; /* Indent content slightly */
+}
+
+.post img {
+    display: block;
+    margin-top: 8px;
+}
+
+.delete-button {
+    margin-top: 5px;
+}

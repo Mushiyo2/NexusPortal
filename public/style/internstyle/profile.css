@@ -1,0 +1,224 @@
+body {
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.banner {
+    width: calc(100% - 40px); /* Adjust width for padding compensation */
+    height: 120px;
+    background:  url('loading_p_bg.54a70f.jpg'); /* Add your image here */
+    background-size: cover; /* Ensures the image covers the entire banner */
+    background-position: center; /* Centers the image */
+    border-radius: 5px;
+    margin: 0 auto 20px auto;
+}
+
+/* Container to center the profile layout */
+.container {
+    max-width: 1500px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.profile-container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 20px; /* Add padding here */
+}
+
+.profile-header {
+    padding: 10px 20px;
+    background: #f0f0f0;
+    font-size: 14px;
+    color: #666;
+    text-align: left;
+}
+
+.profile-content {
+    padding: 20px;
+}
+
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    margin-top: -40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-left: 20px; /* Add padding for better spacing */
+    padding-right: 20px;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    background-color: green;
+    border-radius: 50%;
+    margin-right: 20px;
+    border: 5px solid white;
+}
+.custom-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f9f9f9;
+    font-size: 16px;
+    color: #666;
+    appearance: none; /* Remove default dropdown arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23666" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14l-4.796-5.481A1 1 0 0 1 3.2 4h9.6a1 1 0 0 1 .754 1.659l-4.796 5.481a1 1 0 0 1-1.512 0z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.school-details {
+    flex: 1;
+    margin-top: 20px;
+}
+
+.school-details h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.school-details p {
+    margin: 0;
+    color: #666;
+}
+
+/* Edit button with slick hover effect */
+.edit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: 20px;
+    position: relative;
+    transition: all 0.3s ease; /* Smooth transition for hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.edit-button:hover {
+    transform: translateY(-3px); /* Lift effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+    background-color: #0056b3; /* Darken background on hover */
+}
+
+.edit-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(38, 123, 255, 0.3); /* Focus glow */
+}
+
+.edit-button:active {
+    transform: translateY(1px); /* Pressed effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Smaller shadow on click */
+}
+
+/* Logout button with slick hover effect */
+.logout-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth transition for hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.logout-button:hover {
+    transform: translateY(-3px); /* Lift effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+    background-color: #c82333; /* Darken background on hover */
+}
+
+.logout-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.3); /* Focus glow */
+}
+
+.logout-button:active {
+    transform: translateY(1px); /* Pressed effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Smaller shadow on click */
+}
+
+
+
+/* Form styling */
+.profile-form {
+    margin-top: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 15px;
+    min-width: 200px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+    .profile-info {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: center; /* Center text in mobile view */
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .edit-button {
+        margin: 10px 0 0 0; /* Center button below profile info */
+        align-self: center;
+    }
+    .logout-button {
+        margin: 10px 0 0 0; /* Center button below profile info */
+        align-self: center;
+    }
+    .school-details {
+        margin: 10px 0 0 0; /* Center button below profile info */
+        align-self: center;
+    }
+    .avatar {
+        margin: 10px 0 0 0; /* Center button below profile info */
+        align-self: center;
+    }
+
+    .banner {
+        width: 100%; /* Full-width for smaller screens */
+        margin: 0 auto 20px;
+    }
+}
+
