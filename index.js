@@ -15,12 +15,13 @@ const axios = require('axios');
 //const upload = multer({ storage: multer.memoryStorage() }); // or specify a disk storage
 const app = express();
 const port = process.env.PORT || 3000;
+
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'vamps',
-    password: '666',  
-    port: 61203,
+    user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
 
 // Configure Multer for file uploads
@@ -174,19 +175,26 @@ app.post('/register-company', async (req, res) => {
 });
 
 
-// Register a new school
 app.post('/register', async (req, res) => {
     const { email, password, name, address } = req.body;
+
+    console.log("Received data:", req.body); // Debugging line
+
+    if (!email || !password || !name || !address) {
+        return res.status(400).json({ error: 'All fields are required.' });
+    }
+
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const query = 'INSERT INTO school_requests (email,password, name, address, status) VALUES ($1, $2, $3, $4, $5)';
-        await pool.query(query, [email, hashedPassword, name, address, 'pending']);
+        await pool.query('INSERT INTO school_requests (email,password, name, address, status) VALUES ($1, $2, $3, $4, $5)', 
+            [email, hashedPassword, name, address, 'pending']);
         res.status(201).json({ message: 'Registration successful! Awaiting admin approval.' });
     } catch (error) {
         console.error('Error registering school:', error);
         res.status(500).json({ error: 'Error registering school.' });
     }
 });
+
 
     // Route to register a new intern
     app.post('/register-intern', upload.single('school_id_image'), async (req, res) => {
