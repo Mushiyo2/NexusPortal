@@ -1,37 +1,33 @@
 
+document.getElementById('internRegisterForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
 
+    const formData = new FormData(event.target);
 
+    // Debugging: Log all form values
+    for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]); 
+    }
 
-// Common registration function for school and company only
-document.querySelectorAll('#registerForm, #companyRegisterForm').forEach(form => {
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const data = Object.fromEntries(formData);
+    try {
+        const response = await fetch('/register-intern', {
+            method: 'POST',
+            body: formData 
+        });
 
-        // Determine the endpoint based on the form ID
-        const endpoint = form.id === 'registerForm' ? '/register' : '/register-company';
-
-        try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }, // Send as JSON
-                body: JSON.stringify(data) 
-            });
-
-            const result = await response.json();
-            if (!response.ok) {
-                alert(result.error || 'An unexpected error occurred.');
-            } else {
-                alert(result.message);
-                form.reset(); // Clear form after success
-            }
-        } catch (error) {
-            console.error('Error during registration:', error);
-            alert('Failed to connect to the server. Please try again later.');
+        const result = await response.json();
+        if (!response.ok) {
+            alert(result.error); // Show error message
+        } else {
+            alert(result.message);
+            location.reload();
         }
-    });
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        alert('An unexpected error occurred. Please try again later.');
+    }
 });
+
 
 
 
