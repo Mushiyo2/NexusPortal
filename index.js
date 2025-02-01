@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser'); // Optional: if using express.json()
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { Pool } = require('pg');
 const path = require('path');
 const session = require('express-session'); 
