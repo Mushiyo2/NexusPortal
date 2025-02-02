@@ -9,6 +9,25 @@ const cors = require('cors');
 const multer = require('multer');
 require('dotenv').config();
 const axios = require('axios');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: 'uploads', // Your Cloudinary folder
+      allowedFormats: ['jpg', 'png'], // Allowed formats
+      public_id: (req, file) => `intern_${Date.now()}`, // Unique ID
+    },
+  });
+  
+  
 
 
 // const multer = require('multer');
@@ -25,14 +44,14 @@ const pool = new Pool({
 });
 
 // Configure Multer for file uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    },
-});
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'uploads/');
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, Date.now() + path.extname(file.originalname));
+//     },
+// });
 const upload = multer({ storage: storage });
 const uploadMultiple = multer({
     storage: storage, // Already defined in your code
@@ -195,66 +214,57 @@ app.post('/register', async (req, res) => {
     }
 });
 
+app.post('/register-intern', upload.single('school_id_image'), async (req, res) => {
+    const { email, password, name, address, school_id } = req.body;
+    const schoolImage = req.file; // Uploaded file from Cloudinary
 
-    // Route to register a new intern
-    app.post('/register-intern', upload.single('school_id_image'), async (req, res) => {
-        const { email, password, name, address, school_id } = req.body;
-        const schoolImage = req.file; // The uploaded file
-        console.log('Received form data:', req.body);
-        console.log('Received file:', req.file); 
+    console.log('Received form data:', req.body);
+    console.log('Cloudinary Image:', schoolImage); 
 
-        // Validate input fields
-        if (!name || !email || !password || !school_id || !schoolImage) {
-            return res.status(400).json({ error: 'Name, email, password, school ID, and image are required.' });
-        }
+    // Validate input fields
+    if (!name || !email || !password || !school_id || !schoolImage) {
+        return res.status(400).json({ error: 'Name, email, password, school ID, and image are required.' });
+    }
 
-        try {
-            const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-            // Save the uploaded file's path
-            const filePath = `uploads/${schoolImage.filename}`;
+        // Ensure Cloudinary URL is properly stored
+        const imageUrl = schoolImage ? schoolImage.path : null;
 
-            // Insert intern request into the database
-            const query = `
-                INSERT INTO intern_requests (email, password, name, address, school_id, schoolid_img, status) 
-                VALUES ($1, $2, $3, $4, $5, $6, $7)
-            `;
-            await pool.query(query, [
-                email,
-                hashedPassword,
-                name,
-                address,
-                school_id,
-                filePath, // Save the file path in the database
-                'pending'
-            ]);
+        const query = `
+            INSERT INTO intern_requests (email, password, name, address, school_id, schoolid_img, status) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `;
+        await pool.query(query, [
+            email,
+            hashedPassword,
+            name,
+            address,
+            school_id,
+            imageUrl, // Save Cloudinary URL
+            'pending'
+        ]);
 
-            // Fetch all approved schools
-            const schools = await pool.query('SELECT id FROM school WHERE is_approved = true');
-            
-            // Insert notifications for all approved schools
-            const message = `A new intern request has been submitted by ${name}.`;
-            const notificationQueries = schools.rows.map(school => {
-                return pool.query(
-                    'INSERT INTO school_notifications (school_id, message, timestamp) VALUES ($1, $2, CURRENT_TIMESTAMP)',
-                    [school.id, message]
-                );
-            });
-            await Promise.all(notificationQueries);
+        // Fetch all approved schools
+        const schools = await pool.query('SELECT id FROM school WHERE is_approved = true');
+        
+        // Insert notifications for all approved schools
+        const message = `A new intern request has been submitted by ${name}.`;
+        const notificationQueries = schools.rows.map(school => {
+            return pool.query(
+                'INSERT INTO school_notifications (school_id, message, timestamp) VALUES ($1, $2, CURRENT_TIMESTAMP)',
+                [school.id, message]
+            );
+        });
+        await Promise.all(notificationQueries);
 
-            res.status(201).json({ message: 'Intern registration successful and notifications sent to schools!' });
-        } catch (error) {
-            console.error('Error registering intern:', error);
-
-            if (error.code === '23505') {
-                // Handle duplicate email error
-                return res.status(409).json({ error: 'This email is already registered. Please try with a different email.' });
-            }
-
-            // Handle other errors
-            res.status(500).json({ error: 'An unexpected error occurred during registration.' });
-        }
-    });
+        res.status(201).json({ message: 'Intern registration successful!', imageUrl });
+    } catch (error) {
+        console.error('Error registering intern:', error);
+        res.status(500).json({ error: 'An unexpected error occurred during registration.' });
+    }
+});
 
 
 
