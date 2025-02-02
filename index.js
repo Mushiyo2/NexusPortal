@@ -984,25 +984,38 @@ app.get('/api/school-profile/:email', async (req, res) => {
 // Fetch all tasks or filter by intern_id if provided
 app.get('/api/tasks', async (req, res) => {
     const { intern_id } = req.query;
-    const whereClause = intern_id ? { where: { intern_id } } : {};
-    try {
-      const tasks = await Task.findAll(whereClause);
-      res.json(tasks);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
+    if (!intern_id) {
+        return res.status(400).json({ message: "Intern ID is required" });
     }
-  });
+
+    try {
+        const tasks = await Task.findAll({ where: { intern_id } });
+        res.json(tasks.length ? tasks : []);  // Ensure it's always an array
+    } catch (err) {
+        console.error("Error fetching tasks:", err);
+        res.status(500).json({ message: "Internal Server Error", error: err.message });
+    }
+});
+
+
   
   // Create a new task with optional intern_id association
   app.post('/api/tasks', async (req, res) => {
-    const { title, description, deadline, intern_id } = req.body; // Add intern_id
+    const { title, description, deadline, intern_id } = req.body;
+
+    if (!intern_id) {
+        return res.status(400).json({ message: 'Intern ID is required' });
+    }
+
     try {
-      const newTask = await Task.create({ title, description, deadline, intern_id }); // Include intern_id
-      res.status(201).json(newTask);
+        const newTask = await Task.create({ title, description, deadline, intern_id });
+        res.status(201).json(newTask);
     } catch (err) {
-      res.status(500).json({ message: err.message });
+        console.error('Error creating task:', err);
+        res.status(500).json({ message: 'Failed to create task', error: err.message });
     }
 });
+
 
   
 // Update task details (already exists in index.js)

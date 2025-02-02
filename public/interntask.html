@@ -285,10 +285,22 @@
 
         <!-- MAIN -->
     </div>
-
     <script>
         const taskForm = document.getElementById('taskForm');
         const taskList = document.getElementById('taskList');
+    
+        // Fetch Intern ID
+        async function getInternId() {
+            try {
+                const response = await fetch('/api/intern-profile');
+                if (!response.ok) throw new Error("Failed to fetch intern profile");
+                const data = await response.json();
+                return data.id; // Ensure `intern_id` exists
+            } catch (error) {
+                console.error("Error fetching intern ID:", error);
+                return null;
+            }
+        }
     
         // Update the task progress bar
         function updateProgress(tasks) {
@@ -308,8 +320,19 @@
     
         // Load tasks and update the UI
         async function loadTasks() {
-            const response = await fetch('/api/tasks');
+            const internId = await getInternId(); // Ensure `intern_id` is passed
+            if (!internId) {
+                console.error("Intern ID is missing.");
+                return;
+            }
+    
+            const response = await fetch(`/api/tasks?intern_id=${internId}`);
             const tasks = await response.json();
+    
+            if (!Array.isArray(tasks)) {
+                console.error("Invalid tasks response:", tasks);
+                return;
+            }
     
             taskList.innerHTML = tasks.map(task => `
                 <div class="task-item ${task.status === 'completed' ? 'completed' : ''}" data-id="${task.id}">
@@ -317,7 +340,7 @@
                         <h5>${task.title}</h5>
                         <p>${task.description || 'No description'}</p>
                         <span class="badge bg-info">${task.status}</span>
-                        <span class="badge bg-secondary">Created: ${new Date(task.createdAt).toLocaleDateString()}</span>
+                        <span class="badge bg-secondary">Created: ${new Date(task.created_at).toLocaleDateString()}</span>
                         ${task.deadline ? `<span class="badge deadline-badge">Deadline: ${task.deadline}</span>` : ''}
                     </div>
                     <div class="task-item-buttons">
@@ -365,20 +388,26 @@
         // Add new task
         taskForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+    
+            const internId = await getInternId(); // Fetch intern_id from session or profile
+            if (!internId) {
+                alert('Intern ID is missing.');
+                return;
+            }
+    
             const response = await fetch('/api/tasks', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     title: taskForm.taskTitle.value,
                     description: taskForm.taskDescription.value,
-                    deadline: taskForm.taskDeadline.value
+                    deadline: taskForm.taskDeadline.value,
+                    intern_id: internId
                 })
             });
     
             if (response.ok) {
-                loadTasks(); // Reload task list
+                loadTasks();
                 taskForm.reset();
             } else {
                 const error = await response.json();
@@ -388,24 +417,26 @@
     
         // Initial load of tasks
         loadTasks();
+    
         document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const response = await fetch('/api/intern-profile', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            try {
+                const response = await fetch('/api/intern-profile', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+                    document.querySelector('.sidebar-menu-item-title-expanded').textContent = `INTERN ID: ${data.id}`;
+                } else {
+                    console.error('Failed to load profile data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
         });
-
-        if (response.ok) {
-            const data = await response.json();
-            document.querySelector('.sidebar-menu-item-title-expanded').textContent = `INTERN ID: ${data.id}`;
-        } else {
-            console.error('Failed to load profile data');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-});
     </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
     <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>
     <script src="style/internstyle/script.js"></script>
