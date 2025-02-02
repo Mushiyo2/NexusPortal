@@ -27,7 +27,6 @@ const storage = new CloudinaryStorage({
     },
   });
   
-  
 
 
 // const multer = require('multer');
@@ -321,8 +320,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail', // Use your preferred email service
     auth: {
-        user: 'lenujpagliawan@gmail.com', // Replace with your email
-        pass: 'qvvn nlfl xdfe tltg'
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
     }
 });
 
