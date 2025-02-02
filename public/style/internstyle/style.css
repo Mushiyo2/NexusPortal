@@ -1296,11 +1296,11 @@ body {
 
 .btn-container {
     display: flex;
+    flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
     justify-content: center;
     align-items: center;
-    padding: 0; /* No extra padding to avoid pushing it out of view */
-    gap: 20px; /* Adds space between buttons */
-    margin-right: 30px;
+    gap: 15px; /* Space between buttons */
+    margin: 20px 0;
 }
 
 .btn-container2 {
@@ -1312,8 +1312,9 @@ body {
     
 }
 
-.btn--download {
-    padding: 16px 32px;
+.btn--download,
+.btn--validate {
+    padding: 12px 24px;
     font-size: 16px;
     font-weight: bold;
     color: var(--white);
@@ -1321,36 +1322,36 @@ body {
     text-decoration: none;
     border-radius: var(--rounded-lg);
     transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    min-width: 180px; /* Ensures buttons have a minimum width */
 }
 
-.btn--download:hover {
+
+.btn--download:hover,
+.btn--validate:hover {
     background-color: var(--dark-grey);
     transform: translateY(-3px);
 }
-
-.btn--download:active {
+.btn--download:active,
+.btn--validate:active {
     transform: translateY(1px);
 }
 
 
 /* New Validate button */
-.btn--validate {
-    padding: 16px 32px;
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--white);
-    background-color: var(--blue);
-    text-decoration: none;
-    border-radius: var(--rounded-lg);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
 
-/* Hover effect for Validate button */
-.btn--validate:hover {
-    background-color: var(--dark-green); /* Darker shade for hover effect */
-    transform: translateY(-3px);
-}
 
+@media screen and (max-width: 768px) {
+    .btn-container {
+        flex-direction: column; /* Stacks buttons vertically on smaller screens */
+        align-items: center;
+    }
+
+    .btn--download,
+    .btn--validate {
+        width: 90%; /* Make buttons take up most of the width */
+    }
+}
 /* Active effect for Validate button */
 .btn--validate:active {
     transform: translateY(1px);

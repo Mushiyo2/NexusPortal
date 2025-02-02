@@ -320,10 +320,10 @@
     </div>
 </div>
 <script>
-    let selectedInternId = null;
-    let selectedInternEmail = null;
+   let selectedInternId = null;
+let selectedInternEmail = null;
 
-    async function fetchInternsWithSIP() {
+async function fetchInternsWithSIP() {
     try {
         const response = await fetch('/api/interns-with-sip');
         const interns = await response.json();
@@ -336,20 +336,31 @@
             console.log("Intern object:", intern);  // Debugging line to check intern data
 
             const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${intern.name}</td>
+            row.innerHTML = 
+                `<td>${intern.name}</td>
                 <td>${intern.email}</td>
                 <td>${intern.address}</td>
                 <td>${intern.school_id}</td>
                 <td>
-                    <a href="/uploads/${intern.file_name}" target="_blank" class="view-button">View SIP</a>
+                    ${renderFileLink(intern.file_url)}
                     <button class="approve-btn" onclick="openApproveOverlay(${intern.id}, '${intern.email}')">Approve</button>
-                </td>
-            `;
+                </td>`;
             tbody.appendChild(row);
         });
     } catch (error) {
         console.error('Error fetching interns with SIP files:', error);
+    }
+}
+
+function renderFileLink(fileUrl) {
+    const fileExtension = fileUrl.split('.').pop().toLowerCase();
+    
+    if (fileExtension === 'pdf') {
+        return `<a href="${fileUrl}" target="_blank" class="view-button">View PDF</a>`;
+    } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+        return `<a href="${fileUrl}" target="_blank" class="view-button">View Image</a>`;
+    } else {
+        return `<a href="${fileUrl}" target="_blank" class="view-button">View File</a>`;
     }
 }
 

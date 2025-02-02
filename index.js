@@ -20,13 +20,25 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
-    params: {
-      folder: 'uploads', // Your Cloudinary folder
-      allowedFormats: ['jpg', 'png'], // Allowed formats
-      public_id: (req, file) => `intern_${Date.now()}`, // Unique ID
-    },
-  });
-  
+    params: (req, file) => {
+        const fileExtension = file.originalname.split('.').pop();
+        
+        return {
+            folder: 'uploads',
+            allowed_formats: ['jpg', 'png','jpeg', 'pdf'], // Allowed formats
+            public_id: `intern_${Date.now()}.${fileExtension}`, // File name with extension
+            resource_type: 'auto', // Automatically detects the resource type
+            type: 'upload' // Ensures public access
+        };
+    }
+});
+
+
+
+
+
+
+
 
 
 // const multer = require('multer');
@@ -58,7 +70,6 @@ const uploadMultiple = multer({
 }).array('files', 5); // Allow up to 5 files per request
 
 app.use(cors());
-app.use('/uploads', express.static('uploads'));
 
 
 const jwt = require('jsonwebtoken');
@@ -768,7 +779,12 @@ app.post('/api/posts', upload.single('image'), authenticateUser, async (req, res
     const userId = req.session.userId; // The ID of the currently logged-in user
     const userType = req.session.userType; // 'school' or 'company'
 
-    const image_url = req.file ? `uploads/${req.file.filename}` : null;
+    let image_url = null;
+
+    // If an image is uploaded, get the Cloudinary secure URL
+    if (req.file) {
+        image_url = req.file.path; // Cloudinary provides the secure URL in `req.file.path`
+    }
 
     try {
         let query, values;
@@ -789,7 +805,6 @@ app.post('/api/posts', upload.single('image'), authenticateUser, async (req, res
         res.status(500).send('Server error');
     }
 });
-
 
 // index.js
 function authenticateUser(req, res, next) {
@@ -838,12 +853,16 @@ app.delete('/api/posts/:id', authenticateUser, async (req, res) => {
     }
 });
 
-
 app.post('/api/company-posts', upload.single('image'), authenticateUser, async (req, res) => {
     const { content } = req.body;
     const companyId = req.session.userId; // Assuming `userId` holds the company ID
 
-    const image_url = req.file ? `uploads/${req.file.filename}` : null;
+    let image_url = null;
+
+    // If an image is uploaded, get the Cloudinary secure URL
+    if (req.file) {
+        image_url = req.file.path; // Cloudinary provides the secure URL in `req.file.path`
+    }
 
     try {
         const result = await pool.query(
@@ -872,15 +891,40 @@ app.get('/api/company-posts', authenticateUser, async (req, res) => {
     }
 });
 
-app.delete('/api/company-posts/:id', authenticateUser, async (req, res) => {
+app.delete('/api/posts/:id', authenticateUser, async (req, res) => {
     const postId = req.params.id;
-    const companyId = req.session.userId;
+    const userId = req.session.userId;
+    const userType = req.session.userType;
 
     try {
-        const postResult = await pool.query('SELECT company_id FROM posts WHERE id = $1', [postId]);
-        if (postResult.rows.length === 0) return res.status(404).send('Post not found');
-        if (postResult.rows[0].company_id !== companyId) return res.status(403).send('Unauthorized');
+        // Restrict INTERN users
+        if (userType === 'intern') {
+            return res.status(403).json({ error: 'Interns are not allowed to delete posts.' });
+        }
 
+        // Fetch the post to get the image URL
+        const postResult = await pool.query(
+            'SELECT school_id, company_id, image_url FROM posts WHERE id = $1',
+            [postId]
+        );
+
+        if (postResult.rows.length === 0) {
+            return res.status(404).send('Post not found');
+        }
+
+        const post = postResult.rows[0];
+        if ((userType === 'school' && post.school_id !== userId) ||
+            (userType === 'company' && post.company_id !== userId)) {
+            return res.status(403).send('You do not have permission to delete this post');
+        }
+
+        // Delete the image from Cloudinary if it exists
+        if (post.image_url) {
+            const publicId = post.image_url.split('/').pop().split('.')[0]; // Extract public ID from URL
+            await cloudinary.uploader.destroy(`news_feed/${publicId}`);
+        }
+
+        // Delete the post from the database
         await pool.query('DELETE FROM posts WHERE id = $1', [postId]);
         res.sendStatus(204);
     } catch (err) {
@@ -1213,102 +1257,96 @@ async function notifyCompany(companyId, message) {
     } catch (error) {
         console.error('Error inserting notification into company_notifications:', error);
     }
-}
-
-// Route: Intern Upload Files
-app.post('/api/intern/upload-files', authenticateUser, (req, res) => {
+}app.post('/api/intern/upload-files', authenticateUser, upload.array('files', 5), async (req, res) => {
     const internId = req.session.userId;
 
     if (!internId || req.session.userType !== 'intern') {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    uploadMultiple(req, res, async (err) => {
-        if (err instanceof multer.MulterError) {
-            return res.status(400).json({ error: 'Multer error occurred when uploading.' });
-        } else if (err) {
-            return res.status(500).json({ error: 'An unknown error occurred when uploading.' });
+    try {
+        const { company_id } = req.body;
+        
+        if (!company_id) {
+            return res.status(400).json({ error: 'Company ID is required.' });
         }
 
-        try {
-            const { company_id } = req.body;
+        console.log('Intern ID:', internId);
+        console.log('Company ID:', company_id);
+        console.log('Files received:', req.files);
 
-            console.log('Intern ID:', internId);
-            console.log('Company ID:', company_id);
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ error: 'No files uploaded.' });
+        }
 
-            // Insert application data into companyinternshiprequests
-            await pool.query(
-                `INSERT INTO companyinternshiprequests (company_id, intern_id, application_status, applied_at)
-                 VALUES ($1, $2, 'Pending', CURRENT_TIMESTAMP)`,
-                [company_id, internId]
-            );
+        // Insert application request
+        await pool.query(
+            `INSERT INTO companyinternshiprequests (company_id, intern_id, application_status, applied_at)
+             VALUES ($1, $2, 'Pending', CURRENT_TIMESTAMP)`,
+            [company_id, internId]
+        );
 
-            console.log('Internship request inserted successfully.');
+        console.log('Internship request inserted successfully.');
 
-            // Notify the company about the internship request
-            await notifyCompany(company_id, `A new internship request has been received.`);
+        // Notify the company
+        await notifyCompany(company_id, `A new internship request has been received.`);
 
-            // Insert file data into uploaded_files
-            const files = req.files.map((file) => ({
-                file_name: file.filename,
-                original_name: file.originalname,
-                intern_id: internId,
+        // Process uploaded files
+        const query =
+            `INSERT INTO uploaded_files (file_url, original_name, intern_id, company_id, uploaded_at) 
+             VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)`;
+
+        for (const file of req.files) {
+            console.log('Processing file:', file);
+
+            await pool.query(query, [
+                file.path,  // Cloudinary provides the URL in `file.path`
+                file.originalname,
+                internId,
                 company_id,
-            }));
-
-            const query =
-                'INSERT INTO uploaded_files (file_name, original_name, intern_id, company_id) VALUES ($1, $2, $3, $4)';
-
-            for (const file of files) {
-                await pool.query(query, [
-                    file.file_name,
-                    file.original_name,
-                    file.intern_id,
-                    file.company_id,
-                ]);
-            }
-
-            console.log('Files uploaded successfully.');
-
-            res.json({ success: true, message: 'Application and files uploaded successfully!' });
-        } catch (error) {
-            console.error('Error processing application and file upload:', error);
-            res.status(500).json({ error: 'Failed to process application and file upload.' });
+            ]);
         }
-    });
+
+        console.log('Files uploaded successfully.');
+
+        res.json({ success: true, message: 'Application and files uploaded successfully!' });
+    } catch (error) {
+        console.error('Error processing application and file upload:', error);
+        res.status(500).json({ error: 'Failed to process application and file upload.' });
+    }
 });
+
+
 
 app.post('/api/intern/upload-sip-file', authenticateUser, upload.single('sipFile'), async (req, res) => {
     try {
-        const file = req.file;
         const internId = req.session.userId;
-
-        if (!internId || !file) {
+        if (!internId || !req.file) {
             return res.status(400).json({ error: 'No file uploaded.' });
         }
 
         // Get the intern's name
         const internResult = await pool.query('SELECT name FROM intern WHERE id = $1', [internId]);
-
         if (internResult.rows.length === 0) {
             return res.status(404).json({ error: 'Intern not found.' });
         }
-
         const internName = internResult.rows[0].name;
 
-        // Store the file without linking it to a school
+        // Get Cloudinary file URL
+        const fileUrl = req.file.path; // Cloudinary auto-generates URL
+
+        // Store Cloudinary file URL in PostgreSQL
         await pool.query(
-            `INSERT INTO sip_files (file_name, original_name, intern_id)
-             VALUES ($1, $2, $3)`,
-            [file.filename, file.originalname, internId]
+            `INSERT INTO sip_files (file_name, original_name, intern_id, file_url)
+             VALUES ($1, $2, $3, $4) RETURNING *`,
+            [req.file.path, req.file.originalname, internId, req.file.path]
         );
+        
 
         console.log(`SIP file uploaded successfully by ${internName}.`);
 
-        // Fetch all approved schools
+        // Notify approved schools
         const schools = await pool.query('SELECT id FROM school WHERE is_approved = true');
-
-        // Insert notifications for all approved schools
         const message = `Intern ${internName} has submitted a new SIP form.`;
         const notificationQueries = schools.rows.map(school => {
             return pool.query(
@@ -1318,27 +1356,33 @@ app.post('/api/intern/upload-sip-file', authenticateUser, upload.single('sipFile
         });
         await Promise.all(notificationQueries);
 
-        res.json({ success: true, message: `SIP file uploaded successfully by ${internName}, and notifications sent to all schools.` });
+        res.json({ success: true, message: `SIP file uploaded successfully by ${internName}.`, fileUrl });
     } catch (error) {
         console.error('Error processing SIP file upload:', error);
         res.status(500).json({ error: 'Failed to process SIP file upload.' });
     }
 });
+
 app.delete('/api/intern/cancel-sip-file', authenticateUser, async (req, res) => {
     try {
         const internId = req.session.userId;
 
-        // Check if an SIP file exists for the intern
+        // Check if an SIP file exists
         const fileCheck = await pool.query('SELECT file_name FROM sip_files WHERE intern_id = $1', [internId]);
 
         if (fileCheck.rows.length === 0) {
             return res.status(404).json({ error: 'No SIP file found to cancel.' });
         }
 
-        // Delete only the database record
+        const fileName = fileCheck.rows[0].file_name;
+
+        // Delete from Cloudinary
+        await cloudinary.uploader.destroy(fileName);
+
+        // Delete from PostgreSQL
         await pool.query('DELETE FROM sip_files WHERE intern_id = $1', [internId]);
 
-        console.log(`SIP file record deleted from database for intern ID: ${internId}`);
+        console.log(`SIP file deleted from Cloudinary and database for intern ID: ${internId}`);
         res.json({ success: true, message: 'SIP file submission canceled successfully.' });
 
     } catch (error) {
@@ -1346,6 +1390,7 @@ app.delete('/api/intern/cancel-sip-file', authenticateUser, async (req, res) => 
         res.status(500).json({ error: 'Failed to cancel SIP file.' });
     }
 });
+
 app.get('/api/intern/sip-file-status', authenticateUser, async (req, res) => {
     try {
         const internId = req.session.userId;
@@ -1364,7 +1409,7 @@ app.get('/api/intern/sip-file-status', authenticateUser, async (req, res) => {
 app.get('/api/interns-with-sip', async (req, res) => {
     try {
         const result = await pool.query(`
-            SELECT intern.id, intern.name, intern.email, intern.address, intern.school_id, sip_files.file_name
+            SELECT intern.id, intern.name, intern.email, intern.address, intern.school_id, sip_files.file_name, sip_files.file_url
             FROM intern
             JOIN sip_files ON intern.id = sip_files.intern_id
             ORDER BY intern.name ASC
@@ -1375,6 +1420,7 @@ app.get('/api/interns-with-sip', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch data.' });
     }
 });
+
 
 
 
@@ -1842,7 +1888,6 @@ app.get('/api/reportscompany/excel', async (req, res) => {
 });
 
 
-
 app.get('/api/intern-uploads/:email', authenticateUser, async (req, res) => {
     const email = req.params.email;
     const companyId = req.session.userId;
@@ -1863,7 +1908,7 @@ app.get('/api/intern-uploads/:email', authenticateUser, async (req, res) => {
 
         // Fetch uploaded files for the intern and restrict by company_id
         const filesResult = await pool.query(
-            'SELECT file_name, original_name, uploaded_at FROM uploaded_files WHERE intern_id = $1 AND company_id = $2',
+            'SELECT file_url, original_name, uploaded_at FROM uploaded_files WHERE intern_id = $1 AND company_id = $2',
             [internId, companyId]
         );
 
@@ -1877,6 +1922,7 @@ app.get('/api/intern-uploads/:email', authenticateUser, async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch uploaded files' });
     }
 });
+
 
 app.put('/api/company-internship-requests/:id/accept', async (req, res) => {
     const requestId = parseInt(req.params.id, 10);

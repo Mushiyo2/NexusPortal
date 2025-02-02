@@ -73,8 +73,7 @@ function displayPost(post, currentUserId, userType) {
     postDiv.innerHTML = `
         <p>
             <i class='bx bxs-${postUserType}'></i> 
-            <strong style="color: ${postUserType === 'school' ? 'green' : 'blue'};">${userName}</strong> | 
-            <span style="font-size: 12px; color: #666;">${userEmail}</span><br><br> 
+            <strong style="color: ${postUserType === 'school' ? 'green' : 'blue'};">${userName}</strong><br><br> 
             ${truncatedContent}
             ${isLongPost ? `<button class="see-more" data-id="${post.id}">See More...</button>` : ''}
         </p>
