@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <style>
-    /* Main Colors */
+    
 :root {
   --accent: #33b5e5;
   --white: #ffffff;
@@ -21,19 +21,16 @@
 
 body {
     background-image: url('loading_p_bg.54a70f.jpg');
-    background-position: center top; /* Centers the image horizontally and aligns it to the top */
+    background-position: center top; 
     background-repeat: no-repeat;
-    background-size: cover; /* Ensures the image scales to cover the viewport */
-    background-attachment: fixed; /* Keeps the image fixed during scrolling */
+    background-size: cover; 
+    background-attachment: fixed; 
     color: var(--gray);
     font-family: 'RobotoDraft', 'Roboto', sans-serif;
     font-size: 14px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
-
-/* Pen Title */
 .pen-title {
   padding: 50px 0;
   text-align: center;
@@ -62,8 +59,6 @@ color: #ffffff;
   font-weight: 600;
   text-decoration: none;
 }
-
-/* Form Module */
 .form-module {
   position: relative;
   background: var(--white);
@@ -158,7 +153,7 @@ color: #ffffff;
 }
 
 .form-module button:hover {
-  background: #0099cc; /* 15% darker accent */
+  background: #0099cc; 
 }
 
 .form-module .cta {
@@ -190,38 +185,36 @@ color: #ffffff;
     transform: translateY(-50%);
     z-index: -1;
     -webkit-text-stroke: 2px #6366f1;
-    opacity: 1; /* Ensure it's visible initially */
-    visibility: visible; /* Keep the element interactable */
-    transition: opacity 1.5s ease, visibility 0s 0.5s; /* Transition opacity and visibility after the fade */
+    opacity: 1; 
+    visibility: visible; 
+    transition: opacity 1.5s ease, visibility 0s 0.5s; 
 }
 .forced-vertical-text2 {
-    font-size: 50px; /* Medium-big size */
+    font-size: 50px; 
     font-weight: bold;
   
-    text-transform: uppercase; /* Uppercase text */
-    text-orientation: upright; /* Keep letters upright */
-    display: inline-block; /* Prevent block-level conflicts */
-    pointer-events: none; /* Prevents interaction */
-    position: fixed; /* Fixes the position on the screen */
-    top: 59%; /* Center vertically */
-    writing-mode: vertical-lr; /* Force vertical layout */
-    left: 980px; /* Position slightly to the left */
-    transform: translateY(-50%); /* Ensures true vertical centering */
-    z-index: 10; /* Keeps it on top of other elements */
+    text-transform: uppercase; 
+    text-orientation: upright; 
+    display: inline-block; 
+    pointer-events: none; 
+    position: fixed; 
+    top: 59%; 
+    writing-mode: vertical-lr; 
+    left: 980px; 
+    transform: translateY(-50%); 
+    z-index: 10; 
    color: #6366f1;
 
-   opacity: 1; /* Ensure it's visible initially */
-    visibility: visible; /* Keep the element interactable */
-    transition: opacity 1.5s ease, visibility 0s 0.5s; /* Transition opacity and visibility after the fade */
+   opacity: 1; 
+    visibility: visible; 
+    transition: opacity 1.5s ease, visibility 0s 0.5s; 
     
 }
 .forced-vertical-text.hidden {
-    opacity: 0; /* Fades out */
-    visibility: hidden; /* Makes the element invisible and non-interactive */
-    transition: opacity 1.5s ease, visibility 0s 0.5s; /* Ensure visibility change happens after the fade-out */
+    opacity: 0; 
+    visibility: hidden; 
+    transition: opacity 1.5s ease, visibility 0s 0.5s; 
 }
-
-/* File input style */
 .mb-3 {
     margin-bottom: 20px;
 }
@@ -251,8 +244,6 @@ color: #ffffff;
     color: var(--light-gray);
     margin-top: 5px;
 }
-
-/* Error Overlay Styles */
 #error-overlay {
     display: none;
     position: fixed;
@@ -297,8 +288,6 @@ color: #ffffff;
 #close-button:hover {
     background-color: #0099cc;
 }
-
-/* Responsive Styles for the error overlay */
 @media (max-width: 600px) {
     #error-message-container {
         width: 90%;
@@ -314,8 +303,8 @@ color: #ffffff;
     }
 }
 .cta-link {
-    display: block; /* Makes the entire div clickable */
-    text-decoration: none; /* Removes underline from the link */
+    display: block; 
+    text-decoration: none; 
   }
 
   .cta {
@@ -329,7 +318,7 @@ color: #ffffff;
   }
 
   .cta:hover {
-    background-color: #0099cc; /* Changes background color on hover */
+    background-color: #0099cc; 
     color: #ffffff;
   }
 </style>
@@ -470,9 +459,6 @@ color: #ffffff;
         alert('An unexpected error occurred. Please try again later.');
     }
 });
-
-
-
   function showError(message) {
       const messageElement = document.getElementById('error-message');
       messageElement.textContent = message;
@@ -501,8 +487,4 @@ color: #ffffff;
 });
 </script>
 <script src="scriptintern.js"></script>
-
-
-
-
 </html>

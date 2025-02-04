@@ -272,17 +272,16 @@
                     </div>
                     <form class="profile-form">
                         <div class="checkbox-wrapper-4"><font style="color: #6366f1;">| </font>
-                            <input class="inp-cbx" id="morning" type="checkbox">
-                            <label class="cbx" for="morning"><span>
-                            <svg width="12px" height="10px">
-                              
-                            </svg></span><span>Open for Internship</span></label>
-                            <svg class="inline-svg">
-                              <symbol id="check-4" viewBox="0 0 12 10">
-                                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                              </symbol>
-                            </svg>
-                          </div>
+        <input class="inp-cbx" id="morning" type="checkbox" name="is_available">
+        <label class="cbx" for="morning"><span>
+        <svg width="12px" height="10px">      
+        </svg></span><span>Open for Internship</span></label>
+        <svg class="inline-svg">
+            <symbol id="check-4" viewBox="0 0 12 10">
+                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+            </symbol>
+        </svg>
+    </div>
                           <br>
                         <div class="form-row">
                             <div class="form-group">
@@ -361,6 +360,7 @@
                     document.querySelector('#contact').value = data.contact;
                     document.querySelector('#specialization').value = data.role;
                     document.querySelector('#description').value = data.description;
+                    document.querySelector('#morning').checked = data.is_available; 
                 } else {
                     console.error('Failed to load profile data');
                 }
@@ -400,6 +400,7 @@
                     role: document.querySelector('#specialization').value,
                     department: document.querySelector('#department').value,
                     description: document.querySelector('#description').value,
+                    is_available: document.querySelector('#morning').checked // Add checkbox state
                 };
     
                 const token = localStorage.getItem('token');
@@ -427,24 +428,24 @@
                 }
             }
         });
-
+    
         document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const response = await fetch('/api/company-profile', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            try {
+                const response = await fetch('/api/company-profile', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+                    document.querySelector('.sidebar-menu-item-title-expanded').textContent = `COMPANY ID: ${data.id}`;
+                } else {
+                    console.error('Failed to load profile data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
         });
-
-        if (response.ok) {
-            const data = await response.json();
-            document.querySelector('.sidebar-menu-item-title-expanded').textContent = `COMPANY ID: ${data.id}`;
-        } else {
-            console.error('Failed to load profile data');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-});
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>

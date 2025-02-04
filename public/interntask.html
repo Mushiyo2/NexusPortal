@@ -8,9 +8,8 @@
     <link rel="stylesheet" href="style/internstyle/style.css" />
     <link rel="stylesheet" href="style/internstyle/profile.css">
     <link rel="stylesheet" href="style/internstyle/task.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-
-
     <title>Nexus|Intern (Task)</title>
 </head>
 <style>
@@ -25,7 +24,21 @@
 .forced-vertical-text{
     font-family: "Onest", sans-serif;
 }
-
+  .chart-container {
+            width: 80%;
+            margin: auto;
+            text-align: center;
+        }
+        .chart-toggle {
+            margin: 10px;
+            padding: 8px 12px;
+            border: none;
+            background-color: #6366f1;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
 </style>
 <body>
     <!-- start: Sidebar -->
@@ -148,8 +161,6 @@
                                     Recent Searches
                                 </p>
                                 <div class="topbar-search-form-autocomplete-recent">
-
-
                                 </div>
                             </div>
                             <!--invisible-->
@@ -226,8 +237,6 @@
                 <button type="button" class="topbar-button topbar-button-search" data-toggle="topbar-search">
                 </button>
                 <div class="dropdown" id="topbar-language-dropdown">
-
-
                 </div>
                 <div class="dropdown">
                     <button type="button" class="topbar-button" data-toggle="dropdown">
@@ -278,164 +287,204 @@
                     <p><span id="completedCount">0</span>/<span id="totalCount">0</span> tasks completed</p>
                 </div>
             </div>
-        
+            
             <!-- Task List -->
             <div class="task-list" id="taskList"></div>
-        </div>
-
-        <!-- MAIN -->
+            <div class="chart-container">
+        <canvas id="taskChart"></canvas>
     </div>
-    <script>
-        const taskForm = document.getElementById('taskForm');
-        const taskList = document.getElementById('taskList');
-    
-        // Fetch Intern ID
-        async function getInternId() {
-            try {
-                const response = await fetch('/api/intern-profile');
-                if (!response.ok) throw new Error("Failed to fetch intern profile");
-                const data = await response.json();
-                return data.id; // Ensure `intern_id` exists
-            } catch (error) {
-                console.error("Error fetching intern ID:", error);
-                return null;
-            }
-        }
-    
-        // Update the task progress bar
-        function updateProgress(tasks) {
-            const completedTasks = tasks.filter(task => task.status === 'completed').length;
-            const totalTasks = tasks.length;
-    
-            const progressFill = document.getElementById('progressFill');
-            const completedCount = document.getElementById('completedCount');
-            const totalCount = document.getElementById('totalCount');
-    
-            completedCount.textContent = completedTasks;
-            totalCount.textContent = totalTasks;
-    
-            const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
-            progressFill.style.width = `${progressPercentage}%`;
-        }
-    
-        // Load tasks and update the UI
-        async function loadTasks() {
-            const internId = await getInternId(); // Ensure `intern_id` is passed
-            if (!internId) {
-                console.error("Intern ID is missing.");
-                return;
-            }
-    
-            const response = await fetch(`/api/tasks?intern_id=${internId}`);
-            const tasks = await response.json();
-    
-            if (!Array.isArray(tasks)) {
-                console.error("Invalid tasks response:", tasks);
-                return;
-            }
-    
-            taskList.innerHTML = tasks.map(task => `
-                <div class="task-item ${task.status === 'completed' ? 'completed' : ''}" data-id="${task.id}">
-                    <div>
-                        <h5>${task.title}</h5>
-                        <p>${task.description || 'No description'}</p>
-                        <span class="badge bg-info">${task.status}</span>
-                        <span class="badge bg-secondary">Created: ${new Date(task.created_at).toLocaleDateString()}</span>
-                        ${task.deadline ? `<span class="badge deadline-badge">Deadline: ${task.deadline}</span>` : ''}
-                    </div>
-                    <div class="task-item-buttons">
-                        <button class="done-btn" onclick="markTaskAsDone(${task.id})">Done</button>
-                        <button class="delete-btn" onclick="deleteTask(${task.id})">Delete</button>
-                    </div>
-                </div>
-            `).join('');
-    
-            updateProgress(tasks);
-        }
-    
-        // Mark a task as done
-        async function markTaskAsDone(id) {
-            const response = await fetch(`/api/tasks/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ status: 'completed' })
-            });
-    
-            if (response.ok) {
-                loadTasks(); // Reload task list
-            } else {
-                const error = await response.json();
-                alert('Error marking task as done: ' + error.message);
-            }
-        }
-    
-        // Delete a task
-        async function deleteTask(id) {
-            const response = await fetch(`/api/tasks/${id}`, {
-                method: 'DELETE'
-            });
-    
-            if (response.ok) {
-                loadTasks(); // Reload task list
-            } else {
-                const error = await response.json();
-                alert('Error deleting task: ' + error.message);
-            }
-        }
-    
-        // Add new task
-        taskForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-    
-            const internId = await getInternId(); // Fetch intern_id from session or profile
-            if (!internId) {
-                alert('Intern ID is missing.');
-                return;
-            }
-    
-            const response = await fetch('/api/tasks', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    title: taskForm.taskTitle.value,
-                    description: taskForm.taskDescription.value,
-                    deadline: taskForm.taskDeadline.value,
-                    intern_id: internId
-                })
-            });
-    
-            if (response.ok) {
-                loadTasks();
-                taskForm.reset();
-            } else {
-                const error = await response.json();
-                alert('Error adding task: ' + error.message);
-            }
-        });
-    
-        // Initial load of tasks
-        loadTasks();
-    
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const response = await fetch('/api/intern-profile', {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' },
-                });
-    
-                if (response.ok) {
-                    const data = await response.json();
-                    document.querySelector('.sidebar-menu-item-title-expanded').textContent = `INTERN ID: ${data.id}`;
-                } else {
-                    console.error('Failed to load profile data');
+            <script>
+                const taskForm = document.getElementById('taskForm');
+                const taskList = document.getElementById('taskList');
+                const progressFill = document.getElementById('progressFill');
+                const completedCount = document.getElementById('completedCount');
+                const totalCount = document.getElementById('totalCount');
+                
+                // Fetch Intern ID
+                async function getInternId() {
+                    try {
+                        const response = await fetch('/api/intern-profile');
+                        if (!response.ok) throw new Error("Failed to fetch intern profile");
+                        const data = await response.json();
+                        return data.id; // Ensure `intern_id` exists
+                    } catch (error) {
+                        console.error("Error fetching intern ID:", error);
+                        return null;
+                    }
                 }
+                
+                // Update the task progress bar
+                function updateProgress(tasks) {
+                    const completedTasks = tasks.filter(task => task.status === 'completed').length;
+                    const totalTasks = tasks.length;
+            
+                    completedCount.textContent = completedTasks;
+                    totalCount.textContent = totalTasks;
+            
+                    const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+                    progressFill.style.width = `${progressPercentage}%`;
+                }
+            
+                // Load tasks and update the UI
+                async function loadTasks() {
+                    const internId = await getInternId(); // Ensure `intern_id` is passed
+                    if (!internId) {
+                        console.error("Intern ID is missing.");
+                        return;
+                    }
+            
+                    const response = await fetch(`/api/tasks?intern_id=${internId}`);
+                    const tasks = await response.json();
+            
+                    if (!Array.isArray(tasks)) {
+                        console.error("Invalid tasks response:", tasks);
+                        return;
+                    }
+            
+                    taskList.innerHTML = tasks.map(task => `
+                        <div class="task-item ${task.status === 'completed' ? 'completed' : ''}" data-id="${task.id}">
+                            <div>
+                                <h5>${task.title}</h5>
+                                <p>${task.description || 'No description'}</p>
+                                <span class="badge bg-info">${task.status}</span>
+                                <span class="badge bg-secondary">Created: ${new Date(task.created_at).toLocaleDateString()}</span>
+                                ${task.deadline ? `<span class="badge deadline-badge">Deadline: ${task.deadline}</span>` : ''}
+                            </div>
+                            <div class="task-item-buttons">
+                                <button class="done-btn" onclick="markTaskAsDone(${task.id})">Done</button>
+                                <button class="delete-btn" onclick="deleteTask(${task.id})">Delete</button>
+                            </div>
+                        </div>
+                    `).join('');
+            
+                    updateProgress(tasks);
+                }
+            
+                // Mark a task as done
+                async function markTaskAsDone(id) {
+                    const response = await fetch(`/api/tasks/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: 'completed' })
+                    });
+            
+                    if (response.ok) {
+                        loadTasks(); // Reload task list
+                    } else {
+                        const error = await response.json();
+                        alert('Error marking task as done: ' + error.message);
+                    }
+                }
+            
+                // Delete a task
+                async function deleteTask(id) {
+                    const response = await fetch(`/api/tasks/${id}`, {
+                        method: 'DELETE'
+                    });
+            
+                    if (response.ok) {
+                        loadTasks(); // Reload task list
+                    } else {
+                        const error = await response.json();
+                        alert('Error deleting task: ' + error.message);
+                    }
+                }
+            
+                // Add new task
+                taskForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+            
+                    const internId = await getInternId(); // Fetch intern_id from session or profile
+                    if (!internId) {
+                        alert('Intern ID is missing.');
+                        return;
+                    }
+            
+                    const response = await fetch('/api/tasks', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            title: taskForm.taskTitle.value,
+                            description: taskForm.taskDescription.value,
+                            deadline: taskForm.taskDeadline.value,
+                            intern_id: internId
+                        })
+                    });
+            
+                    if (response.ok) {
+                        loadTasks();
+                        taskForm.reset();
+                    } else {
+                        const error = await response.json();
+                        alert('Error adding task: ' + error.message);
+                    }
+                });
+            
+                // Initial load of tasks
+                loadTasks();
+            
+                document.addEventListener('DOMContentLoaded', async () => {
+                    try {
+                        const response = await fetch('/api/intern-profile', {
+                            method: 'GET',
+                            headers: { 'Content-Type': 'application/json' },
+                        });
+            
+                        if (response.ok) {
+                            const data = await response.json();
+                            document.querySelector('.sidebar-menu-item-title-expanded').textContent = `INTERN ID: ${data.id}`;
+                        } else {
+                            console.error('Failed to load profile data');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+
+
+                async function fetchTaskData() {
+            try {
+                const response = await fetch('/api/tasks');
+                if (!response.ok) throw new Error("Failed to fetch tasks");
+                const tasks = await response.json();
+                return tasks;
             } catch (error) {
-                console.error('Error:', error);
+                console.error("Error fetching task data:", error);
+                return [];
             }
-        });
-    </script>
+        }
+
+        async function renderChart() {
+            const tasks = await fetchTaskData();
+            const completedTasks = tasks.filter(task => task.status === 'completed').length;
+            const pendingTasks = tasks.length - completedTasks;
+
+            const ctx = document.getElementById('taskChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Completed', 'Pending'],
+                    datasets: [{
+                        label: 'Tasks',
+                        data: [completedTasks, pendingTasks],
+                        backgroundColor: ['#4CAF50', '#FF5733'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderChart);
+            </script>
+            
+            
     
     <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
     <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>

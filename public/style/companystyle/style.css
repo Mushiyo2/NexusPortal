@@ -540,8 +540,6 @@ body.sidebar-collapsed .main {
     padding-bottom: 12px;
     border-bottom: 1px solid var(--neutral-200);
 }
-
-
 .topbar-search-form-autocomplete-recent-item:hover {
     background-color: var(--primary-500);
     color: var(--white);
@@ -647,8 +645,6 @@ body.sidebar-collapsed .main {
     line-height: 1.2;
 }
 /* end: Main */
-
-
 /* start: Dropdown Notification */
 .dropdown-menu-notification {
     max-width: 500px;
@@ -798,10 +794,6 @@ body.sidebar-collapsed .main {
     }
 }
 /* end: Breakpoints */
-
-
-
-
 a {
 	text-decoration: none;
 }
@@ -809,8 +801,6 @@ a {
 li {
 	list-style: none;
 }
-
-
 :root {
 	--poppins: 'Poppins', sans-serif;
 	--lato: 'Lato', sans-serif;
@@ -832,9 +822,6 @@ body {
 	background: var(--grey);
 	overflow-x: hidden;
 }
-
-
-
 /* General scrollbar styling */
 ::-webkit-scrollbar {
     width: 12px; /* Width of vertical scrollbar */
@@ -863,10 +850,6 @@ body {
   ::-webkit-scrollbar-corner {
     background: #f1f1f1; /* Matches the track background */
   }
-  
-
-
-
 /* MAIN */
 #content main {
 	width: 100%;
@@ -910,10 +893,6 @@ body {
 	grid-gap: 10px;
 	font-weight: 500;
 }
-
-
-
-
 #content main .box-info {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -951,8 +930,6 @@ body {
     color: var(--primary-color); /* Adjust color if needed */
     padding: 0 8px;
 }
-
-
 #content main .box-info li:nth-child(1) .bx {
 	background: var(--light-blue);
 	color: var(--blue);
@@ -973,8 +950,6 @@ body {
 #content main .box-info li .text p {
 	color: var(--dark);	
 }
-
-
 #content main .box-info2 {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -1084,8 +1059,6 @@ body {
 #content main .table-data .order table tr td .status.pending {
 	background: var(--orange);
 }
-
-
 #content main .table-data .todo {
 	flex-grow: 1;
 	flex-basis: 300px;
@@ -1117,15 +1090,6 @@ body {
 }
 /* MAIN */
 /* CONTENT */
-
-
-
-
-
-
-
-
-
 @media screen and (max-width: 768px) {
 	#sidebar {
 		width: 200px;
@@ -1140,12 +1104,6 @@ body {
 		display: none;
 	}
 }
-
-
-
-
-
-
 @media screen and (max-width: 576px) {
 	#content nav form .form-input input {
 		display: none;

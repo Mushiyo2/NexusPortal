@@ -39,8 +39,6 @@ async function fetchPosts() {
         alert('An error occurred while fetching posts. Please try again.');
     }
 }
-
-
 function displayPost(post, currentUserId, userType) {
     const newsfeed = document.getElementById('newsfeed');
     const postDiv = document.createElement('div');
@@ -50,9 +48,8 @@ function displayPost(post, currentUserId, userType) {
     // Determine user type (school or company)
     const postUserType = post.school_id ? 'school' : 'company';
     const userName = postUserType === 'school' ? post.school_name : post.company_name;
-    const userEmail = postUserType === 'school' ? post.school_email : post.company_email;
 
-    // Format post content
+    // Format post content (only text, no buttons or timestamps)
     const formattedContent = post.content.replace(/\n/g, '<br>')
         .replace(/\b((https?:\/\/)?(www\.[^\s]+))/g, (match, p1, p2) => {
             const url = p2 ? p1 : `https://${p1}`;
@@ -69,31 +66,48 @@ function displayPost(post, currentUserId, userType) {
         isLongPost = true;
     }
 
-    // Build the post HTML
+    // Build post HTML
     postDiv.innerHTML = `
         <p>
             <i class='bx bxs-${postUserType}'></i> 
             <strong style="color: ${postUserType === 'school' ? 'green' : 'blue'};">${userName}</strong><br><br> 
-            ${truncatedContent}
-            ${isLongPost ? `<button class="see-more" data-id="${post.id}">See More...</button>` : ''}
+            <span class="post-content">${truncatedContent}</span>
+            ${isLongPost ? `<button class="see-more">See More...</button>` : ''}
         </p>
         ${post.image_url ? `<img src="${post.image_url.startsWith('uploads/') ? '/' + post.image_url : post.image_url}" alt="Post Image">` : ''}
-        <small>${new Date(post.created_at).toLocaleString()}</small>
+        <small class="timestamp">${new Date(post.created_at).toLocaleString()}</small>
         ${(userType === 'school' && post.school_id === currentUserId) || 
             (userType === 'company' && post.company_id === currentUserId) 
                 ? `<button class="delete-button" data-id="${post.id}">Delete</button>` 
                 : ''
-            }
+        }
     `;
 
-    // Prepend the post to the newsfeed
+    // Prepend to newsfeed
     newsfeed.prepend(postDiv);
 
-    // Attach delete functionality if the delete button exists
+    // Attach delete functionality
     const deleteButton = postDiv.querySelector('.delete-button');
     if (deleteButton) {
         deleteButton.addEventListener('click', deletePost);
     }
+
+    // Attach See More functionality
+    const seeMoreButton = postDiv.querySelector('.see-more');
+    if (seeMoreButton) {
+        seeMoreButton.addEventListener('click', function () {
+            const contentSpan = postDiv.querySelector('.post-content');
+
+            if (seeMoreButton.textContent === 'See More...') {
+                contentSpan.innerHTML = formattedContent; // Expand content
+                seeMoreButton.textContent = 'See Less'; // Change button text
+            } else {
+                contentSpan.innerHTML = truncatedContent; // Collapse content
+                seeMoreButton.textContent = 'See More...'; // Change button text back
+            }
+        });
+    }
+
 
     // Styling for toggle buttons (See More/See Less)
     const style = document.createElement('style');
@@ -113,6 +127,7 @@ function displayPost(post, currentUserId, userType) {
     `;
     document.head.appendChild(style);
 }
+
 
 
 

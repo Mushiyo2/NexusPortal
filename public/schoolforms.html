@@ -11,8 +11,7 @@
     <title>Nexus|School (Request Intern)</title>
 </head>
 <style>
-
-    /* View button with similar design as Edit button */
+/* View button with similar design as Edit button */
 .view-button {
     background-color: green;
     color: white;
@@ -41,7 +40,7 @@
 .view-button:active {
     transform: translateY(1px); /* Pressed effect */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Smaller shadow on click */
-}
+}   
     /* Overlay Styles */
 .overlay {
     display: none; /* Hidden by default */
@@ -97,6 +96,62 @@
     background-color: #45a049;
 }
 
+
+.approveButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.approveButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: #0056b3;
+}
+
+.approveButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(38, 123, 255, 0.3);
+}
+
+.approveButton:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.rejectButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.rejectButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: #c82333;
+}
+
+.rejectButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.3);
+}
+
+.rejectButton:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 </style>
 <body>
     <!-- start: Sidebar -->
@@ -279,7 +334,7 @@
                         <li>
                             <i class='bx bx-file'></i>
                             <span class="text">
-                                <h3 id="internRequestCount">0</h3>
+                                <h3 id="sipRequestCount">0</h3>
                                 <p>SIP Forms</p>
                             </span>
                         </li>
@@ -320,120 +375,165 @@
     </div>
 </div>
 <script>
-   let selectedInternId = null;
-let selectedInternEmail = null;
-
-async function fetchInternsWithSIP() {
-    try {
-        const response = await fetch('/api/interns-with-sip');
-        const interns = await response.json();
-        console.log("Fetched interns:", interns);  // Log the entire data
-
-        const tbody = document.querySelector('#sipFileTableBody');
-        tbody.innerHTML = ''; // Clear previous data
-
-        interns.forEach(intern => {
-            console.log("Intern object:", intern);  // Debugging line to check intern data
-
-            const row = document.createElement('tr');
-            row.innerHTML = 
-                `<td>${intern.name}</td>
-                <td>${intern.email}</td>
-                <td>${intern.address}</td>
-                <td>${intern.school_id}</td>
-                <td>
-                    ${renderFileLink(intern.file_url)}
-                    <button class="approve-btn" onclick="openApproveOverlay(${intern.id}, '${intern.email}')">Approve</button>
-                </td>`;
-            tbody.appendChild(row);
-        });
-    } catch (error) {
-        console.error('Error fetching interns with SIP files:', error);
-    }
-}
-
-function renderFileLink(fileUrl) {
-    const fileExtension = fileUrl.split('.').pop().toLowerCase();
+    let selectedInternId = null;
+    let selectedInternEmail = null;
     
-    if (fileExtension === 'pdf') {
-        return `<a href="${fileUrl}" target="_blank" class="view-button">View PDF</a>`;
-    } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
-        return `<a href="${fileUrl}" target="_blank" class="view-button">View Image</a>`;
-    } else {
-        return `<a href="${fileUrl}" target="_blank" class="view-button">View File</a>`;
+    // Added Reject function
+    async function rejectSipFile(internId, email) {
+        if (!confirm('Are you sure you want to reject this SIP submission? This action cannot be undone.')) return;
+    
+        try {
+            const response = await fetch('/api/reject-sip-file', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ internId, internEmail: email })
+            });
+    
+            const data = await response.json();
+            if (data.success) {
+                alert('SIP rejected and intern notified!');
+                fetchInternsWithSIP();
+            } else {
+                alert('Failed to reject SIP: ' + (data.error || 'Unknown error'));
+            }
+        } catch (error) {
+            console.error('Error rejecting SIP:', error);
+            alert('Failed to reject SIP');
+        }
     }
-}
-
-
+    
+    // Updated table row rendering with Reject button
+    function renderTableRow(intern) {
+        return `
+            <td>${intern.name}</td>
+            <td>${intern.email}</td>
+            <td>${intern.address}</td>
+            <td>${intern.school_id}</td>
+            <td>
+                ${renderFileLink(intern.file_url)}
+                <button class="approveButton" onclick="openApproveOverlay(${intern.id}, '${intern.email}')">Approve</button>
+            <button class="rejectButton" onclick="rejectSipFile(${intern.id}, '${intern.email}')">Reject</button>
+            </td>`;
+    }
+    
+    // Modified fetch function to use renderTableRow
+    async function fetchInternsWithSIP() {
+        try {
+            const response = await fetch('/api/interns-with-sip');
+            const interns = await response.json();
+            console.log("Fetched interns:", interns);
+    
+            const tbody = document.querySelector('#sipFileTableBody');
+            tbody.innerHTML = ''; // Clear previous data
+    
+            interns.forEach(intern => {
+                const row = document.createElement('tr');
+                row.innerHTML = renderTableRow(intern);
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error fetching interns with SIP files:', error);
+        }
+    }
+    
+    // Rest of your existing code remains unchanged below this line
+    function renderFileLink(fileUrl) {
+        const fileExtension = fileUrl.split('.').pop().toLowerCase();
+        
+        if (fileExtension === 'pdf') {
+            return `<a href="${fileUrl}" target="_blank" class="view-button">View PDF</a>`;
+        } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+            return `<a href="${fileUrl}" target="_blank" class="view-button">View Image</a>`;
+        } else {
+            return `<a href="${fileUrl}" target="_blank" class="view-button">View File</a>`;
+        }
+    }
+    
     function openApproveOverlay(internId, email) {
-    console.log("Opening overlay for Intern ID:", internId);  // Debugging line
-    selectedInternId = internId;  // Set the intern ID correctly
-    selectedInternEmail = email;
-
-    // Check if the internId is being set properly
-    console.log("selectedInternId set to:", selectedInternId);  // Debugging line
+        console.log("Opening overlay for Intern ID:", internId);
+        selectedInternId = internId;
+        selectedInternEmail = email;
+        console.log("selectedInternId set to:", selectedInternId);
+        document.getElementById("selectedIntern").textContent = `Approving SIP for Intern ID: ${internId}`;
+        document.getElementById("approveOverlay").style.display = "flex";
+    }
     
-    document.getElementById("selectedIntern").textContent = `Approving SIP for Intern ID: ${internId}`;
-    document.getElementById("approveOverlay").style.display = "flex";
-}
-
-
-
     function closeApproveOverlay() {
         document.getElementById("approveOverlay").style.display = "none";
         selectedInternId = null;
         selectedInternEmail = null;
     }
+    
     document.getElementById("sendApprovedSIP").addEventListener("click", async () => {
-    const fileInput = document.getElementById("approvedSipFile");
-    const file = fileInput.files[0];
-
-    if (!file) {
-        alert("Please select a file to send.");
-        return;
-    }
-
-    // Log internId to ensure it's set
-    console.log("Sending SIP file for Intern ID:", selectedInternId);  // Debug log
-
-    if (!selectedInternId) {
-        alert("Intern ID is missing.");
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append("sipFile", file);
-    formData.append("internId", selectedInternId);  // Ensure this is not undefined
-    formData.append("internEmail", selectedInternEmail);
-
-    // Debug log to check the FormData
-    for (let pair of formData.entries()) {
-        console.log(pair[0]+ ': ' + pair[1]);
-    }
-
-    try {
-        const response = await fetch('/api/approve-sip-file', {
-            method: "POST",
-            body: formData,
-        });
-
-        const data = await response.json();
-        if (data.success) {
-            alert("SIP Form Approved & Sent!");
-            closeApproveOverlay();
-            fetchInternsWithSIP();
-        } else {
-            alert("Failed to send SIP form.");
+        const fileInput = document.getElementById("approvedSipFile");
+        const file = fileInput.files[0];
+    
+        if (!file) {
+            alert("Please select a file to send.");
+            return;
         }
+    
+        console.log("Sending SIP file for Intern ID:", selectedInternId);
+        if (!selectedInternId) {
+            alert("Intern ID is missing.");
+            return;
+        }
+    
+        const formData = new FormData();
+        formData.append("sipFile", file);
+        formData.append("internId", selectedInternId);
+        formData.append("internEmail", selectedInternEmail);
+    
+        try {
+            const response = await fetch('/api/approve-sip-file', {
+                method: "POST",
+                body: formData,
+            });
+    
+            const data = await response.json();
+            if (data.success) {
+                alert("SIP Form Approved & Sent!");
+                closeApproveOverlay();
+                fetchInternsWithSIP();
+            } else {
+                alert("Failed to send SIP form.");
+            }
+        } catch (error) {
+            console.error("Error sending SIP form:", error);
+        }
+    });
+    
+    document.addEventListener('DOMContentLoaded', fetchInternsWithSIP);
+    document.addEventListener('DOMContentLoaded', async () => { 
+    try {
+        // Fetch pending SIP files count
+        const response = await fetch('/api/pending-sip-files');
+        const data = await response.json();
+
+        // Update UI with the count of pending SIP files
+        document.querySelector('#sipRequestCount').textContent = data.count;
     } catch (error) {
-        console.error("Error sending SIP form:", error);
+        console.error('Error fetching pending SIP files count:', error);
     }
 });
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/api/school-profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
 
-
-    // Load the intern SIP file list on page load
-    document.addEventListener('DOMContentLoaded', fetchInternsWithSIP);
-</script>
+        if (response.ok) {
+            const data = await response.json();
+            document.querySelector('.sidebar-menu-item-title-expanded').textContent = `SCHOOL ID: ${data.id}`;
+        } else {
+            console.error('Failed to load profile data');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+    </script>
 
                 
                 <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>

@@ -7,79 +7,73 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="style/schoolstyle/schoolstyle.css">
-   
-
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Nexus|School (Dashboard)</title>
 </head>
 <style>
- /* Keyframes for the slide-in effect from the top */
+ 
 @keyframes slideDown {
     from {
-        transform: translateY(-100%); /* Start off-screen (above) */
-        opacity: 0; /* Start invisible */
+        transform: translateY(-100%); 
+        opacity: 0; 
     }
     to {
-        transform: translateY(0); /* End in the default position */
-        opacity: 1; /* Fully visible */
+        transform: translateY(0); 
+        opacity: 1; 
     }
 }
-
-/* Forced vertical text with slide-down animation */
 .forced-vertical-text2 {
-    font-size: 65px; /* Medium-big size */
+    font-size: 65px; 
     font-weight: bold;
-    color: transparent; /* No fill color */
-    -webkit-text-stroke: 2px #68a9ff; /* Stroke color for the text */
-    text-transform: uppercase; /* Keeps the text uppercase */
-    writing-mode: vertical-lr; /* Force vertical layout */
-    position: absolute; /* Ensures the text doesn't affect layout flow */
-    top: 15%; /* Adjust vertical position */
-    left: 94%; /* Adjust horizontal position */
-    text-align: center; /* Ensures alignment if inside a container */
+    color: transparent; 
+    -webkit-text-stroke: 2px #68a9ff; 
+    text-transform: uppercase; 
+    writing-mode: vertical-lr; 
+    position: absolute; 
+    top: 15%; 
+    left: 94%; 
+    text-align: center; 
     font-family: "Onest", sans-serif;
-    z-index: -1; /* Place it behind other elements */
-    pointer-events: none; /* Prevents interaction with the text */
-    opacity: 0; /* Initially invisible */
-    animation: slideDown 1s ease-out forwards; /* Trigger slide-down animation */
+    z-index: -1; 
+    pointer-events: none; 
+    opacity: 0; 
+    animation: slideDown 1s ease-out forwards; 
 }
 
 .forced-vertical-text2 span {
-    display: inline-block; /* Makes each letter an inline-block to apply rotation */
-    transform: rotate(90deg); /* Rotates each letter to make it face upright */
+    display: inline-block; 
+    transform: rotate(90deg); 
 }
-
-/* Responsive Styles */
 @media (max-width: 1200px) {
     .forced-vertical-text2 {
-        font-size: 50px; /* Reduce font size on medium screens */
-        top: 10%; /* Adjust vertical position */
-        left: 90%; /* Adjust horizontal position */
+        font-size: 50px; 
+        top: 10%; 
+        left: 90%; 
     }
 }
 
 @media (max-width: 992px) {
     .forced-vertical-text2 {
-        font-size: 40px; /* Further reduce font size */
-        top: 8%; /* Adjust vertical position */
-        left: 85%; /* Adjust horizontal position */
+        font-size: 40px; 
+        top: 8%; 
+        left: 85%; 
     }
 }
 
 @media (max-width: 768px) {
     .forced-vertical-text2 {
-        font-size: 30px; /* Further reduce font size */
-        top: 5%; /* Adjust vertical position */
-        left: 80%; /* Adjust horizontal position */
+        font-size: 30px; 
+        top: 5%; 
+        left: 80%; 
     }
     
 }
 
 @media (max-width: 576px) {
     .forced-vertical-text2 {
-        font-size: 40px; /* Reduce font size for small screens */
-        top: 12.5%; /* Adjust vertical position */
-        left: 87%; /* Adjust horizontal position */
+        font-size: 40px; 
+        top: 12.5%; 
+        left: 87%; 
     }
 }
 .QMvdmx {
@@ -90,8 +84,8 @@
     top: 10.8rem;
     width: 100%;
     z-index: -1;
-    display: flex; /* Aligns children and pseudo-elements */
-    align-items: center; /* Vertically aligns pseudo-elements */
+    display: flex; 
+    align-items: center; 
 }
 
 .QMvdmx:before,
@@ -99,7 +93,7 @@
     content: "";
     height: 100%;
     display: block;
-    position: relative; /* Prevent overlapping issues */
+    position: relative; 
 }
 
 .QMvdmx:before {
@@ -112,31 +106,31 @@
     background-image: linear-gradient(-45deg, #0000, #0000 20.58050117%, #000 0, #000 29.41949883%, #0000 0, #0000 70.58050117%, #000 0, #000 79.41949883%, #0000 0, #0000);
     background-repeat: repeat;
     background-size: 0.5rem 0.5rem;
-    flex: 1; /* Ensures it spans the remaining space */
+    flex: 1; 
     opacity: 0.6;
 }
-/* Responsive QMvdmx adjustments */
+
 @media (max-width: 1200px) {
     .QMvdmx:before {
-        width: calc(70% - 40rem); /* Adjust width for medium screens */
+        width: calc(70% - 40rem); 
     }
 }
 
 @media (max-width: 992px) {
     .QMvdmx:before {
-        width: calc(65% - 35rem); /* Further adjust for smaller screens */
+        width: calc(65% - 35rem); 
     }
 }
 
 @media (max-width: 768px) {
     .QMvdmx:before {
-        width: calc(60% - 30rem); /* Proportional adjustment */
+        width: calc(60% - 30rem); 
     }
 }
 
 @media (max-width: 576px) {
     .QMvdmx:before {
-        width: 200px; /* Set width to 30px on very small screens */
+        width: 200px; 
     }
 }
 </style>
@@ -175,7 +169,7 @@
                     
                 
                 <li class="sidebar-menu-item">
-                    <a href="https://dashboard.sendbird.com/E36B0FE7-C481-4327-B8B2-715E0B1F4F76" class="sidebar-menu-item-link">
+                    <a href="https://dashboard.sendbird.com/F81C75BE-FFC8-42B5-9FFE-21B6E62CD7A3/overview" class="sidebar-menu-item-link">
                         <span class="sidebar-menu-item-link-icon"><i class="bx bxs-message-dots"></i></span>
                         <span class="sidebar-menu-item-link-text">Message</span>
                     </a>
@@ -396,23 +390,6 @@
         </main>
         <!-- MAIN -->
         </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
     </div>
     <script>

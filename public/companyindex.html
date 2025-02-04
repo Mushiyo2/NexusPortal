@@ -12,7 +12,7 @@
     <title>Nexus|Company (Dashboard)</title>
 </head>
 <style>
-    /* Style for the remove button */
+    
 .remove-button {
     background-color: #dc3545;
     color: white;
@@ -24,29 +24,23 @@
     transition: all 0.3s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
-/* Hover effect for remove button */
 .remove-button:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     background-color: #c82333;
 }
-
-/* Focus effect for remove button */
 .remove-button:focus {
     outline: none;
     box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.3);
 }
-
-/* Active effect for remove button */
 .remove-button:active {
     transform: translateY(1px);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
     
-    /* Style for the view button */
+    
 .view-button {
-    background-color: var(--success-500); /* Green for "View" */
+    background-color: var(--success-500); 
     color: var(--white);
     border: none;
     padding: 8px 16px;
@@ -66,10 +60,8 @@
     transform: translateY(1px);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-/* Style for the dismiss button */
 .dismiss-button {
-    background-color: var(--danger-500); /* Red for "Dismiss" */
+    background-color: var(--danger-500); 
     color: var(--white);
     border: none;
     padding: 8px 16px;
@@ -89,77 +81,67 @@
     transform: translateY(1px);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-
-
-
-
-/* Keyframes for the slide-in effect from the top */
 @keyframes slideDown {
     from {
-        transform: translateY(-100%); /* Start off-screen (above) */
-        opacity: 0; /* Start invisible */
+        transform: translateY(-100%); 
+        opacity: 0; 
     }
     to {
-        transform: translateY(0); /* End in the default position */
-        opacity: 1; /* Fully visible */
+        transform: translateY(0); 
+        opacity: 1; 
     }
 }
-
-/* Forced vertical text with slide-down animation */
 .forced-vertical-text2 {
-    font-size: 65px; /* Medium-big size */
+    font-size: 65px; 
     font-weight: bold;
-    color: transparent; /* No fill color */
-    -webkit-text-stroke: 2px #68a9ff; /* Stroke color for the text */
-    text-transform: uppercase; /* Keeps the text uppercase */
-    writing-mode: vertical-lr; /* Force vertical layout */
-    position: absolute; /* Ensures the text doesn't affect layout flow */
-    top: 15%; /* Adjust vertical position */
-    left: 94%; /* Adjust horizontal position */
-    text-align: center; /* Ensures alignment if inside a container */
+    color: transparent; 
+    -webkit-text-stroke: 2px #68a9ff; 
+    text-transform: uppercase; 
+    writing-mode: vertical-lr; 
+    position: absolute; 
+    top: 15%; 
+    left: 94%; 
+    text-align: center; 
     font-family: "Onest", sans-serif;
-    z-index: -1; /* Place it behind other elements */
-    pointer-events: none; /* Prevents interaction with the text */
-    opacity: 0; /* Initially invisible */
-    animation: slideDown 1s ease-out forwards; /* Trigger slide-down animation */
+    z-index: -1; 
+    pointer-events: none; 
+    opacity: 0; 
+    animation: slideDown 1s ease-out forwards; 
 }
 
 .forced-vertical-text2 span {
-    display: inline-block; /* Makes each letter an inline-block to apply rotation */
-    transform: rotate(90deg); /* Rotates each letter to make it face upright */
+    display: inline-block; 
+    transform: rotate(90deg); 
 }
-
-/* Responsive Styles */
 @media (max-width: 1200px) {
     .forced-vertical-text2 {
-        font-size: 50px; /* Reduce font size on medium screens */
-        top: 10%; /* Adjust vertical position */
-        left: 90%; /* Adjust horizontal position */
+        font-size: 50px; 
+        top: 10%; 
+        left: 90%; 
     }
 }
 
 @media (max-width: 992px) {
     .forced-vertical-text2 {
-        font-size: 40px; /* Further reduce font size */
-        top: 8%; /* Adjust vertical position */
-        left: 85%; /* Adjust horizontal position */
+        font-size: 40px; 
+        top: 8%; 
+        left: 85%; 
     }
 }
 
 @media (max-width: 768px) {
     .forced-vertical-text2 {
-        font-size: 30px; /* Further reduce font size */
-        top: 5%; /* Adjust vertical position */
-        left: 80%; /* Adjust horizontal position */
+        font-size: 30px; 
+        top: 5%; 
+        left: 80%; 
     }
 }
 
 @media (max-width: 576px) {
     .forced-vertical-text2 {
-        font-size: 25px; /* Reduce font size for small screens */
-        top: 5%; /* Adjust vertical position */
-        left: 75%; /* Adjust horizontal position */
+        font-size: 25px; 
+        top: 5%; 
+        left: 75%; 
     }
 }
 .QMvdmx {
@@ -170,8 +152,8 @@
        top: 10.8rem;
        width: 100%;
        z-index: -1;
-       display: flex; /* Aligns children and pseudo-elements */
-       align-items: center; /* Vertically aligns pseudo-elements */
+       display: flex; 
+       align-items: center; 
    }
    
    .QMvdmx:before,
@@ -179,7 +161,7 @@
        content: "";
        height: 100%;
        display: block;
-       position: relative; /* Prevent overlapping issues */
+       position: relative; 
    }
    
    .QMvdmx:before {
@@ -192,31 +174,31 @@
        background-image: linear-gradient(-45deg, #0000, #0000 20.58050117%, #000 0, #000 29.41949883%, #0000 0, #0000 70.58050117%, #000 0, #000 79.41949883%, #0000 0, #0000);
        background-repeat: repeat;
        background-size: 0.5rem 0.5rem;
-       flex: 1; /* Ensures it spans the remaining space */
+       flex: 1; 
        opacity: 0.6;
    }
-   /* Responsive QMvdmx adjustments */
+   
    @media (max-width: 1200px) {
        .QMvdmx:before {
-           width: calc(70% - 40rem); /* Adjust width for medium screens */
+           width: calc(70% - 40rem); 
        }
    }
    
    @media (max-width: 992px) {
        .QMvdmx:before {
-           width: calc(65% - 35rem); /* Further adjust for smaller screens */
+           width: calc(65% - 35rem); 
        }
    }
    
    @media (max-width: 768px) {
        .QMvdmx:before {
-           width: calc(60% - 30rem); /* Proportional adjustment */
+           width: calc(60% - 30rem); 
        }
    }
    
    @media (max-width: 576px) {
        .QMvdmx:before {
-           width: 200px; /* Set width to 30px on very small screens */
+           width: 200px; 
        }
    }
 </style>
@@ -295,9 +277,6 @@
                     <h3 class="username">Name : ? ? ? </h3>
 
                     <span class="topbar-search-form-icon"></i></span>
-                    <button type="button" class="topbar-search-form-clear" id="topbar-search-clear">
-                        <i class="ri-close-circle-fill"></i>
-                    </button>
 
                     <div class="topbar-search-form-autocomplete" id="topbar-search-autocomplete">
                         <div class="topbar-search-form-autocomplete-wrapper">
@@ -306,40 +285,13 @@
                                     Recent Searches
                                 </p>
                                 <div class="topbar-search-form-autocomplete-recent">
-
-
                                 </div>
                             </div>
-                            <!--invisible-->
                             <div class="topbar-search-form-autocomplete-box">
                                 <p class="topbar-search-form-autocomplete-box-title">
                                     Products
                                 </p>
                                 <div class="topbar-search-form-autocomplete-product">
-                                    <button type="button" class="topbar-search-form-autocomplete-product-item">
-                                        <span class="topbar-search-form-autocomplete-product-item-icon">
-                                            <i class="ri-search-line"></i>
-                                        </span>
-                                        <span class="topbar-search-form-autocomplete-product-item-text">Nike Air Max SC
-                                            Leather Men's
-                                            Shoes Size 11.5 (White)</span>
-                                    </button>
-                                    <button type="button" class="topbar-search-form-autocomplete-product-item">
-                                        <span class="topbar-search-form-autocomplete-product-item-icon">
-                                            <i class="ri-search-line"></i>
-                                        </span>
-                                        <span class="topbar-search-form-autocomplete-product-item-text">Nike Air Max SC
-                                            Leather Men's
-                                            Shoes Size 11.5 (White)</span>
-                                    </button>
-                                    <button type="button" class="topbar-search-form-autocomplete-product-item">
-                                        <span class="topbar-search-form-autocomplete-product-item-icon">
-                                            <i class="ri-search-line"></i>
-                                        </span>
-                                        <span class="topbar-search-form-autocomplete-product-item-text">Nike Air Max SC
-                                            Leather Men's
-                                            Shoes Size 11.5 (White)</span>
-                                    </button>
                                 </div>
                             </div>
                             <div class="topbar-search-form-autocomplete-box">
@@ -347,33 +299,6 @@
                                     Users
                                 </p>
                                 <div class="topbar-search-form-autocomplete-user">
-                                    <button type="button" class="topbar-search-form-autocomplete-user-item">
-                                        <img src="https://placehold.co/32x32" alt=""
-                                            class="topbar-search-form-autocomplete-user-item-image" />
-                                        <div class="topbar-search-form-autocomplete-user-item-info">
-                                            <p class="topbar-search-form-autocomplete-user-item-name">
-                                                John Doe
-                                            </p>
-                                            <p class="topbar-search-form-autocomplete-user-item-role">
-                                                Developer
-                                            </p>
-                                        </div>
-                                        <span
-                                            class="topbar-search-form-autocomplete-user-item-status online">online</span>
-                                    </button>
-                                    <button type="button" class="topbar-search-form-autocomplete-user-item">
-                                        <img src="https://placehold.co/32x32" alt=""
-                                            class="topbar-search-form-autocomplete-user-item-image" />
-                                        <div class="topbar-search-form-autocomplete-user-item-info">
-                                            <p class="topbar-search-form-autocomplete-user-item-name">
-                                                John Doe
-                                            </p>
-                                            <p class="topbar-search-form-autocomplete-user-item-role">
-                                                Developer
-                                            </p>
-                                        </div>
-                                        <span class="topbar-search-form-autocomplete-user-item-status">offline</span>
-                                    </button>
                                 </div>
                             </div>
                         </div>

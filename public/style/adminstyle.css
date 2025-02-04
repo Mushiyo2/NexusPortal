@@ -49,11 +49,6 @@ body {
 	background: var(--grey);
 	overflow-x: hidden;
 }
-
-
-
-
-
 /* SIDEBAR */
 #sidebar {
 	position: fixed;
@@ -162,11 +157,6 @@ body {
 	justify-content: center;
 }
 /* SIDEBAR */
-
-
-
-
-
 /* CONTENT */
 #content {
 	position: relative;
@@ -178,10 +168,6 @@ body {
 	width: calc(100% - 60px);
 	left: 60px;
 }
-
-
-
-
 /* NAVBAR */
 #content nav {
 	height: 56px;
@@ -305,11 +291,6 @@ body {
 	left: calc(100% - (25px - 4px) - 2px);
 }
 /* NAVBAR */
-
-
-
-
-
 /* MAIN */
 #content main {
 	width: 100%;
@@ -359,10 +340,6 @@ body {
 	grid-gap: 10px;
 	font-weight: 500;
 }
-
-
-
-
 #content main .box-info {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -407,8 +384,6 @@ body {
 #content main .box-info li .text p {
 	color: var(--dark);	
 }
-
-
 #content main .box-info2 {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -518,8 +493,6 @@ body {
 #content main .table-data .order table tr td .status.pending {
 	background: var(--orange);
 }
-
-
 #content main .table-data .todo {
 	flex-grow: 1;
 	flex-basis: 300px;
@@ -551,15 +524,6 @@ body {
 }
 /* MAIN */
 /* CONTENT */
-
-
-
-
-
-
-
-
-
 @media screen and (max-width: 768px) {
 	#sidebar {
 		width: 200px;
@@ -574,12 +538,6 @@ body {
 		display: none;
 	}
 }
-
-
-
-
-
-
 @media screen and (max-width: 576px) {
 	#content nav form .form-input input {
 		display: none;
@@ -624,8 +582,6 @@ body {
 		min-width: 420px;
 	}
 }
-
-
 .view-button {
     background-color: #007bff; /* Blue background */
     color: white; /* White text */

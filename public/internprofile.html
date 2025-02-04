@@ -217,9 +217,28 @@
                                     <option value="Computer Engineering" <%=department==='Computer Engineering'
                                         ? 'selected' : '' %>Computer Engineering</option>
                                 </select>
-                            </div>
-
+                            </div>    
                         </div>
+
+                        <br>
+                       <hr style="background-color: #6366f1;height: 4px;border: 0;">
+                       <br>
+<div class="form-row">
+    <div class="form-group">
+    <label for="current-password"><font style="color: #6366f1;">| </font>Current Password</label>
+    <input type="password" id="current-password" placeholder="Enter current password" disabled>
+    <i class="fas fa-eye" id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
+</div>
+<div class="form-group">
+    <label for="new-password"><font style="color: #6366f1;">| </font>New Password</label>
+    <input type="password" id="new-password" placeholder="Enter new password" disabled>
+</div>
+<div class="form-group">
+    <label for="confirm-password"><font style="color: #6366f1;">| </font>Confirm New Password</label>
+    <input type="password" id="confirm-password" placeholder="Confirm new password" disabled>
+</div>
+</div>
+
                     </form>
                 </div>
             </div>
@@ -227,114 +246,29 @@
         <!-- MAIN -->
     </div>
     <!-- end: Main -->
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                // Make a request to fetch the profile data, relying on session authentication
-                const response = await fetch('/api/intern-profile', {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-    
-                if (response.ok) {
-                    const data = await response.json();
-                    // Populate profile fields with the fetched data
-                    document.querySelector('.profile-header span').textContent = `Intern ID: ${data.id}`;
-                    document.querySelector('.school-details h2').textContent = data.name;
-                    document.querySelector('.username').textContent = data.name;
-                    document.querySelector('.school-details p').textContent = data.email;
-                    document.querySelector('#email').value = data.email;
-                    document.querySelector('#school-name').value = data.name;
-                    document.querySelector('#address').value = data.address;
-                    document.querySelector('#school-id').value = data.school_id;
-                    document.querySelector('#university').value = data.university;
-                    document.querySelector('#department').value = data.department;
-                } else if (response.status === 401) {
-                    // Redirect to login if user is not authenticated
-                    window.location.href = '/nexuslogin.html';
-                } else {
-                    console.error('Failed to load profile data');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-    
-        document.querySelector('.logout-button').addEventListener('click', async () => {
-            try {
-                // Clear session on the server
-                await fetch('/logout', { method: 'POST' });
-                window.location.href = '/nexuslogin.html'; // Redirect to login page
-            } catch (error) {
-                console.error('Error logging out:', error);
-            }
-        });
-    
-        // Function to toggle edit mode
-        const toggleEditMode = (isEditing) => {
-            const formFields = document.querySelectorAll('.profile-form input, .profile-form select');
-            formFields.forEach(field => {
-                field.disabled = !isEditing;
-            });
-            document.querySelector('.edit-button').textContent = isEditing ? 'Save' : 'Edit';
-        };
-    
-        // Initial state - form fields are disabled
-        toggleEditMode(false);
-    
-        document.querySelector('.edit-button').addEventListener('click', async () => {
-            const isEditing = document.querySelector('.edit-button').textContent === 'Edit';
-    
-            if (isEditing) {
-                // Enter edit mode
-                toggleEditMode(true);
-            } else {
-                // Save changes
-                toggleEditMode(false);
-    
-                // Gather form data
-                const formData = {
-                    name: document.querySelector('#school-name').value,
-                    school_id: document.querySelector('#school-id').value,
-                    address: document.querySelector('#address').value,
-                    email: document.querySelector('#email').value,
-                    university: document.querySelector('#university').value,
-                    department: document.querySelector('#department').value
-                };
-    
-                try {
-                    const response = await fetch('/api/update-intern-profile', {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formData)
-                    });
-    
-                    if (response.ok) {
-                        alert('Profile updated successfully!');
-                    } else {
-                        const errorData = await response.json();
-                        console.error('Failed to update profile:', errorData);
-                        alert('Failed to update profile: ' + errorData.error);
-                    }
-                } catch (error) {
-                    console.error('Error updating profile:', error);
-                    alert('An error occurred while updating the profile.');
-                }
-            }
-        });
-
-
-
-        document.addEventListener('DOMContentLoaded', async () => {
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch('/api/intern-profile', {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' }
         });
 
         if (response.ok) {
             const data = await response.json();
+            document.querySelector('.profile-header span').textContent = `Intern ID: ${data.id}`;
+            document.querySelector('.school-details h2').textContent = data.name;
+            document.querySelector('.username').textContent = data.name;
+            document.querySelector('.school-details p').textContent = data.email;
+            document.querySelector('#email').value = data.email;
+            document.querySelector('#school-name').value = data.name;
+            document.querySelector('#address').value = data.address;
+            document.querySelector('#school-id').value = data.school_id;
+            document.querySelector('#university').value = data.university;
+            document.querySelector('#department').value = data.department;
             document.querySelector('.sidebar-menu-item-title-expanded').textContent = `INTERN ID: ${data.id}`;
+        } else if (response.status === 401) {
+            window.location.href = '/nexuslogin.html';
         } else {
             console.error('Failed to load profile data');
         }
@@ -342,7 +276,107 @@
         console.error('Error:', error);
     }
 });
-    </script>
+
+// Function to toggle edit mode
+const toggleEditMode = (isEditing) => {
+    const formFields = document.querySelectorAll('.profile-form input, .profile-form select');
+    formFields.forEach(field => {
+        field.disabled = !isEditing;
+    });
+
+    // Enable/disable password fields
+    document.querySelector('#current-password').disabled = !isEditing;
+    document.querySelector('#new-password').disabled = !isEditing;
+    document.querySelector('#confirm-password').disabled = !isEditing;
+
+    document.querySelector('.edit-button').textContent = isEditing ? 'Save' : 'Edit';
+};
+
+// Initial state - form fields are disabled
+toggleEditMode(false);
+
+document.querySelector('.edit-button').addEventListener('click', async () => {
+    const isEditing = document.querySelector('.edit-button').textContent === 'Edit';
+
+    if (isEditing) {
+        // Enter edit mode
+        toggleEditMode(true);
+    } else {
+        // Save changes
+        toggleEditMode(false);
+
+        // Gather form data
+        const formData = {
+            name: document.querySelector('#school-name').value,
+            school_id: document.querySelector('#school-id').value,
+            address: document.querySelector('#address').value,
+            email: document.querySelector('#email').value,
+            university: document.querySelector('#university').value,
+            department: document.querySelector('#department').value
+        };
+
+        try {
+            const response = await fetch('/api/update-intern-profile', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                alert('Profile updated successfully!');
+            } else {
+                const errorData = await response.json();
+                alert('Failed to update profile: ' + errorData.error);
+            }
+        } catch (error) {
+            alert('An error occurred while updating the profile.');
+        }
+
+        // Handle password update
+        const currentPassword = document.querySelector('#current-password').value;
+        const newPassword = document.querySelector('#new-password').value;
+        const confirmPassword = document.querySelector('#confirm-password').value;
+
+        if (newPassword && newPassword !== confirmPassword) {
+            alert("New passwords do not match!");
+            return;
+        }
+
+        if (newPassword) {
+            try {
+                const response = await fetch('/api/change-password', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ currentPassword, newPassword }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Password updated successfully!');
+                    document.querySelector('#current-password').value = '';
+                    document.querySelector('#new-password').value = '';
+                    document.querySelector('#confirm-password').value = '';
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                alert('An error occurred while updating the password.');
+            }
+        }
+    }
+});
+
+document.querySelector('.logout-button').addEventListener('click', async () => {
+    try {
+        await fetch('/logout', { method: 'POST' });
+        window.location.href = '/nexuslogin.html';
+    } catch (error) {
+        console.error('Error logging out:', error);
+    }
+});
+
+  </script>
     
     
     <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>

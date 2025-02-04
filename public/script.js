@@ -1,151 +1,133 @@
+document
+  .querySelectorAll("#registerForm, #companyRegisterForm")
+  .forEach((form) => {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData);
 
+      const endpoint =
+        form.id === "registerForm" ? "/register" : "/register-company";
 
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
 
-
-// Common registration function for school and company only
-document.querySelectorAll('#registerForm, #companyRegisterForm').forEach(form => {
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const data = Object.fromEntries(formData);
-
-        // Determine the endpoint based on the form ID
-        const endpoint = form.id === 'registerForm' ? '/register' : '/register-company';
-
-        try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }, // Send as JSON
-                body: JSON.stringify(data) 
-            });
-
-            const result = await response.json();
-            if (!response.ok) {
-                alert(result.error || 'An unexpected error occurred.');
-            } else {
-                alert(result.message);
-                form.reset(); // Clear form after success
-            }
-        } catch (error) {
-            console.error('Error during registration:', error);
-            alert('Failed to connect to the server. Please try again later.');
+        const result = await response.json();
+        if (!response.ok) {
+          alert(result.error || "An unexpected error occurred.");
+        } else {
+          alert(result.message);
+          form.reset();
         }
+      } catch (error) {
+        console.error("Error during registration:", error);
+        alert("Failed to connect to the server. Please try again later.");
+      }
     });
-});
+  });
 
-
-
-const passwordInput = document.getElementById('password');
-const togglePassword = document.getElementById('togglePassword');
+const passwordInput = document.getElementById("password");
+const togglePassword = document.getElementById("togglePassword");
 
 if (passwordInput && togglePassword) {
-    togglePassword.addEventListener('click', function() {
-        // Toggle password visibility
-        const type = passwordInput.type === 'password' ? 'text' : 'password';
-        passwordInput.type = type;
+  togglePassword.addEventListener("click", function () {
+    const type = passwordInput.type === "password" ? "text" : "password";
+    passwordInput.type = type;
 
-        // Toggle the eye icon class to indicate visibility
-        this.classList.toggle('fa-eye-slash');
-    });
+    this.classList.toggle("fa-eye-slash");
+  });
 }
 
-// Common function for form submissions
 const handleFormSubmit = async (form) => {
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData);
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData);
 
-    const response = await fetch(form.action, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-    });
+  const response = await fetch(form.action, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
 
-    const result = await response.json();
-    
-    if (response.ok) {
-        window.location.href = result.redirect;
-    } else {
-        document.getElementById('loginMessage').textContent = result.error || 'Login failed.';
-    }
+  const result = await response.json();
+
+  if (response.ok) {
+    window.location.href = result.redirect;
+  } else {
+    document.getElementById("loginMessage").textContent =
+      result.error || "Login failed.";
+  }
 };
 
-// Attach event listener to the login form
-document.getElementById('loginForm').addEventListener('submit', (event) => {
-    event.preventDefault();
-    handleFormSubmit(event.target);
+document.getElementById("loginForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  handleFormSubmit(event.target);
 });
 
-
-
-
-
-// Fetch pending school requests
-document.getElementById('fetchSchoolRequests').addEventListener('click', async () => {
-    const response = await fetch('/admin/requests');
+document
+  .getElementById("fetchSchoolRequests")
+  .addEventListener("click", async () => {
+    const response = await fetch("/admin/requests");
     const requests = await response.json();
 
-    const requestsList = document.getElementById('requestsList');
-    requestsList.innerHTML = '';
+    const requestsList = document.getElementById("requestsList");
+    requestsList.innerHTML = "";
 
-    requests.forEach(request => {
-        const li = document.createElement('li');
-        li.textContent = `${request.name} (${request.email}) - Status: ${request.status}`;
-        requestsList.appendChild(li);
+    requests.forEach((request) => {
+      const li = document.createElement("li");
+      li.textContent = `${request.name} (${request.email}) - Status: ${request.status}`;
+      requestsList.appendChild(li);
     });
-});
+  });
 
-
-// Fetch school users and display them in the table
 async function fetchSchoolUsers() {
-    try {
-        const response = await fetch('/api/schools');
-        const schoolUsers = await response.json();
+  try {
+    const response = await fetch("/api/schools");
+    const schoolUsers = await response.json();
 
-        const schoolTableBody = document.getElementById('schoolTableBody');
-        schoolTableBody.innerHTML = ''; // Clear existing rows
-
-        schoolUsers.forEach(user => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
+    const schoolTableBody = document.getElementById("schoolTableBody");
+    schoolTableBody.innerHTML = "";
+    schoolUsers.forEach((user) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
                 <td>${user.name}</td>
                 <td>${user.email}</td>
                 <td>${user.address}</td>
                 <td><button class="action-btn">View</button></td>
             `;
-            schoolTableBody.appendChild(row);
-        });
-    } catch (error) {
-        console.error('Error fetching school users:', error);
-    }
+      schoolTableBody.appendChild(row);
+    });
+  } catch (error) {
+    console.error("Error fetching school users:", error);
+  }
 }
 
-// Call the function to fetch school users when the page loads
-document.addEventListener('DOMContentLoaded', fetchSchoolUsers);
-
+document.addEventListener("DOMContentLoaded", fetchSchoolUsers);
 
 async function fetchCompanyUsers() {
-    try {
-        const response = await fetch('/api/company');
-        const companyUsers = await response.json();
+  try {
+    const response = await fetch("/api/company");
+    const companyUsers = await response.json();
 
-        const companyTableBody = document.getElementById('companyTableBody');
-        companyTableBody.innerHTML = ''; // Clear existing rows
-
-        companyUsers.forEach(user => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
+    const companyTableBody = document.getElementById("companyTableBody");
+    companyTableBody.innerHTML = "";
+    companyUsers.forEach((user) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
                 <td>${user.name}</td>
                 <td>${user.email}</td>
                 <td>${user.address}</td>
                  <td>${user.contact}</td>
                 <td><button class="action-btn">View</button></td>
             `;
-            companyTableBody.appendChild(row);
-        });
-    } catch (error) {
-        console.error('Error fetching company users:', error);
-    }
+      companyTableBody.appendChild(row);
+    });
+  } catch (error) {
+    console.error("Error fetching company users:", error);
+  }
 }
 
-// Call the function to fetch school users when the page loads
-document.addEventListener('DOMContentLoaded', fetchCompanyUsers);
+document.addEventListener("DOMContentLoaded", fetchCompanyUsers);
