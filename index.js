@@ -1399,7 +1399,7 @@ app.get("/api/company-computerengineer", async (req, res) => {
              SELECT name, email, address, contact, department, role 
             FROM company 
             WHERE is_approved = true 
-            AND department = 'Computer Engineer'
+            AND department = 'Computer Engineering'
             AND is_available = true 
         `);
     res.json(result.rows);
@@ -1413,7 +1413,7 @@ app.get("/api/company/countcomputerengineer", async (req, res) => {
     const result = await pool.query(`
             SELECT COUNT(*) 
             FROM company 
-            WHERE department = 'Computer Engineer' AND is_approved = true
+            WHERE department = 'Computer Engineering' AND is_approved = true
         `);
     res.json({ total: result.rows[0].count });
   } catch (error) {
