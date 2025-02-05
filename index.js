@@ -13,7 +13,7 @@ const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,    
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
@@ -1589,6 +1589,132 @@ app.get("/api/company-approved-interns/:companyId", async (req, res) => {
   }
 });
 
+// API to generate a PDF report of approved interns for a company
+app.get("/api/reports/approved-interns/:companyId", async (req, res) => {
+  const companyId = parseInt(req.params.companyId, 10);
+
+  if (isNaN(companyId)) {
+    return res.status(400).json({ error: "Invalid company ID" });
+  }
+
+  try {
+    // Fetch company name
+    const companyResult = await pool.query(
+      `SELECT name FROM company WHERE id = $1`,
+      [companyId]
+    );
+
+    if (companyResult.rowCount === 0) {
+      return res.status(404).json({ error: "Company not found" });
+    }
+
+    const companyName = companyResult.rows[0].name;
+
+    // Fetch approved interns with acceptance date
+    const result = await pool.query(
+      `SELECT i.id, i.name, i.email, i.university AS school_name, 
+                    cir.decision_at 
+             FROM companyinternshiprequests cir
+             JOIN intern i ON cir.intern_id = i.id
+             WHERE cir.company_id = $1 AND cir.application_status = 'Accepted'`,
+      [companyId]
+    );
+
+    const interns = result.rows;
+
+    if (interns.length === 0) {
+      return res.status(404).json({ error: "No approved interns found" });
+    }
+
+    // Create a PDF document
+    const doc = new PDFDocument({ margin: 50, size: "A4" });
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${companyName}_Approved_Interns.pdf"`
+    );
+    res.setHeader("Content-Type", "application/pdf");
+    doc.pipe(res);
+
+    // Header Section
+    doc
+      .font("Helvetica-Bold")
+      .fontSize(18)
+      .text(`${companyName}`, { align: "center" });
+    doc
+      .fontSize(14)
+      .text("Approved Interns Report", { align: "center" })
+      .moveDown(1);
+    doc
+      .strokeColor("#000")
+      .lineWidth(2)
+      .moveTo(50, doc.y)
+      .lineTo(550, doc.y)
+      .stroke()
+      .moveDown(1);
+
+    // Table Header
+    doc.fontSize(12).font("Helvetica-Bold");
+    doc.fillColor("#333333");
+    const headerY = doc.y;
+    doc
+      .text("Name", 50, headerY, { width: 150, align: "left" })
+      .text("Email", 200, headerY, { width: 180, align: "left" })
+      .text("School", 380, headerY, { width: 120, align: "left" })
+      .text("Accepted On", 500, headerY, { width: 80, align: "left" });
+    doc
+      .moveDown(0.5)
+      .strokeColor("#666")
+      .lineWidth(1)
+      .moveTo(50, doc.y)
+      .lineTo(570, doc.y)
+      .stroke();
+
+    // Table Rows
+    doc.font("Helvetica").fontSize(11).fillColor("#000000");
+    interns.forEach((intern, index) => {
+      const rowY = doc.y + 5;
+      const formattedDate = new Date(intern.decision_at).toLocaleDateString(); // Format the date
+      doc
+        .text(intern.name, 50, rowY, { width: 150, align: "left" })
+        .text(intern.email, 200, rowY, { width: 180, align: "left" })
+        .text(intern.school_name || "N/A", 380, rowY, {
+          width: 120,
+          align: "left",
+        })
+        .text(formattedDate, 500, rowY, { width: 80, align: "left" });
+      doc.moveDown(0.5);
+
+      // Add a separator line between rows
+      if (index !== interns.length - 1) {
+        doc
+          .strokeColor("#ddd")
+          .lineWidth(0.5)
+          .moveTo(50, doc.y)
+          .lineTo(570, doc.y)
+          .stroke();
+      }
+    });
+
+    // Footer Section
+    doc.moveDown(2);
+    doc
+      .strokeColor("#000")
+      .lineWidth(1)
+      .moveTo(50, doc.y)
+      .lineTo(570, doc.y)
+      .stroke();
+    doc
+      .fontSize(10)
+      .fillColor("#666")
+      .text(`Generated on: ${new Date().toLocaleString()}`, { align: "right" });
+
+    doc.end();
+  } catch (error) {
+    console.error("Error generating approved interns report:", error);
+    res.status(500).json({ error: "Failed to generate report" });
+  }
+});
+
 app.get("/api/check-session", (req, res) => {
   if (req.session.userId) {
     res.json({
@@ -2123,6 +2249,147 @@ app.delete(
 );
 
 const PDFDocument = require("pdfkit");
+const moment = require("moment");
+
+app.get("/api/tasks/report/pdf", async (req, res) => {
+  const { userId } = req.session;
+
+  if (!userId) {
+    return res.status(400).json({ message: "Intern ID is required" });
+  }
+
+  try {
+    // Fetch intern and tasks
+    const result = await pool.query(
+      `SELECT 
+        i.id AS intern_id,
+        i.name AS intern_name,
+        t.id AS task_id,
+        t.title,
+        t.description,
+        t.deadline,
+        t.status
+      FROM task_intern t
+      JOIN intern i ON t.intern_id = i.id
+      WHERE i.id = $1;`,
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No tasks found for this intern" });
+    }
+
+    const internName = result.rows[0].intern_name;
+    const internId = result.rows[0].intern_id;
+
+    // Create a PDF document
+    const doc = new PDFDocument({ size: "A4", margin: 50 });
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=task_report_${internId}.pdf`
+    );
+    res.setHeader("Content-Type", "application/pdf");
+
+    doc.pipe(res); // Send the PDF as response
+
+    // Add Logo
+    doc.image("logo.jpg", 50, 30, { width: 80 });
+
+    // Add Report Title (Centered)
+    doc
+      .fillColor("#007BFF")
+      .font("Helvetica-Bold") // Professional font for headers
+      .fontSize(22)
+      .text("Intern Task Report", 0, 40, { align: "center" }) // Perfectly centered
+      .moveDown(2);
+
+    // Add Intern Info
+    doc
+      .fillColor("black")
+      .font("Times-Bold") // More professional font
+      .fontSize(14)
+      .text(`Intern Name: ${internName}`, 50, 120)
+      .text(`Intern ID: ${internId}`, 50, 140)
+      .moveDown(1);
+
+    // Table Headers
+    const startX = 50;
+    const colWidths = [70, 200, 120, 100]; // Column widths
+    let y = doc.y;
+
+    doc
+      .fillColor("#000000")
+      .font("Helvetica-Bold")
+      .text("Task ID", startX, y, { width: colWidths[0], align: "left" })
+      .text("Title", startX + colWidths[0], y, {
+        width: colWidths[1],
+        align: "left",
+      })
+      .text("Status", startX + colWidths[0] + colWidths[1], y, {
+        width: colWidths[2],
+        align: "left",
+      })
+      .text(
+        "Deadline",
+        startX + colWidths[0] + colWidths[1] + colWidths[2],
+        y,
+        { width: colWidths[3], align: "left" }
+      );
+
+    doc
+      .moveTo(startX, doc.y + 5)
+      .lineTo(550, doc.y + 5)
+      .stroke(); // Line separator
+    doc.moveDown(1);
+
+    // Table Rows
+    y = doc.y;
+    result.rows.forEach((task, index) => {
+      // Alternate row background
+      if (index % 2 === 0) {
+        doc
+          .rect(startX, y - 2, 500, 20)
+          .fill("#F0F0F0")
+          .stroke();
+      }
+
+      // Reset text color after background fill
+      doc.fillColor("black").font("Times-Roman"); // Professional font for table content
+
+      // Properly aligned text
+      doc.text(task.task_id.toString(), startX, y, {
+        width: colWidths[0],
+        align: "left",
+      });
+      doc.text(task.title, startX + colWidths[0], y, {
+        width: colWidths[1],
+        align: "left",
+      });
+      doc.text(task.status, startX + colWidths[0] + colWidths[1], y, {
+        width: colWidths[2],
+        align: "left",
+      });
+      doc.text(
+        moment(task.deadline).format("YYYY-MM-DD"),
+        startX + colWidths[0] + colWidths[1] + colWidths[2],
+        y,
+        { width: colWidths[3], align: "left" }
+      );
+
+      y = doc.y + 5; // Add consistent spacing between rows
+    });
+
+    doc.end();
+  } catch (err) {
+    console.error("Error generating PDF report:", err);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: err.message });
+  }
+});
 
 app.get("/api/reports/pdf", async (req, res) => {
   try {
