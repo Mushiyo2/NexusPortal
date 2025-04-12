@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="style/internstyle/style.css">
+
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>Nexus|Intern (Dashboard) </title>
+</head>
+<style>
+    
+   @keyframes slideDown {
+       from {
+           transform: translateY(-100%); 
+           opacity: 0; 
+       }
+       to {
+           transform: translateY(0); 
+           opacity: 1; 
+       }
+   }
+   
+   
+   .forced-vertical-text2 {
+       font-size: 65px; 
+       font-weight: bold;
+       color: transparent; 
+       -webkit-text-stroke: 2px #68a9ff; 
+       text-transform: uppercase; 
+       writing-mode: vertical-lr; 
+       position: absolute; 
+       top: 15%; 
+       left: 94%; 
+       text-align: center; 
+       font-family: "Onest", sans-serif;
+       z-index: -1; 
+       pointer-events: none; 
+       opacity: 0; 
+       animation: slideDown 1s ease-out forwards; 
+   }
+   
+   .forced-vertical-text2 span {
+       display: inline-block; 
+       transform: rotate(90deg); 
+   }
+   
+   
+   @media (max-width: 1200px) {
+       .forced-vertical-text2 {
+           font-size: 50px; 
+           top: 10%; 
+           left: 90%; 
+       }
+   }
+   
+   @media (max-width: 992px) {
+       .forced-vertical-text2 {
+           font-size: 40px; 
+           top: 8%; 
+           left: 85%; 
+       }
+   }
+   
+   @media (max-width: 768px) {
+       .forced-vertical-text2 {
+           font-size: 30px; 
+           top: 5%; 
+           left: 80%; 
+       }
+       
+   }
+   
+   @media (max-width: 576px) {
+       .forced-vertical-text2 {
+           font-size: 40px; 
+           top: 12.5%; 
+           left: 87%; 
+       }
+   }
+   .QMvdmx {
+       unicode-bidi: isolate;
+       height: 10px;
+       left: 0;
+       position: absolute;
+       top: 10.8rem;
+       width: 100%;
+       z-index: -1;
+       display: flex; 
+       align-items: center; 
+   }
+   
+   .QMvdmx:before,
+   .QMvdmx:after {
+       content: "";
+       height: 100%;
+       display: block;
+       position: relative; 
+   }
+   
+   .QMvdmx:before {
+       background-color: yellow;
+       width: calc(75% - 47.5rem);
+       height: 20px;
+   }
+   
+   .QMvdmx:after {
+       background-image: linear-gradient(-45deg, #0000, #0000 20.58050117%, #000 0, #000 29.41949883%, #0000 0, #0000 70.58050117%, #000 0, #000 79.41949883%, #0000 0, #0000);
+       background-repeat: repeat;
+       background-size: 0.5rem 0.5rem;
+       flex: 1; 
+       opacity: 0.6;
+   }
+   
+   @media (max-width: 1200px) {
+       .QMvdmx:before {
+           width: calc(70% - 40rem); 
+       }
+   }
+   
+   @media (max-width: 992px) {
+       .QMvdmx:before {
+           width: calc(65% - 35rem); 
+       }
+   }
+   
+   @media (max-width: 768px) {
+       .QMvdmx:before {
+           width: calc(60% - 30rem); 
+       }
+   }
+   
+   @media (max-width: 576px) {
+       .QMvdmx:before {
+           width: 200px; 
+       }
+   }
+   #sendSIPModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    padding: 15px; 
+}
+
+#sendSIPModal .modal-content {
+    background: #333;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    width: 90%; 
+    max-width: 450px; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#sendSIPModal .close-btn {
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    float: right;
+}
+
+#sendSIPModal .modal-buttons {
+    margin-top: 15px;
+}
+
+#sendSIPModal .modal-btn {
+    background: #68A9FF;
+    color: white;
+    border: none;
+    padding: 12px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%; 
+}
+
+#sendSIPModal input[type="file"] {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    display: block;
+    margin: 10px auto;
+    width: 100%; 
+}
+@media (min-width: 768px) {
+    #sendSIPModal .modal-content {
+        width: 50%; 
+    }
+}
+
+@media (min-width: 1024px) {
+    #sendSIPModal .modal-content {
+        width: 30%; 
+    }
+}
+
+   </style>
+<body>
+    <!-- start: Sidebar -->
+    <div class="sidebar-overlay" data-dismiss="sidebar"></div>
+    <div class="sidebar">
+        <div class="sidebar-brand-wrapper">
+            <a href="#" class="sidebar-brand">
+                <img src="style/internstyle/logo.jpg" alt="" class="sidebar-brand-image" />
+                <span class="sidebar-brand-name">NEXUS </span>
+            </a>
+        </div>
+        <div class="sidebar-menu-wrapper">
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item-title">
+                    <span class="sidebar-menu-item-title-expanded">INTERN ID: </span>
+                    <span class="sidebar-menu-item-title-collapsed">
+                        <i class="ri-more-fill"></i>
+                    </span>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="internindex.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bxs-dashboard' style="color: #6366f1;"></i></i></span>
+                        <span class="sidebar-menu-item-link-text" style="color: #6366f1;">Dashboard</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-search-alt-2'></i></i></span>
+                        <span class="sidebar-menu-item-link-text">Portal</span>
+                        <span class="sidebar-menu-item-link-arrow"><i class="ri-arrow-right-s-line"></i></span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li class="sidebar-submenu-item">
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li class="sidebar-submenu-item">
+                                    <a href="#" class="sidebar-submenu-item-link">
+                                        <span class="sidebar-submenu-item-link-text">Test</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="internportalinfotech.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Information Tech</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="internportalindustrialtech.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Industrial Technology </span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="internportalcomputerengin.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Computer Engineering </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                <li class="sidebar-menu-item">
+                    <a href="internfeed.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-book-open'></i></span>
+                        <span class="sidebar-menu-item-link-text">Feed</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="interntask.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-task'></i></i></span>
+                        <span class="sidebar-menu-item-link-text">Task</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="/chat/index.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-message-dots"></i></span>
+                        <span class="sidebar-menu-item-link-text">Message</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="internprofile.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-happy-alt'></i></span>
+                        <span class="sidebar-menu-item-link-text">Profile</span>
+                    </a>
+                </li>
+                </li>
+            </ul>
+           
+        </div>
+        <div class="forced-vertical-text">NEXUS</div>
+    </div>
+    <!-- end: Sidebar -->
+
+    <!-- start: Main -->
+    <div class="main">
+        <div class="topbar">
+            <a href="#" class="topbar-brand">
+                <img src="style/internstyle/logo.jpg" alt="" class="topbar-brand-image" />
+            </a>
+            <button type="button" class="topbar-button topbar-toggle" data-toggle="sidebar">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="topbar-search-form-wrapper" id="topbar-search-form-wrapper">
+                <button type="button" class="topbar-button topbar-button-search-form-back" data-dismiss="topbar-search">
+                    <i class="ri-arrow-left-line"></i>
+                </button>
+                <form action="" class="topbar-search-form">
+                    <h3 class="username">Name : ? ? ? </h3>
+
+                    <span class="topbar-search-form-icon"></i></span>
+                    <button type="button" class="topbar-search-form-clear" id="topbar-search-clear">
+                        <i class="ri-close-circle-fill"></i>
+                    </button>
+
+                    <div class="topbar-search-form-autocomplete" id="topbar-search-autocomplete">
+                        <div class="topbar-search-form-autocomplete-wrapper">
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Recent Searches
+                                </p>
+                                <div class="topbar-search-form-autocomplete-recent">
+                                </div>
+                            </div>
+                            <!--invisible-->
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Products
+                                </p>
+                                <div class="topbar-search-form-autocomplete-product">
+                                    <button type="button" class="topbar-search-form-autocomplete-product-item">
+                                        <span class="topbar-search-form-autocomplete-product-item-icon">
+                                            <i class="ri-search-line"></i>
+                                        </span>
+                                        <span class="topbar-search-form-autocomplete-product-item-text">Nike Air Max SC
+                                            Leather Men's
+                                            Shoes Size 11.5 (White)</span>
+                                    </button>
+                                    <button type="button" class="topbar-search-form-autocomplete-product-item">
+                                        <span class="topbar-search-form-autocomplete-product-item-icon">
+                                            <i class="ri-search-line"></i>
+                                        </span>
+                                        <span class="topbar-search-form-autocomplete-product-item-text">Nike Air Max SC
+                                            Leather Men's
+                                            Shoes Size 11.5 (White)</span>
+                                    </button>
+                                    <button type="button" class="topbar-search-form-autocomplete-product-item">
+                                        <span class="topbar-search-form-autocomplete-product-item-icon">
+                                            <i class="ri-search-line"></i>
+                                        </span>
+                                        <span class="topbar-search-form-autocomplete-product-item-text">Nike Air Max SC
+                                            Leather Men's
+                                            Shoes Size 11.5 (White)</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Users
+                                </p>
+                                <div class="topbar-search-form-autocomplete-user">
+                                    <button type="button" class="topbar-search-form-autocomplete-user-item">
+                                        <img src="https://placehold.co/32x32" alt=""
+                                            class="topbar-search-form-autocomplete-user-item-image" />
+                                        <div class="topbar-search-form-autocomplete-user-item-info">
+                                            <p class="topbar-search-form-autocomplete-user-item-name">
+                                                John Doe
+                                            </p>
+                                            <p class="topbar-search-form-autocomplete-user-item-role">
+                                                Developer
+                                            </p>
+                                        </div>
+                                        <span
+                                            class="topbar-search-form-autocomplete-user-item-status online">online</span>
+                                    </button>
+                                    <button type="button" class="topbar-search-form-autocomplete-user-item">
+                                        <img src="https://placehold.co/32x32" alt=""
+                                            class="topbar-search-form-autocomplete-user-item-image" />
+                                        <div class="topbar-search-form-autocomplete-user-item-info">
+                                            <p class="topbar-search-form-autocomplete-user-item-name">
+                                                John Doe
+                                            </p>
+                                            <p class="topbar-search-form-autocomplete-user-item-role">
+                                                Developer
+                                            </p>
+                                        </div>
+                                        <span class="topbar-search-form-autocomplete-user-item-status">offline</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="topbar-right">
+                <button type="button" class="topbar-button topbar-button-search" data-toggle="topbar-search">
+              
+                </button>
+                <div class="dropdown" id="topbar-language-dropdown">
+                </div>
+                <div class="dropdown">
+                    <button type="button" class="topbar-button" data-toggle="dropdown">
+                        <i class="ri-notification-3-line"></i>
+                        <span class="topbar-button-total topbar-button-total-notification">5</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-notification">
+                        <div class="dropdown-menu-header">
+                            <p class="dropdown-menu-title">Notifications</p>
+                        </div>
+                        <div class="dropdown-menu-notification-wrapper">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <!-- Your code here -->
+            <section id="content">
+
+                <main>
+                    <div class="head-title">
+                        <div class="left">
+                            <h1><i class='bx bxs-dashboard' style="color: #6366f1;"></i> | Dashboard </h1>
+                            <ul class="breadcrumb">
+                                <li>
+                                    <a href="#">Dashboard</a>
+                                </li>
+                                <li><i class='bx bx-chevron-right'></i><i class='bx bx-chevron-right'></i></li>
+                                <li>
+                                    <a class="active" href="#"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="QMvdmx"></div>
+                    <div class="forced-vertical-text2">INTERN</div>
+                    <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i> 
+                    </div>
+                    <br>
+                   
+                    <ul class="box-info">
+                        <li>
+                            <i class='bx bxs-school'></i>
+                            <span class="text">
+                                <h3>Samar State University</h3>
+                                <p class="school-id">School ID: 000000</p>
+                            </span>
+                        </li>
+                        
+                        <li>
+                            <span class="users-label">Assigned</span>
+                            <i class='bx bxs-buildings'></i>
+                            <span class="text">
+                                <h3>Company Name</h3>
+                                <p>Department</p>
+                            </span>
+                        </li>
+                    </ul>
+                    <!-- Modal Structure -->
+                    <div id="sendSIPModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-btn">&times;</span>
+                            <h2 style="color: #ffffff;">Submit SIP Form</h2>
+                            <div class="modal-buttons">
+                                <input type="file" id="sipFileInput" accept=".pdf,.doc,.docx">
+                                <button class="modal-btn" id="uploadSIP">Upload</button>
+                                <button class="modal-btn cancel-btn" id="cancelSIP" style="background-color: red;">Cancel Upload</button>
+                            </div>
+                            <p id="uploadStatus"></p>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    <br>
+        </div>
+        <div class="btn-container">
+            <a href="SIP-ENTRY-FORMS-2024-F2F.pdf" class="btn--download">Download SIP Form</a>
+            <a href="#" class="btn--validate"  id="sendSIPLink">Validate SIP Form</a>
+        </div>
+        
+        </main>
+        <!-- MAIN -->
+        </section>
+    </div>
+    </div>
+   <!-- end: Main -->
+   <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch('/api/intern/company');
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            const { company_name, department } = await response.json();
+
+            // Target the specific list item for the company
+            const companyLi = document.querySelector('.box-info li:nth-child(2)');
+            const companyElement = companyLi.querySelector('.text h3');
+            const departmentElement = companyLi.querySelector('.text p');
+
+            if (companyElement && departmentElement) {
+                companyElement.textContent = company_name;
+                departmentElement.textContent = department;
+            } else {
+                console.error('Target elements for updating company information not found.');
+            }
+        } catch (error) {
+            console.error('Error fetching and displaying company information:', error);
+        }
+
+        // Check if the intern has uploaded an SIP file
+        const cancelBtn = document.getElementById("cancelSIP");
+        const uploadStatus = document.getElementById("uploadStatus");
+
+        try {
+            const response = await fetch('/api/intern/sip-file-status');
+            const data = await response.json();
+
+            if (data.exists) {
+                cancelBtn.style.display = "inline-block"; // Show cancel button
+                uploadStatus.textContent = `SIP File Uploaded: ${data.file_name}`;
+            } else {
+                cancelBtn.style.display = "none"; // Hide cancel button
+                uploadStatus.textContent = "";
+            }
+        } catch (error) {
+            console.error('Error fetching SIP file status:', error);
+            uploadStatus.textContent = "Error checking SIP file status.";
+        }
+    });
+
+    // Get modal elements
+    const sipModal = document.getElementById("sendSIPModal");
+    const sendSIPLink = document.getElementById("sendSIPLink");
+    const closeBtn = sipModal.querySelector(".close-btn");
+    const sipFileInput = document.getElementById("sipFileInput");
+    const uploadBtn = document.getElementById("uploadSIP");
+
+    // Open modal when clicking "Send SIP Form"
+    sendSIPLink.onclick = function (event) {
+        event.preventDefault();
+        sipModal.style.display = "flex";
+    };
+
+    // Close modal when clicking the close button
+    closeBtn.onclick = function () {
+        sipModal.style.display = "none";
+    };
+
+    // Close modal when clicking outside the modal content
+    window.onclick = function (event) {
+        if (event.target === sipModal) {
+            sipModal.style.display = "none";
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const uploadBtn = document.getElementById("uploadSIP");
+        const sipFileInput = document.getElementById("sipFileInput");
+        const uploadStatus = document.getElementById("uploadStatus");
+        const cancelBtn = document.getElementById("cancelSIP");
+
+        uploadBtn.onclick = async () => {
+            const file = sipFileInput.files[0];
+            if (!file) {
+                uploadStatus.textContent = 'Please select a file.';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('sipFile', file);
+
+            try {
+                const response = await fetch('/api/intern/upload-sip-file', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    uploadStatus.textContent = 'SIP file uploaded successfully!';
+                    cancelBtn.style.display = 'inline-block'; // Show cancel button
+                } else {
+                    uploadStatus.textContent = 'Failed to upload SIP file.';
+                }
+            } catch (error) {
+                console.error('Error uploading SIP file:', error);
+                uploadStatus.textContent = 'An error occurred while uploading the SIP file.';
+            }
+        };
+
+        cancelBtn.onclick = async () => {
+            try {
+                const response = await fetch('/api/intern/cancel-sip-file', {
+                    method: 'DELETE',
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    uploadStatus.textContent = 'SIP file canceled successfully!';
+                    cancelBtn.style.display = 'none'; // Hide cancel button
+                } else {
+                    uploadStatus.textContent = 'Failed to cancel SIP file.';
+                }
+            } catch (error) {
+                console.error('Error canceling SIP file:', error);
+                uploadStatus.textContent = 'An error occurred while canceling the SIP file.';
+            }
+        };
+    });
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>
+    <script src="style/internstyle/script.js"></script>
+    <script src="style/internstyle/internscript.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style/schoolstyle/schoolstyle.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>Nexus|School (Dashboard)</title>
+</head>
+<style>
+ 
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%); 
+        opacity: 0; 
+    }
+    to {
+        transform: translateY(0); 
+        opacity: 1; 
+    }
+}
+.forced-vertical-text2 {
+    font-size: 65px; 
+    font-weight: bold;
+    color: transparent; 
+    -webkit-text-stroke: 2px #68a9ff; 
+    text-transform: uppercase; 
+    writing-mode: vertical-lr; 
+    position: absolute; 
+    top: 15%; 
+    left: 94%; 
+    text-align: center; 
+    font-family: "Onest", sans-serif;
+    z-index: -1; 
+    pointer-events: none; 
+    opacity: 0; 
+    animation: slideDown 1s ease-out forwards; 
+}
+
+.forced-vertical-text2 span {
+    display: inline-block; 
+    transform: rotate(90deg); 
+}
+@media (max-width: 1200px) {
+    .forced-vertical-text2 {
+        font-size: 50px; 
+        top: 10%; 
+        left: 90%; 
+    }
+}
+
+@media (max-width: 992px) {
+    .forced-vertical-text2 {
+        font-size: 40px; 
+        top: 8%; 
+        left: 85%; 
+    }
+}
+
+@media (max-width: 768px) {
+    .forced-vertical-text2 {
+        font-size: 30px; 
+        top: 5%; 
+        left: 80%; 
+    }
+    
+}
+
+@media (max-width: 576px) {
+    .forced-vertical-text2 {
+        font-size: 40px; 
+        top: 12.5%; 
+        left: 87%; 
+    }
+}
+.QMvdmx {
+    unicode-bidi: isolate;
+    height: 10px;
+    left: 0;
+    position: absolute;
+    top: 10.8rem;
+    width: 100%;
+    z-index: -1;
+    display: flex; 
+    align-items: center; 
+}
+
+.QMvdmx:before,
+.QMvdmx:after {
+    content: "";
+    height: 100%;
+    display: block;
+    position: relative; 
+}
+
+.QMvdmx:before {
+    background-color: yellow;
+    width: calc(75% - 47.5rem);
+    height: 20px;
+}
+
+.QMvdmx:after {
+    background-image: linear-gradient(-45deg, #0000, #0000 20.58050117%, #000 0, #000 29.41949883%, #0000 0, #0000 70.58050117%, #000 0, #000 79.41949883%, #0000 0, #0000);
+    background-repeat: repeat;
+    background-size: 0.5rem 0.5rem;
+    flex: 1; 
+    opacity: 0.6;
+}
+
+@media (max-width: 1200px) {
+    .QMvdmx:before {
+        width: calc(70% - 40rem); 
+    }
+}
+
+@media (max-width: 992px) {
+    .QMvdmx:before {
+        width: calc(65% - 35rem); 
+    }
+}
+
+@media (max-width: 768px) {
+    .QMvdmx:before {
+        width: calc(60% - 30rem); 
+    }
+}
+
+@media (max-width: 576px) {
+    .QMvdmx:before {
+        width: 200px; 
+    }
+}
+</style>
+<body>
+    
+    <!-- start: Sidebar -->
+    <div class="sidebar-overlay" data-dismiss="sidebar"></div>
+    <div class="sidebar">
+        <div class="sidebar-brand-wrapper">
+            <a href="#" class="sidebar-brand">
+                <img src="style/schoolstyle/logo.jpg" alt="" class="sidebar-brand-image" />
+                <span class="sidebar-brand-name">NEXUS </span>
+            </a>
+        </div>
+        <div class="sidebar-menu-wrapper">
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item-title">
+                    <span class="sidebar-menu-item-title-expanded">ADMIN</span>
+                    <span class="sidebar-menu-item-title-collapsed">
+                        <i class="ri-more-fill"></i>
+                    </span>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="adminmainindex.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bxs-dashboard' style="color: #6366f1;"></i></i></span>
+                        <span class="sidebar-menu-item-link-text" style="color:  #6366f1; ">Dashboard</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="adminmainusers.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-group"></i></span>
+                        <span class="sidebar-menu-item-link-text">User List</span>
+                    </a>
+                </li>
+                    
+                
+                <li class="sidebar-menu-item">
+                    <a href="https://dashboard.sendbird.com/F81C75BE-FFC8-42B5-9FFE-21B6E62CD7A3/overview" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-message-dots"></i></span>
+                        <span class="sidebar-menu-item-link-text">Message</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-user-plus' ></i></span>
+                        <span class="sidebar-menu-item-link-text">Requests</span>
+                        <span class="sidebar-menu-item-link-arrow"><i class="ri-arrow-right-s-line"></i></span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li class="sidebar-submenu-item">
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li class="sidebar-submenu-item">
+                                    <a href="#" class="sidebar-submenu-item-link">
+                                        <span class="sidebar-submenu-item-link-text">Test</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="adminmainrequestsschool.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">School</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="adminmainrequestscompany.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Company</span>
+                            </a>
+                        </li>
+                </li>
+            </ul>
+
+        </div>
+        <div class="forced-vertical-text">NEXUS</div>
+    </div>
+    <!-- end: Sidebar -->
+
+    <!-- start: Main -->
+     
+    <div class="main">
+        <div class="topbar" style="  border-bottom: 2px solid  #000000;">
+            <a href="#" class="topbar-brand">
+                <img src="style/schoolstyle/logo.jpg" alt="" class="topbar-brand-image" />
+            </a>
+            <button type="button" class="topbar-button topbar-toggle" data-toggle="sidebar">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="topbar-search-form-wrapper" id="topbar-search-form-wrapper">
+                <form action="" class="topbar-search-form">
+                    <span class="topbar-search-form-icon"></i></span>
+                    <div class="topbar-search-form-autocomplete" id="topbar-search-autocomplete">
+                        <div class="topbar-search-form-autocomplete-wrapper">
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Recent Searches
+                                </p>
+                                <div class="topbar-search-form-autocomplete-recent">
+                                </div>
+                            </div>
+                            <!--invisible-->
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p>Products
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>
+                                    Users
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="topbar-right">
+                <div class="dropdown">
+                    <button type="button" class="topbar-button" data-toggle="dropdown">
+                        <i class="ri-notification-3-line"></i>
+                        <span class="topbar-button-total topbar-button-total-notification">3</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-notification">
+                        <div class="dropdown-menu-header">
+                            <p class="dropdown-menu-title">Notifications</p>
+                        </div>
+                        <div class="dropdown-menu-notification-wrapper">
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon success">
+                                    <i class="ri-check-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon danger">
+                                    <i class="ri-alert-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon warning">
+                                    <i class="ri-alarm-warning-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            
+            <!-- Your code here -->
+            <section id="content">
+
+                <main>
+                      <div class="head-title">
+                        <div class="left">
+                            <h1><i class='bx bxs-dashboard' style="color: #6366f1;"></i> | Dashboard </h1>
+                            <ul class="breadcrumb">
+                                <li>
+                                    <a href="#">Dashboard</a>
+                                </li>
+                                <li><i class='bx bx-chevron-right'></i><i class='bx bx-chevron-right'></i></li>
+                                <li>
+                                    <a class="active" href="#"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                     <div class="QMvdmx"></div>
+                    <div class="forced-vertical-text2" style="z-index: -1;">ADMIN</div>
+                    <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i> 
+                    </div>
+                 
+                    <br>
+                    
+                    <ul class="box-info">
+                        <li>
+                        
+                            <i class='bx bxs-face'></i>
+                            <span class="text">
+                                <h3 id="internUserCount">0</h3>
+                                <p>Interns</p>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="users-label">Users</span>
+                            <i class='bx bxs-buildings'></i>
+                            <span class="text">
+                                <h3 id="companyUserCount">0</h3>
+                                <p>Company</p>
+                            </span>
+                        </li>
+                        <li>
+                            <i class='bx bxs-school' style="background-color: #a3f6a3;color: green;"></i>
+                            <span class="text">
+                                <h3 id="schoolUserCount">0</h3> 
+                                <p>School</p>
+                            </span>
+                        </li>
+                    </ul>
+                    <br>
+                   
+                    <ul class="box-info">
+                        <li>
+                            <span class="users-label">Registration Requests</span>
+                            <i class='bx bxs-buildings' style="background-color: #FFF2C6;color: #FFCE26;"></i>
+                            <span class="text">
+                                <h3 id="companyRequestCount">0</h3> 
+                                <p>Company</p>
+                            </span>
+                        </li>
+                        <li>
+                            <i class='bx bxs-school' style="background-color: #a3f6a3;color: green;"></i>
+                            <span class="text">
+                                <h3 id="schoolRequestCount">0</h3> <!-- Added id to target this element -->
+                                <p>School</p>
+                            </span>
+                        </li>
+                    </ul>
+        </div>
+
+        </main>
+        <!-- MAIN -->
+        </section>
+    </div>
+    </div>
+    <script>
+
+        async function fetchSchoolCount() {
+                try {
+                    const response = await fetch('/api/schools/count');
+                    const data = await response.json();
+        
+                    // Update the count of school users
+                    document.querySelector('#schoolUserCount').textContent = data.total;
+                } catch (error) {
+                    console.error('Error fetching school count:', error);
+                }
+            }
+            async function fetchCompanyCount() {
+                try {
+                    const response = await fetch('/api/company/count');
+                    const data = await response.json();
+        
+                    // Update the count of school users
+                    document.querySelector('#companyUserCount').textContent = data.total;
+                } catch (error) {
+                    console.error('Error fetching company count:', error);
+                }
+            }
+            // Call the function to fetch the school count when the page loads
+            document.addEventListener('DOMContentLoaded', fetchSchoolCount);
+            document.addEventListener('DOMContentLoaded', fetchCompanyCount);
+                // Fetch and count school requests
+                async function fetchSchoolRequests() {
+                    const response = await fetch('/admin/school-requests');
+                    const requests = await response.json();
+                
+                    // Update the count of school requests
+                    document.querySelector('#schoolRequestCount').textContent = requests.length;
+                }
+                
+                // Fetch and count company requests
+                async function fetchCompanyRequests() {
+                    const response = await fetch('/admin/company-requests');
+                    const requests = await response.json();
+                
+                    // Update the count of company requests
+                    document.querySelector('#companyRequestCount').textContent = requests.length;
+                }
+                
+                // Fetch both school and company requests when the page loads
+                fetchSchoolRequests();
+                fetchCompanyRequests();
+                async function fetchInternCount() {
+                try {
+                    const response = await fetch('/api/intern/count');
+                    const data = await response.json();
+                    document.querySelector('#internUserCount').textContent = data.total;
+                } catch (error) {
+                    console.error('Error fetching intern count:', error);
+                }
+            }
+            document.addEventListener('DOMContentLoaded', fetchInternCount);
+                </script>
+    <!-- end: Main -->
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>
+    <script src="style/schoolstyle/script.js"></script>
+    <script src="adminscript.js"></script>
+    <script src="style/schoolstyle/usertablecount.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="style/adminstyle.css">
+
+	<title>Intern Portal: Nexus | Admin</title>
+</head>
+<body>
+
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<i class='bx bxl-kubernetes'></i>
+			<span class="text">NEXUS</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="adminindex.html">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="adminrequest.html">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Request</span>
+				</a>
+			</li>
+			<li>
+				<a href="adminmessage.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Message</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="adminusers.html">
+					<i class='bx bxs-group' ></i>
+					<span class="text">Users</span>
+				</a>
+			</li>
+			
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="#" class="logout">
+					<i class='bx bxs-log-out-circle' ></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<a href="#" class="nav-link">Admin</a>
+			<form action="#">
+			</form>
+			<a href="#" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num">8</span>
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Users</h1>
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">Users</a>
+						</li>
+						<li><i class='bx bx-chevron-right'></i></li>
+						<li>
+							<a class="active" href="#">Home</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<br>
+			<h2>Users</h2>
+			<ul class="box-info">
+				<li>
+					<i class='bx bxs-face'></i>
+					<span class="text">
+						<h3 id="internUserCount">0</h3>
+						<p>Interns</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-buildings'></i>
+					<span class="text">
+						<h3 id="companyUserCount">0</h3>
+						<p>Company</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-school'></i>
+					<span class="text">
+						<h3 id="schoolUserCount">0</h3>
+						<p>School</p>
+					</span>
+				</li>
+			</ul>
+			<br>
+			<h1>User List</h1>
+		
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>School</h3>
+						<i class='bx bx-search'></i>
+						<i class='bx bx-filter'></i>
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Email</th>
+								<th>Address</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody id="schoolTableBody">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Company</h3>
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Email</th>
+								<th>Address</th>
+								<th>Contact</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody id="companyTableBody"> <!-- Changed this ID -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Intern</h3>
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Email</th>
+								<th>Address</th>
+								<th>School ID</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody id="internTableBody">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+		
+		<!-- MAIN -->
+	</section>
+
+	
+	<script>
+		// User Total
+async function fetchSchoolCount() {
+        try {
+            const response = await fetch('/api/schools/count');
+            const data = await response.json();
+            document.querySelector('#schoolUserCount').textContent = data.total;
+        } catch (error) {
+            console.error('Error fetching school count:', error);
+        }
+    }
+	async function fetchCompanyCount() {
+        try {
+            const response = await fetch('/api/company/count');
+            const data = await response.json();
+            document.querySelector('#companyUserCount').textContent = data.total;
+        } catch (error) {
+            console.error('Error fetching company count:', error);
+        }
+    }
+    // Call the function to fetch the school count when the page loads
+    document.addEventListener('DOMContentLoaded', fetchSchoolCount);
+	document.addEventListener('DOMContentLoaded', fetchCompanyCount);
+	// User Total
+
+// Fetch school users and display them in the table
+async function fetchSchoolUsers() {
+    try {
+        const response = await fetch('/api/schools');
+        const schoolUsers = await response.json();
+
+        const schoolTableBody = document.getElementById('schoolTableBody');
+        schoolTableBody.innerHTML = ''; // Clear existing rows
+
+        schoolUsers.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.address}</td>
+                 <td><button class="view-button" class="action-btn" onclick="viewProfile3('${user.email}')">View</button></td>
+            `;
+            schoolTableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching school users:', error);
+    }
+}
+// Call the function to fetch school users when the page loads
+document.addEventListener('DOMContentLoaded', fetchSchoolUsers);
+
+
+async function fetchCompanyUsers() {
+    try {
+        const response = await fetch('/api/company');
+        const companyUsers = await response.json();
+
+        const companyTableBody = document.getElementById('companyTableBody');
+        companyTableBody.innerHTML = ''; // Clear existing rows
+
+        companyUsers.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.address}</td>
+                 <td>${user.contact}</td>
+                <td><button class="view-button" class="action-btn" onclick="viewProfile2('${user.email}')">View</button></td>
+            `;
+            companyTableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching company users:', error);
+    }
+}
+document.addEventListener('DOMContentLoaded', fetchCompanyUsers);
+async function fetchInternCount() {
+        try {
+            const response = await fetch('/api/intern/count');
+            const data = await response.json();
+            document.querySelector('#internUserCount').textContent = data.total;
+        } catch (error) {
+            console.error('Error fetching intern count:', error);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', fetchInternCount);
+
+	async function fetchInternUsers() {
+    try {
+        const response = await fetch('/api/intern');
+        const internUsers = await response.json();
+
+        const internTableBody = document.getElementById('internTableBody');
+        internTableBody.innerHTML = ''; // Clear existing rows
+        internUsers.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.address}</td>
+				<td>${user.school_id}</td>
+				<td><button class="view-button" class="action-btn" onclick="viewProfile('${user.email}')">View</button></td>
+            `;
+            internTableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching intern users:', error);
+    }
+}
+document.addEventListener('DOMContentLoaded', fetchInternUsers);
+
+
+function viewProfile(internEmail) {
+        window.location.href = `/adminviewprofileintern.html?email=${internEmail}`; // Redirect to intern's profile page with email query parameter
+    }
+
+	function viewProfile2	(companyEmail) {
+    window.location.href = `/adminviewprofilecompany.html?email=${companyEmail}`; 
+}
+
+function viewProfile3	(schoolEmail) {
+    window.location.href = `/adminviewprofileschool.html?email=${schoolEmail}`; 
+}
+		</script>
+	<script src="adminscript.js"></script>
+	<script src="script.js"></script>
+</body>
+</html>

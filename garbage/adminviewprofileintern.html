@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="style/adminstyle.css">
+	<link rel="stylesheet" href="style/companystyle/profile.css 	">
+	<title>Intern Portal: Nexus | Admin</title>
+</head>
+<style>
+	body {
+		background-color:  #eee;
+	}
+</style>
+<body>
+
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<i class='bx bxl-kubernetes'></i>
+			<span class="text">NEXUS</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="adminindex.html">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="adminrequest.html">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Request</span>
+				</a>
+			</li>
+			<li>
+				<a href="adminmessage.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Message</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="adminusers.html">
+					<i class='bx bxs-group' ></i>
+					<span class="text">Users</span>
+				</a>
+			</li>
+			
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="#" class="logout">
+					<i class='bx bxs-log-out-circle' ></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<a href="#" class="nav-link">Admin</a>
+			<form action="#">
+			</form>
+			<a href="#" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num">8</span>
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="container">
+				<div class="profile-container">
+					<div class="profile-header">
+						<p>Viewing Intern Profile</p>
+					</div>
+					<div class="profile-content">
+						<div class="banner"></div>
+						<div class="profile-info">
+							<div class="avatar" id="internAvatar" style="background-color: #007bff;"></div>
+							<div class="school-details">
+								<h2 id="internName">Intern Name</h2>
+								<p id="internEmail">intern@email.com</p>
+							</div>
+						</div>
+						<form class="profile-form">
+							<div class="form-row">
+								<div class="form-group">
+									<label for="internNameInput">Intern Name</label>
+									<input type="text" id="internNameInput" placeholder="Name" readonly>
+								</div>
+								<div class="form-group">
+									<label for="school-id">School ID</label>
+									<input type="text" id="internSchoolIdInput" placeholder="ID" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="address">Address</label>
+								<input type="text" id="internAddress" placeholder="Address" readonly>
+							</div>
+							<div class="form-group">
+								<label for="email">Email</label>
+								<input type="email" id="internEmail2" placeholder="Email" readonly>
+							</div>
+							<div class="form-row">
+								<div class="form-group">
+									<label for="university">University</label>
+									<input type="text" id="internUniversity" placeholder="University" readonly>
+								</div>
+								<div class="form-group">
+									<label for="department">Department</label>
+									<select id="internDepartment" name="department" class="custom-select" disabled>
+										<option value="">Select Department</option>
+										<option value="Information Technology">Information Technology</option>
+										<option value="Industrial Technology">Industrial Technology</option>
+										<option value="Computer Engineering">Computer Engineering</option>
+									</select>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			
+			<!-- MAIN -->
+		</div>
+		</main>
+		<!-- MAIN -->
+	</section>
+
+	
+	<script>
+ function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const internEmail = getQueryParam('email');
+        if (internEmail) {
+            try {
+                console.log('Fetching data for intern with email:', internEmail);
+                const response = await fetch(`/api/intern-profile/${internEmail}`);
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status} ${response.statusText}`);
+                }
+
+                const internData = await response.json();
+                console.log('API response:', internData);
+
+                if (internData && internData.name) {
+                    document.querySelector('#internName').textContent = internData.name;
+                    document.querySelector('#internEmail').textContent = internData.email;
+                    document.querySelector('#internEmail2').value = internData.email;
+                    document.querySelector('#internAddress').value = internData.address;
+                    document.querySelector('#internNameInput').value = internData.name;
+                    document.querySelector('#internSchoolIdInput').value = internData.school_id;
+                    document.querySelector('#internUniversity').value = internData.university;
+                    document.querySelector('#internDepartment').value = internData.department;
+                    document.querySelector('#internDepartment').value = internData.department;
+                } else {
+                    throw new Error('Invalid data received from the API.');
+                }
+            } catch (error) {
+                console.error('Error fetching intern data:', error);
+                alert('There was an error fetching the intern data. Please check the console for more details.');
+            }
+        } else {
+            console.error('No email provided in the URL.');
+            alert('No email parameter found in the URL.');
+        }
+    });
+		</script>
+	<script src="adminscript.js"></script>
+	<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style/companystyle/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Source+Han+Sans+SC:wght@700&display=swap" rel="stylesheet">
+
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>Nexus|Company (Dashboard)</title>
+</head>
+<style>
+    
+.remove-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.remove-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: #c82333;
+}
+.remove-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.3);
+}
+.remove-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+    
+    
+.view-button {
+    background-color: var(--success-500); 
+    color: var(--white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--rounded-lg);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.view-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: var(--success-600);
+}
+
+.view-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.dismiss-button {
+    background-color: var(--danger-500); 
+    color: var(--white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--rounded-lg);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dismiss-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: var(--danger-600);
+}
+
+.dismiss-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%); 
+        opacity: 0; 
+    }
+    to {
+        transform: translateY(0); 
+        opacity: 1; 
+    }
+}
+.forced-vertical-text2 {
+    font-size: 65px; 
+    font-weight: bold;
+    color: transparent; 
+    -webkit-text-stroke: 2px #68a9ff; 
+    text-transform: uppercase; 
+    writing-mode: vertical-lr; 
+    position: absolute; 
+    top: 15%; 
+    left: 94%; 
+    text-align: center; 
+    font-family: "Onest", sans-serif;
+    z-index: -1; 
+    pointer-events: none; 
+    opacity: 0; 
+    animation: slideDown 1s ease-out forwards; 
+}
+
+.forced-vertical-text2 span {
+    display: inline-block; 
+    transform: rotate(90deg); 
+}
+@media (max-width: 1200px) {
+    .forced-vertical-text2 {
+        font-size: 50px; 
+        top: 10%; 
+        left: 90%; 
+    }
+}
+
+@media (max-width: 992px) {
+    .forced-vertical-text2 {
+        font-size: 40px; 
+        top: 8%; 
+        left: 85%; 
+    }
+}
+
+@media (max-width: 768px) {
+    .forced-vertical-text2 {
+        font-size: 30px; 
+        top: 5%; 
+        left: 80%; 
+    }
+}
+
+@media (max-width: 576px) {
+    .forced-vertical-text2 {
+        font-size: 25px; 
+        top: 5%; 
+        left: 75%; 
+    }
+}
+.QMvdmx {
+       unicode-bidi: isolate;
+       height: 10px;
+       left: 0;
+       position: absolute;
+       top: 10.8rem;
+       width: 100%;
+       z-index: -1;
+       display: flex; 
+       align-items: center; 
+   }
+   
+   .QMvdmx:before,
+   .QMvdmx:after {
+       content: "";
+       height: 100%;
+       display: block;
+       position: relative; 
+   }
+   
+   .QMvdmx:before {
+       background-color: yellow;
+       width: calc(75% - 47.5rem);
+       height: 20px;
+   }
+   
+   .QMvdmx:after {
+       background-image: linear-gradient(-45deg, #0000, #0000 20.58050117%, #000 0, #000 29.41949883%, #0000 0, #0000 70.58050117%, #000 0, #000 79.41949883%, #0000 0, #0000);
+       background-repeat: repeat;
+       background-size: 0.5rem 0.5rem;
+       flex: 1; 
+       opacity: 0.6;
+   }
+   
+   @media (max-width: 1200px) {
+       .QMvdmx:before {
+           width: calc(70% - 40rem); 
+       }
+   }
+   
+   @media (max-width: 992px) {
+       .QMvdmx:before {
+           width: calc(65% - 35rem); 
+       }
+   }
+   
+   @media (max-width: 768px) {
+       .QMvdmx:before {
+           width: calc(60% - 30rem); 
+       }
+   }
+   
+   @media (max-width: 576px) {
+       .QMvdmx:before {
+           width: 200px; 
+       }
+   }
+</style>
+<body>
+    <!-- start: Sidebar -->
+    <div class="sidebar-overlay" data-dismiss="sidebar"></div>
+    <div class="sidebar">
+        <div class="sidebar-brand-wrapper">
+            <a href="#" class="sidebar-brand">
+                <img src="style/companystyle/logo.jpg" alt="" class="sidebar-brand-image" />
+                <span class="sidebar-brand-name">NEXUS </span>
+            </a>
+        </div>
+        <div class="sidebar-menu-wrapper">
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item-title">
+                    <span class="sidebar-menu-item-title-expanded">Company ID:</span>
+                    <span class="sidebar-menu-item-title-collapsed">
+                        <i class="ri-more-fill"></i>
+                    </span>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="companyindex.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bxs-dashboard' style="color: #6366f1;"></i></i></span>
+                        <span class="sidebar-menu-item-link-text"  style="color: #6366f1;">Dashboard</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="companyinternshiprequest.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-user-plus' ></i></span>
+                        <span class="sidebar-menu-item-link-text">Internship</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="companyfeed.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-book-open'></i></span>
+                        <span class="sidebar-menu-item-link-text">Feed</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="/chat/index.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-message-dots"></i></span>
+                        <span class="sidebar-menu-item-link-text">Message</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="companyprofile.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-happy-alt'></i></span>
+                        <span class="sidebar-menu-item-link-text">Profile</span>
+                    </a>
+                </li>
+                </li>
+            </ul>
+
+        </div>
+        
+        <div class="forced-vertical-text">NEXUS</div>
+    </div>
+    <!-- end: Sidebar -->
+
+    <!-- start: Main -->
+    <div class="main">
+        <div class="topbar">
+            <a href="#" class="topbar-brand">
+                <img src="https://placehold.co/32x32" alt="" class="topbar-brand-image" />
+            </a>
+            <button type="button" class="topbar-button topbar-toggle" data-toggle="sidebar">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="topbar-search-form-wrapper" id="topbar-search-form-wrapper">
+                <button type="button" class="topbar-button topbar-button-search-form-back" data-dismiss="topbar-search">
+                    <i class="ri-arrow-left-line"></i>
+                </button>
+                <form action="" class="topbar-search-form">
+                    <h3 class="username">Name : ? ? ? </h3>
+
+                    <span class="topbar-search-form-icon"></i></span>
+
+                    <div class="topbar-search-form-autocomplete" id="topbar-search-autocomplete">
+                        <div class="topbar-search-form-autocomplete-wrapper">
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Recent Searches
+                                </p>
+                                <div class="topbar-search-form-autocomplete-recent">
+                                </div>
+                            </div>
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Products
+                                </p>
+                                <div class="topbar-search-form-autocomplete-product">
+                                </div>
+                            </div>
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Users
+                                </p>
+                                <div class="topbar-search-form-autocomplete-user">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="topbar-right">
+                <button type="button" class="topbar-button topbar-button-search" data-toggle="topbar-search">
+                    <i class="ri-search-line"></i>
+                </button>
+                <div class="dropdown" id="topbar-language-dropdown">
+                </div>
+                <div class="dropdown">
+                    <button type="button" class="topbar-button" data-toggle="dropdown">
+                        <i class="ri-notification-3-line"></i>
+                        <span class="topbar-button-total topbar-button-total-notification">5</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-notification">
+                        <div class="dropdown-menu-header">
+                            <p class="dropdown-menu-title">Notifications</p>
+                        </div>
+                        <div class="dropdown-menu-notification-wrapper">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Your code here -->
+            <section id="content">
+
+                <main>
+                    <div class="head-title">
+                        <div class="left">
+                            <h1><i class='bx bxs-dashboard' style="color: #6366f1;"></i> | Dashboard </h1>
+                            <ul class="breadcrumb">
+                                <li>
+                                    <a href="#">Dashboard</a>
+                                </li>
+                                <li><i class='bx bx-chevron-right'></i><i class='bx bx-chevron-right'></i></li>
+                                <li>
+                                    <a class="active" href="#"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="QMvdmx"></div>
+                    <div class="forced-vertical-text2">COMPANY</div>
+                    <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i> 
+                    </div>
+                    
+                    <ul class="box-info">
+                        <li>
+                            <span class="users-label">Users</span>
+                            <i class='bx bxs-face'></i>
+                            <span class="text">
+                                <h3 id="approvedInternsCount">0</h3>
+                                <p>Interns</p>
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="box-info">
+                        <li>
+                            <span class="users-label">Internship Requests</span>
+                            <i class='bx bxs-user-plus' ></i>
+                            <span class="text">
+                                <h3 id="totalRequests">0</h3>
+                                <p>Interns </p>
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="table-data">
+                        <div class="order">
+                            <div class="head">
+                                <h3>Interns </h3>
+                                <i class='bx bxs-download'></i>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>School</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="internList"></tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        </div>
+    </div>
+
+    </main>
+    <!-- MAIN -->
+    </section>
+    </div>
+    </div>
+    <!-- end: Main -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const approvedInternsCountElement = document.getElementById('approvedInternsCount'); // Target the h3 element by id
+        
+            try {
+                // Fetch session data to get the current user's ID and type
+                const sessionResponse = await fetch('/api/check-session');
+                const sessionData = await sessionResponse.json();
+        
+                if (sessionData.userType !== 'company') {
+                    console.error('Access denied: Only companies can view this page');
+                    return;
+                }
+        
+                const companyId = sessionData.userId;
+        
+                // Fetch only approved interns for this company
+                const response = await fetch(`/api/company-approved-interns/${companyId}`);
+                const interns = await response.json();
+        
+                // Update the approved interns count
+                approvedInternsCountElement.textContent = interns.length;
+        
+            } catch (error) {
+                console.error('Error fetching approved interns:', error);
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Fetch the internship requests for the logged-in company
+                const response = await fetch('/api/company-internship-requests');
+                const requests = await response.json();
+        
+                // Display the total number of internship requests
+                document.querySelector('#totalRequests').textContent = requests.length;
+            } catch (error) {
+                console.error('Error fetching internship requests:', error);
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            const internListContainer = document.getElementById('internList');
+        
+            try {
+                // Fetch session data to get the current user's ID and type
+                const sessionResponse = await fetch('/api/check-session');
+                const sessionData = await sessionResponse.json();
+        
+                if (sessionData.userType !== 'company') {
+                    console.error('Access denied: Only companies can view this page');
+                    return;
+                }
+        
+                const companyId = sessionData.userId;
+        
+                // Fetch only approved interns for this company
+                const response = await fetch(`/api/company-approved-interns/${companyId}`);
+                const interns = await response.json();
+        
+                if (interns.length === 0) {
+                    internListContainer.innerHTML = `<tr><td colspan="6">No approved interns yet.</td></tr>`;
+                    return;
+                }
+        
+                // Render each intern in the list
+                interns.forEach(intern => {
+                    console.log('Intern Object:', intern); // Debug: Check intern object
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${intern.name}</td>
+                        <td>${intern.email}</td>
+                        <td>${intern.address}</td>
+                        <td>${intern.school_name || 'N/A'}</td>
+                        <td>
+                            <button class="view-button" data-intern-email="${intern.email}">View</button>
+                            <button class="remove-button" data-intern-id="${intern.id}">Remove</button>
+                        </td>
+                    `;
+                    internListContainer.appendChild(row);
+                });
+        
+                // Add event listeners to the "View" buttons
+                document.querySelectorAll('.view-button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const email = button.dataset.internEmail;
+                        window.location.href = `/internprofile3.html?email=${encodeURIComponent(email)}`;
+                    });
+                });
+        
+                // Add event listeners to the "Remove" buttons
+                document.querySelectorAll('.remove-button').forEach(button => {
+                    button.addEventListener('click', async () => {
+                        const internId = button.dataset.internId;
+                        console.log('Intern ID to Remove:', internId); // Debug: Check internId
+        
+                        if (!internId || isNaN(internId)) {
+                            alert('Invalid intern ID. Please refresh the page.');
+                            return;
+                        }
+        
+                        // Confirm before removing the intern
+                        if (confirm('Are you sure you want to remove this intern? This action cannot be undone.')) {
+                            try {
+                                const response = await fetch(`/api/company-dismiss-intern/${internId}`, {
+                                    method: 'DELETE',
+                                });
+        
+                                if (response.ok) {
+                                    alert('Intern removed successfully.');
+                                    location.reload(); // Refresh the page to update the list
+                                } else {
+                                    const error = await response.json();
+                                    alert(error.message || 'Failed to remove intern.');
+                                }
+                            } catch (error) {
+                                console.error('Error removing intern:', error);
+                                alert('An error occurred while trying to remove the intern.');
+                            }
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error fetching interns:', error);
+                internListContainer.innerHTML = `<tr><td colspan="6">Error loading interns.</td></tr>`;
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/api/company-profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            document.querySelector('.sidebar-menu-item-title-expanded').textContent = `COMPANY ID: ${data.id}`;
+        } else {
+            console.error('Failed to load profile data');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+        </script>
+        
+        
+        
+        
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>
+    <script src="style/companystyle/script.js"></script>
+    <script src="style/companystyle/companyscript.js"></script>
+</body>
+
+</html>

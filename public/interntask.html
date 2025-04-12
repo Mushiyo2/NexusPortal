@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style/internstyle/style.css" />
+    <link rel="stylesheet" href="style/internstyle/profile.css">
+    <link rel="stylesheet" href="style/internstyle/task.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>Nexus|Intern (Task)</title>
+</head>
+<style>
+    .task-item.completed {
+    text-decoration: line-through;
+    color: gray;
+}
+.container{
+    max-width: 1500px;
+}
+
+.forced-vertical-text{
+    font-family: "Onest", sans-serif;
+}
+  .chart-container {
+            width: 80%;
+            margin: auto;
+            text-align: center;
+        }
+        .chart-toggle {
+            margin: 10px;
+            padding: 8px 12px;
+            border: none;
+            background-color: #6366f1;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+</style>
+<body>
+    <!-- start: Sidebar -->
+    <div class="sidebar-overlay" data-dismiss="sidebar"></div>
+    <div class="sidebar">
+        <div class="sidebar-brand-wrapper">
+            <a href="#" class="sidebar-brand">
+                <img src="style/internstyle/logo.jpg" alt="" class="sidebar-brand-image" />
+                <span class="sidebar-brand-name">NEXUS </span>
+            </a>
+        </div>
+        <div class="sidebar-menu-wrapper">
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item-title">
+                    <span class="sidebar-menu-item-title-expanded">INTERN ID:</span>
+                    <span class="sidebar-menu-item-title-collapsed">
+                        <i class="ri-more-fill"></i>
+                    </span>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="internindex.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bxs-dashboard'></i></i></span>
+                        <span class="sidebar-menu-item-link-text">Dashboard</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-search-alt-2'></i></i></span>
+                        <span class="sidebar-menu-item-link-text">Portal</span>
+                        <span class="sidebar-menu-item-link-arrow"><i class="ri-arrow-right-s-line"></i></span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li class="sidebar-submenu-item">
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li class="sidebar-submenu-item">
+                                    <a href="#" class="sidebar-submenu-item-link">
+                                        <span class="sidebar-submenu-item-link-text">Test</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="internportalinfotech.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Information Tech</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="internportalindustrialtech.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Industrial Technology </span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="schoolusercomp.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Computer Engineering </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                <li class="sidebar-menu-item">
+                    <a href="internfeed.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-book-open'></i></span>
+                        <span class="sidebar-menu-item-link-text">Feed</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="interntask.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-task' style="color: #6366f1;"></i></i></span>
+                        <span class="sidebar-menu-item-link-text" style="color: #6366f1;">Task</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="/chat/index.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-message-dots"></i></span>
+                        <span class="sidebar-menu-item-link-text">Message</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="internprofile.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-happy-alt'></i></span>
+                        <span class="sidebar-menu-item-link-text">Profile</span>
+                    </a>
+                </li>
+                </li>
+            </ul>
+
+        </div>
+        <div class="forced-vertical-text"  
+        
+        >NEXUS</div>
+    </div>
+    <!-- end: Sidebar -->
+
+    <!-- start: Main -->
+    <div class="main">
+        <div class="topbar">
+            <a href="#" class="topbar-brand">
+                <img src="style/internstyle/logo.jpg" alt="" class="topbar-brand-image" />
+            </a>
+            <button type="button" class="topbar-button topbar-toggle" data-toggle="sidebar">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="topbar-search-form-wrapper" id="topbar-search-form-wrapper">
+                <button type="button" class="topbar-button topbar-button-search-form-back" data-dismiss="topbar-search">
+                    <i class="ri-arrow-left-line"></i>
+                </button>
+                <form action="" class="topbar-search-form">
+                    <h3 class="username">Name : ? ? ? </h3>
+
+                    <span class="topbar-search-form-icon"></i></span>
+                    <button type="button" class="topbar-search-form-clear" id="topbar-search-clear">
+                        <i class="ri-close-circle-fill"></i>
+                    </button>
+
+                    <div class="topbar-search-form-autocomplete" id="topbar-search-autocomplete">
+                        <div class="topbar-search-form-autocomplete-wrapper">
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Recent Searches
+                                </p>
+                                <div class="topbar-search-form-autocomplete-recent">
+                                </div>
+                            </div>
+                            <!--invisible-->
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Products
+                                </p>
+                                <div class="topbar-search-form-autocomplete-product">
+                                    <button type="button" class="topbar-search-form-autocomplete-product-item">
+                                        <span class="topbar-search-form-autocomplete-product-item-icon">
+                                            <i class="ri-search-line"></i>
+                                        </span>
+                                        <span class="topbar-search-form-autocomplete-product-item-text">Nike Air Max SC
+                                            Leather Men's
+                                            Shoes Size 11.5 (White)</span>
+                                    </button>
+                                    <button type="button" class="topbar-search-form-autocomplete-product-item">
+                                        <span class="topbar-search-form-autocomplete-product-item-icon">
+                                            <i class="ri-search-line"></i>
+                                        </span>
+                                        <span class="topbar-search-form-autocomplete-product-item-text">Nike Air Max SC
+                                            Leather Men's
+                                            Shoes Size 11.5 (White)</span>
+                                    </button>
+                                    <button type="button" class="topbar-search-form-autocomplete-product-item">
+                                        <span class="topbar-search-form-autocomplete-product-item-icon">
+                                            <i class="ri-search-line"></i>
+                                        </span>
+                                        <span class="topbar-search-form-autocomplete-product-item-text">Nike Air Max SC
+                                            Leather Men's
+                                            Shoes Size 11.5 (White)</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Users
+                                </p>
+                                <div class="topbar-search-form-autocomplete-user">
+                                    <button type="button" class="topbar-search-form-autocomplete-user-item">
+                                        <img src="https://placehold.co/32x32" alt=""
+                                            class="topbar-search-form-autocomplete-user-item-image" />
+                                        <div class="topbar-search-form-autocomplete-user-item-info">
+                                            <p class="topbar-search-form-autocomplete-user-item-name">
+                                                John Doe
+                                            </p>
+                                            <p class="topbar-search-form-autocomplete-user-item-role">
+                                                Developer
+                                            </p>
+                                        </div>
+                                        <span
+                                            class="topbar-search-form-autocomplete-user-item-status online">online</span>
+                                    </button>
+                                    <button type="button" class="topbar-search-form-autocomplete-user-item">
+                                        <img src="https://placehold.co/32x32" alt=""
+                                            class="topbar-search-form-autocomplete-user-item-image" />
+                                        <div class="topbar-search-form-autocomplete-user-item-info">
+                                            <p class="topbar-search-form-autocomplete-user-item-name">
+                                                John Doe
+                                            </p>
+                                            <p class="topbar-search-form-autocomplete-user-item-role">
+                                                Developer
+                                            </p>
+                                        </div>
+                                        <span class="topbar-search-form-autocomplete-user-item-status">offline</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="topbar-right">
+                <button type="button" class="topbar-button topbar-button-search" data-toggle="topbar-search">
+                </button>
+                <div class="dropdown" id="topbar-language-dropdown">
+                </div>
+                <div class="dropdown">
+                    <button type="button" class="topbar-button" data-toggle="dropdown">
+                        <i class="ri-notification-3-line"></i>
+                        <span class="topbar-button-total topbar-button-total-notification">5</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-notification">
+                        <div class="dropdown-menu-header">
+                            <p class="dropdown-menu-title">Notifications</p>
+                        </div>
+                        <div class="dropdown-menu-notification-wrapper">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Your code here -->
+
+        <div class="container">
+            <!-- Task Progress -->
+           <br>
+        
+            <!-- Form to Add Task -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" style="text-align: center;">Task</h5>
+                    <form id="taskForm">
+                        <div>
+                            <label for="taskTitle" class="form-label"><font style="color: #6366f1;">| </font>Title</label>
+                            <input type="text" class="form-control" id="taskTitle" required>
+                        </div>
+                        <div>
+                            <label for="taskDescription" class="form-label"><font style="color: #6366f1;">| </font>Description</label>
+                            <textarea class="form-control" id="taskDescription"></textarea>
+                        </div>
+                        <div>
+                            <label for="taskDeadline" class="form-label"><font style="color: #6366f1;">| </font>Deadline</label>
+                            <input type="date" class="form-control" id="taskDeadline">
+                        </div>
+                        <button type="submit" class="btn">Add Task</button>
+                    </form>
+                </div>
+                <div class="task-progress">
+                    <br>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p><span id="completedCount">0</span>/<span id="totalCount">0</span> tasks completed</p>
+                </div>
+            </div>
+            
+            <!-- Task List -->
+            <div class="task-list" id="taskList"></div>
+            <div class="chart-container">
+        <canvas id="taskChart"></canvas>
+    </div>
+            <script>
+                const taskForm = document.getElementById('taskForm');
+                const taskList = document.getElementById('taskList');
+                const progressFill = document.getElementById('progressFill');
+                const completedCount = document.getElementById('completedCount');
+                const totalCount = document.getElementById('totalCount');
+                
+                // Fetch Intern ID
+                async function getInternId() {
+                    try {
+                        const response = await fetch('/api/intern-profile');
+                        if (!response.ok) throw new Error("Failed to fetch intern profile");
+                        const data = await response.json();
+                        return data.id; // Ensure `intern_id` exists
+                    } catch (error) {
+                        console.error("Error fetching intern ID:", error);
+                        return null;
+                    }
+                }
+                
+                // Update the task progress bar
+                function updateProgress(tasks) {
+                    const completedTasks = tasks.filter(task => task.status === 'completed').length;
+                    const totalTasks = tasks.length;
+            
+                    completedCount.textContent = completedTasks;
+                    totalCount.textContent = totalTasks;
+            
+                    const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+                    progressFill.style.width = `${progressPercentage}%`;
+                }
+            
+                // Load tasks and update the UI
+                async function loadTasks() {
+                    const internId = await getInternId(); // Ensure `intern_id` is passed
+                    if (!internId) {
+                        console.error("Intern ID is missing.");
+                        return;
+                    }
+            
+                    const response = await fetch(`/api/tasks?intern_id=${internId}`);
+                    const tasks = await response.json();
+            
+                    if (!Array.isArray(tasks)) {
+                        console.error("Invalid tasks response:", tasks);
+                        return;
+                    }
+            
+                    taskList.innerHTML = tasks.map(task => `
+                        <div class="task-item ${task.status === 'completed' ? 'completed' : ''}" data-id="${task.id}">
+                            <div>
+                                <h5>${task.title}</h5>
+                                <p>${task.description || 'No description'}</p>
+                                <span class="badge bg-info">${task.status}</span>
+                                <span class="badge bg-secondary">Created: ${new Date(task.created_at).toLocaleDateString()}</span>
+                                ${task.deadline ? `<span class="badge deadline-badge">Deadline: ${task.deadline}</span>` : ''}
+                            </div>
+                            <div class="task-item-buttons">
+                                <button class="done-btn" onclick="markTaskAsDone(${task.id})">Done</button>
+                                <button class="delete-btn" onclick="deleteTask(${task.id})">Delete</button>
+                            </div>
+                        </div>
+                    `).join('');
+            
+                    updateProgress(tasks);
+                }
+            
+                // Mark a task as done
+                async function markTaskAsDone(id) {
+                    const response = await fetch(`/api/tasks/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: 'completed' })
+                    });
+            
+                    if (response.ok) {
+                        loadTasks(); // Reload task list
+                    } else {
+                        const error = await response.json();
+                        alert('Error marking task as done: ' + error.message);
+                    }
+                }
+            
+                // Delete a task
+                async function deleteTask(id) {
+                    const response = await fetch(`/api/tasks/${id}`, {
+                        method: 'DELETE'
+                    });
+            
+                    if (response.ok) {
+                        loadTasks(); // Reload task list
+                    } else {
+                        const error = await response.json();
+                        alert('Error deleting task: ' + error.message);
+                    }
+                }
+            
+                // Add new task
+                taskForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+            
+                    const internId = await getInternId(); // Fetch intern_id from session or profile
+                    if (!internId) {
+                        alert('Intern ID is missing.');
+                        return;
+                    }
+            
+                    const response = await fetch('/api/tasks', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            title: taskForm.taskTitle.value,
+                            description: taskForm.taskDescription.value,
+                            deadline: taskForm.taskDeadline.value,
+                            intern_id: internId
+                        })
+                    });
+            
+                    if (response.ok) {
+                        loadTasks();
+                        taskForm.reset();
+                    } else {
+                        const error = await response.json();
+                        alert('Error adding task: ' + error.message);
+                    }
+                });
+            
+                // Initial load of tasks
+                loadTasks();
+            
+                document.addEventListener('DOMContentLoaded', async () => {
+                    try {
+                        const response = await fetch('/api/intern-profile', {
+                            method: 'GET',
+                            headers: { 'Content-Type': 'application/json' },
+                        });
+            
+                        if (response.ok) {
+                            const data = await response.json();
+                            document.querySelector('.sidebar-menu-item-title-expanded').textContent = `INTERN ID: ${data.id}`;
+                        } else {
+                            console.error('Failed to load profile data');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+
+
+                async function fetchTaskData() {
+            try {
+                const response = await fetch('/api/tasks');
+                if (!response.ok) throw new Error("Failed to fetch tasks");
+                const tasks = await response.json();
+                return tasks;
+            } catch (error) {
+                console.error("Error fetching task data:", error);
+                return [];
+            }
+        }
+
+        async function renderChart() {
+            const tasks = await fetchTaskData();
+            const completedTasks = tasks.filter(task => task.status === 'completed').length;
+            const pendingTasks = tasks.length - completedTasks;
+
+            const ctx = document.getElementById('taskChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Completed', 'Pending'],
+                    datasets: [{
+                        label: 'Tasks',
+                        data: [completedTasks, pendingTasks],
+                        backgroundColor: ['#4CAF50', '#FF5733'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderChart);
+            </script>
+            
+            
+    
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>
+    <script src="style/internstyle/script.js"></script>
+    <script src="style/internstyle/internscript.js"></script>
+</body>
+
+</html>

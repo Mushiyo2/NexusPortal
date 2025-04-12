@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>School Registration Requests</h1>
+    <table id="requestsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function fetchRequests() {
+            const response = await fetch('/admin/requests');
+            const requests = await response.json();
+            const tbody = document.querySelector('#requestsTable tbody');
+            tbody.innerHTML = '';
+            requests.forEach(request => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${request.id}</td>
+                    <td>${request.name}</td>
+                    <td>${request.email}</td>
+                    <td>${request.status}</td>
+                    <td>
+                        <button onclick="updateRequest(${request.id}, 'approved')">Approve</button>
+                        <button onclick="updateRequest(${request.id}, 'rejected')">Reject</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        async function updateRequest(id, status) {
+            await fetch(`/admin/requests/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status })
+            });
+            fetchRequests(); // Refresh the request list
+        }
+
+        // Fetch requests when the page loads
+        fetchRequests();
+
+        async function updateRequest(id, status) {
+    console.log(`Updating request ${id} with status ${status}`);
+    await fetch(`/admin/requests/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status })
+    });
+    fetchRequests(); // Refresh the request list
+}
+
+    </script>
+</body>
+</html>

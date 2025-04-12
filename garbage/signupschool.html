@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style/signupintern.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400&display=swap"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <title>Intern Portal Signup | School</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a href="#" class="navbar-brand mb-0 h1">NEXUS</a> 
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item active dropdown">
+                <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #68a9ff;"  >School</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a href="signupintern.html" class="dropdown-item">Intern</a></li>
+                    <li><a href="signupcompany.html" class="dropdown-item">Company</a></li>
+                    <li><a href="#" class="dropdown-item">School</a></li>
+                </ul>
+            </li>
+            <li class="nav-item active">
+                <a href="#" class="nav-link">About Us</a>
+            </li>
+            <li class="nav-item active">
+                <a href="login.html" class="btn btn-custom1 text-white">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="intern-portal-container">
+    <p class="intern-portal">Intern Portal <br> | <font style="color: #68a9ff;"> Nexus</p></font>
+</div>
+<div class="tagline">Bridging the Gap Between Talent and Opportunity</div>
+
+
+<!--LOGIN CONTAINER-->
+<div class="login-container">
+    <form class="login-form p-4 rounded shadow-sm" id="registerForm">
+        <hr style="margin: auto;align-items: center;width: 100%;color: white;padding-top: 20px;">
+        <h4 class="text-center mb-4" id="signupwho">Sign up as <font style="color: #68a9ff;">SCHOOL</font></h3>
+        <div class="mb-3">
+            <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
+        </div>
+        <div class="mb-3">
+            <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+        </div>
+        <div class="mb-3">
+            <input type="text" name="name" class="form-control" id="name" placeholder="University Name" required>
+        </div>
+        <div class="mb-3">
+            <input type="text" name="address" class="form-control" id="address" placeholder="Address" required>
+        </div>
+        <button type="submit" class="btn btn-custom w-100 text-white">Confirm</button>
+    </form>
+</div>
+
+<!-- <script>
+    document.getElementById('schoolForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
+
+        fetch('/api/v1/school', {
+            method: 'POST',
+            body: jsonData,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                // If the response is not okay, throw an error to be caught by the catch block
+                return response.text().then(text => { throw new Error(text); });
+            }
+            return response.text();
+        })
+        .then(data => {
+            alert(data);
+            if (data === "School created successfully!") {
+                document.getElementById('schoolForm').reset(); // Only reset form if creation was successful
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred: ' + error.message);
+            // The form will not reset here, allowing the user to make corrections
+        });
+    });
+</script> -->
+
+<script src="script.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

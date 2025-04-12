@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flat Login Form</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <style>
+    :root {
+      --accent: #33b5e5;
+      --white: #ffffff;
+      --black: #000000;
+      --dark-gray: #333333;
+      --gray: #666666;
+      --light-gray: #999999;
+      --lighter-gray: #cccccc;
+      --module-width: 320px;
+    }
+
+    body {
+      background-image: url("loading_p_bg.54a70f.jpg");
+      background-position: center top;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      color: var(--gray);
+      font-family: "RobotoDraft", "Roboto", sans-serif;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .pen-title {
+      padding: 50px 0;
+      text-align: center;
+      font-family: "Source Han Sans", sans-serif;
+      font-size: 3.375rem;
+      line-height: 3rem;
+      color: #ffffff;
+    }
+
+    .pen-title h1 {
+      margin: 0 0 20px;
+      font-size: 48px;
+      font-weight: 300;
+    }
+
+    .pen-title span {
+      font-size: 12px;
+    }
+
+    .pen-title span .fa {
+      color: var(--accent);
+    }
+
+    .pen-title span a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .form-module {
+      position: relative;
+      background: var(--white);
+      max-width: var(--module-width);
+      width: 100%;
+      border-top: 5px solid var(--accent);
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+      margin: 0 auto;
+    }
+
+    .form-module .toggle {
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--accent);
+      width: 30px;
+      height: 30px;
+      margin: -5px 0 0;
+      color: var(--white);
+      font-size: 12px;
+      line-height: 30px;
+      text-align: center;
+    }
+
+    .form-module .toggle .tooltip {
+      position: absolute;
+      top: 5px;
+      right: -65px;
+      display: block;
+      background: rgba(0, 0, 0, 0.6);
+      width: auto;
+      padding: 5px;
+      font-size: 10px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .form-module .toggle .tooltip::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: -5px;
+      display: block;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-right: 5px solid rgba(0, 0, 0, 0.6);
+    }
+
+    .form-module .form {
+      display: none;
+      padding: 40px;
+    }
+
+    .form-module .form:nth-child(2) {
+      display: block;
+    }
+
+    .form-module h2 {
+      margin: 0 0 20px;
+      color: var(--accent);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .form-module input {
+      outline: none;
+      display: block;
+      width: 100%;
+      border: 1px solid #e6e6e6;
+      margin: 0 0 20px;
+      padding: 10px 15px;
+      box-sizing: border-box;
+      font-weight: 400;
+      transition: all 0.3s ease;
+    }
+
+    .form-module input:focus {
+      border: 1px solid var(--accent);
+      color: var(--dark-gray);
+    }
+
+    .form-module button {
+      cursor: pointer;
+      background: var(--accent);
+      width: 100%;
+      border: 0;
+      padding: 10px 15px;
+      color: var(--white);
+      transition: all 0.3s ease;
+    }
+
+    .form-module button:hover {
+      background: #0099cc;
+    }
+
+    .form-module .cta {
+      background: #f2f2f2;
+      width: 100%;
+      padding: 15px 40px;
+      box-sizing: border-box;
+      color: var(--gray);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .form-module .cta a {
+      color: var(--dark-gray);
+      text-decoration: none;
+    }
+    .forced-vertical-text {
+      font-size: 50px;
+      font-weight: bold;
+      color: transparent;
+      text-transform: uppercase;
+      text-orientation: upright;
+      display: inline-block;
+      pointer-events: none;
+      position: fixed;
+      top: 51%;
+      writing-mode: vertical-lr;
+      left: 550px;
+      transform: translateY(-50%);
+      z-index: -1;
+      -webkit-text-stroke: 2px #6366f1;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 1.5s ease, visibility 0s 0.5s;
+    }
+    .forced-vertical-text.hidden {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1.5s ease, visibility 0s 0.5s;
+    }
+    .mb-3 {
+      margin-bottom: 20px;
+    }
+    .mb-3 select {
+      outline: none;
+      display: block;
+      width: 100%;
+      background: #e2e2e2;
+      border: 1px solid #e6e6e6;
+      border-radius: 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #333;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
+    }
+    .mb-3 select:focus {
+      border-color: var(--accent);
+      background-color: #fff;
+      box-shadow: 0 0 5px rgba(0, 153, 204, 0.3);
+    }
+    .mb-3 select option[value=""] {
+      color: #aaa;
+    }
+    .mb-3 label {
+      font-size: 14px;
+      margin-bottom: 5px;
+      display: block;
+      font-weight: 500;
+    }
+
+    .cta-link {
+      display: block;
+      text-decoration: none;
+    }
+
+    .cta {
+      text-align: center;
+      background-color: var(--accent);
+      color: var(--white);
+      padding: 15px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .cta:hover {
+      background-color: #0099cc;
+      color: #ffffff;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #272727;
+      padding: 35px;
+      border-radius: 5px;
+      width: 300px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .close-btn {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--gray);
+    }
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .modal-btn {
+      padding: 10px 15px;
+      background-color: var(--accent);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+    }
+
+    .modal-btn:hover {
+      background-color: #0099cc;
+    }
+  </style>
+  <body>
+    <!-- Pen Title -->
+    <div class="pen-title">
+      <h1>Intern Portal <font style="color: #6366f1">Nexus</font></h1>
+      <span>
+        <font style="color: #6366f1">| </font>Bridging the Gap Between Talent
+        and Opportunity
+      </span>
+    </div>
+    <!-- Form Module -->
+
+    <div class="forced-vertical-text">LOGIN</div>
+    <div class="module form-module">
+      <div></div>
+      <div class="form">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <div class="mb-3">
+            <select name="userType" class="form-control" id="userType" required>
+              <option value="" disabled selected>Select User Type</option>
+              <option value="school">School</option>
+              <option value="company">Company</option>
+              <option value="intern">Intern</option>
+            </select>
+          </div>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Email"
+            required
+          />
+          <div style="position: relative">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Password"
+              required
+            />
+            <i
+              class="fas fa-eye"
+              id="togglePassword"
+              style="
+                position: absolute;
+                top: 50%;
+                right: 10px;
+                transform: translateY(-50%);
+                cursor: pointer;
+              "
+            ></i>
+          </div>
+          <button type="submit">Login</button>
+          <p id="loginMessage" class="error text-danger"></p>
+        </form>
+      </div>
+      <a href="javascript:void(0);" class="cta-link" id="signUpLink">
+        <div class="cta">Click to Sign Up</div>
+      </a>
+    </div>
+    <div id="signUpModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2 style="color: #ffffff">Register as</h2>
+        <div class="modal-buttons">
+          <button class="modal-btn" id="option1">Intern</button>
+          <button class="modal-btn" id="option2">School</button>
+          <button class="modal-btn" id="option3">Company</button>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    const modal = document.getElementById("signUpModal");
+    const signUpLink = document.getElementById("signUpLink");
+    const closeBtn = document.querySelector(".close-btn");
+    signUpLink.onclick = function (event) {
+      event.preventDefault();
+      modal.style.display = "flex";
+    };
+
+    closeBtn.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    };
+    document.getElementById("option1").onclick = function () {
+      window.location.href = "nexusregisterintern.html";
+    };
+
+    document.getElementById("option2").onclick = function () {
+      window.location.href = "nexusregisterschool.html";
+    };
+
+    document.getElementById("option3").onclick = function () {
+      window.location.href = "nexusregistercompany.html";
+    };
+    // LOGIN
+    document
+      .getElementById("loginForm")
+      .addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        // Prepare the form data for submission
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData);
+
+        console.log("Attempting login with data:", data);
+
+        try {
+          const response = await fetch("/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            console.log("Login successful, redirecting to:", result.redirect);
+            window.location.href = result.redirect;
+          } else {
+            const result = await response.json();
+            document.getElementById("loginMessage").textContent =
+              result.error || "Login failed.";
+          }
+        } catch (error) {
+          console.error("Login request failed:", error);
+          document.getElementById("loginMessage").textContent =
+            "An error occurred. Please try again later.";
+        }
+      });
+
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+    togglePassword?.addEventListener("click", function () {
+      const type = passwordInput.type === "password" ? "text" : "password";
+      passwordInput.type = type;
+
+      // Toggle the eye icon (open/closed)
+      this.classList.toggle("fa-eye-slash");
+    });
+    window.addEventListener("resize", function () {
+      var verticalText = document.querySelector(".forced-vertical-text");
+      if (window.innerWidth > 1500) {
+        verticalText.classList.remove("hidden");
+      } else {
+        verticalText.classList.add("hidden");
+      }
+    });
+  </script>
+  <script src="loginscript.js"></script>
+</html>

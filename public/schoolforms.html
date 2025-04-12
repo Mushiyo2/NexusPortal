@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style/schoolstyle/schoolstyle.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>Nexus|School (Request Intern)</title>
+</head>
+<style>
+/* View button with similar design as Edit button */
+.view-button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: 20px;
+    position: relative;
+    transition: all 0.3s ease; /* Smooth transition for hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.view-button:hover {
+    transform: translateY(-3px); /* Lift effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+    background-color: #0056b3; /* Darken background on hover */
+}
+
+.view-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(38, 123, 255, 0.3); /* Focus glow */
+}
+
+.view-button:active {
+    transform: translateY(1px); /* Pressed effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Smaller shadow on click */
+}   
+    /* Overlay Styles */
+.overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000; /* Makes sure it's above everything */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+/* Overlay Content Styling */
+.overlay-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 80%;
+    max-height: 80%;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.overlay-content img {
+    max-width: 100%;
+    max-height: 70vh; /* Keep the image responsive */
+    object-fit: contain; /* Ensures the image does not distort */
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Close Button Styling */
+.overlay-content button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.overlay-content button:hover {
+    background-color: #45a049;
+}
+
+
+.approveButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.approveButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: #0056b3;
+}
+
+.approveButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(38, 123, 255, 0.3);
+}
+
+.approveButton:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.rejectButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.rejectButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: #c82333;
+}
+
+.rejectButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.3);
+}
+
+.rejectButton:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+</style>
+<body>
+    <!-- start: Sidebar -->
+    <div class="sidebar-overlay" data-dismiss="sidebar"></div>
+    <div class="sidebar">
+        <div class="sidebar-brand-wrapper">
+            <a href="#" class="sidebar-brand">
+                <img src="style/schoolstyle/logo.jpg" alt="" class="sidebar-brand-image" />
+                <span class="sidebar-brand-name">NEXUS </span>
+            </a>
+        </div>
+        <div class="sidebar-menu-wrapper">
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item-title">
+                    <span class="sidebar-menu-item-title-expanded">Menu</span>
+                    <span class="sidebar-menu-item-title-collapsed">
+                        <i class="ri-more-fill"></i>
+                    </span>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolindex.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bxs-dashboard'></i></i></span>
+                        <span class="sidebar-menu-item-link-text">Dashboard</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolindex.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-group"></i></span>
+                        <span class="sidebar-menu-item-link-text">User List</span>
+                        <span class="sidebar-menu-item-link-arrow"><i class="ri-arrow-right-s-line"></i></span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li class="sidebar-submenu-item">
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li class="sidebar-submenu-item">
+                                    <a href="#" class="sidebar-submenu-item-link">
+                                        <span class="sidebar-submenu-item-link-text">Test</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="schooluserintern.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Interns</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="schoolusercomp.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Company</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                <li class="sidebar-menu-item">
+                    <a href="schoolfeed.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-book-open'></i></span>
+                        <span class="sidebar-menu-item-link-text">Feed</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolrequestintern.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon">  <i class='bx bxs-user-plus'></i></span>
+                        <span class="sidebar-menu-item-link-text" >Intern Requests</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolforms.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"> <i class="bx bxs-file" style="color: #6366f1;"></i></i></span>
+                        <span class="sidebar-menu-item-link-text" style="color:  #6366f1; ">Forms Requests</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="/chat/index.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-message-dots"></i></span>
+                        <span class="sidebar-menu-item-link-text">Message</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolprofile.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-happy-alt'></i></span>
+                        <span class="sidebar-menu-item-link-text">Profile</span>
+                    </a>
+                </li>
+                </li>
+            </ul>
+
+        </div>
+        <div class="forced-vertical-text">NEXUS</div>
+    </div>
+    <!-- end: Sidebar -->
+
+    <!-- start: Main -->
+    <div class="main">
+        <div class="topbar">
+            <a href="#" class="topbar-brand">
+                <img src="style/schoolstyle/logo.jpg" alt="" class="topbar-brand-image" />
+            </a>
+            <button type="button" class="topbar-button topbar-toggle" data-toggle="sidebar">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="topbar-search-form-wrapper" id="topbar-search-form-wrapper">
+                <form action="" class="topbar-search-form">
+                    <h3 class="username">Name : ? ? ? </h3>
+                    <span class="topbar-search-form-icon"></i></span>
+                    <div class="topbar-search-form-autocomplete" id="topbar-search-autocomplete">
+                        <div class="topbar-search-form-autocomplete-wrapper">
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Recent Searches
+                                </p>
+                                <div class="topbar-search-form-autocomplete-recent">
+                                </div>
+                            </div>
+                            <!--invisible-->
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p>Products
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>
+                                    Users
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="topbar-right">
+                <div class="dropdown">
+                    <button type="button" class="topbar-button" data-toggle="dropdown">
+                        <i class="ri-notification-3-line"></i>
+                        <span class="topbar-button-total topbar-button-total-notification">5</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-notification">
+                        <div class="dropdown-menu-header">
+                            <p class="dropdown-menu-title">Notifications</p>
+                        </div>
+                        <div class="dropdown-menu-notification-wrapper">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <!-- Your code here -->
+            <section id="content">
+                <main>
+                    <div class="head-title">
+                        <div class="left">
+                            <h1><i class="bx bxs-file" style="color: #6366f1;"></i> | Intern Forms </h1>
+                            <ul class="breadcrumb">
+                                <li>
+                                    <a href="#">Intern Forms</a>
+                                </li>
+                                <li><i class='bx bx-chevron-right'></i><i class='bx bx-chevron-right'></i></li>
+                                <li>
+                                    <a class="active" href="#"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i> 
+                    </div>
+                    <br>
+                    <h2>Total: SIP Forms for Validation</h2>
+                    <ul class="box-info">
+                        <li>
+                            <i class='bx bx-file'></i>
+                            <span class="text">
+                                <h3 id="sipRequestCount">0</h3>
+                                <p>SIP Forms</p>
+                            </span>
+                        </li>
+                    </ul>
+                    <br>
+                    <h1>List</h1>
+                    <div class="table-data">
+                        <div class="order">
+                            <div class="head">
+                                <h3>Interns</h3>
+                                <i class='bx bxs-download'></i>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>School ID</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sipFileTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </main>
+                
+               
+<div id="approveOverlay" class="overlay">
+    <div class="overlay-content">
+        <h2>Approve SIP Form</h2>
+        <p id="selectedIntern"></p>
+        <input type="file" id="approvedSipFile" accept=".pdf,.doc,.docx">
+        <button class="modal-btn" id="sendApprovedSIP">Send to Intern</button>
+        <button onclick="closeApproveOverlay()">Cancel</button>
+    </div>
+</div>
+<script>
+    let selectedInternId = null;
+    let selectedInternEmail = null;
+    
+    // Added Reject function
+    async function rejectSipFile(internId, email) {
+        if (!confirm('Are you sure you want to reject this SIP submission? This action cannot be undone.')) return;
+    
+        try {
+            const response = await fetch('/api/reject-sip-file', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ internId, internEmail: email })
+            });
+    
+            const data = await response.json();
+            if (data.success) {
+                alert('SIP rejected and intern notified!');
+                fetchInternsWithSIP();
+            } else {
+                alert('Failed to reject SIP: ' + (data.error || 'Unknown error'));
+            }
+        } catch (error) {
+            console.error('Error rejecting SIP:', error);
+            alert('Failed to reject SIP');
+        }
+    }
+    
+    // Updated table row rendering with Reject button
+    function renderTableRow(intern) {
+        return `
+            <td>${intern.name}</td>
+            <td>${intern.email}</td>
+            <td>${intern.address}</td>
+            <td>${intern.school_id}</td>
+            <td>
+                ${renderFileLink(intern.file_url)}
+                <button class="approveButton" onclick="openApproveOverlay(${intern.id}, '${intern.email}')">Approve</button>
+            <button class="rejectButton" onclick="rejectSipFile(${intern.id}, '${intern.email}')">Reject</button>
+            </td>`;
+    }
+    
+    // Modified fetch function to use renderTableRow
+    async function fetchInternsWithSIP() {
+        try {
+            const response = await fetch('/api/interns-with-sip');
+            const interns = await response.json();
+            console.log("Fetched interns:", interns);
+    
+            const tbody = document.querySelector('#sipFileTableBody');
+            tbody.innerHTML = ''; // Clear previous data
+    
+            interns.forEach(intern => {
+                const row = document.createElement('tr');
+                row.innerHTML = renderTableRow(intern);
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error fetching interns with SIP files:', error);
+        }
+    }
+    
+    // Rest of your existing code remains unchanged below this line
+    function renderFileLink(fileUrl) {
+        const fileExtension = fileUrl.split('.').pop().toLowerCase();
+        
+        if (fileExtension === 'pdf') {
+            return `<a href="${fileUrl}" target="_blank" class="view-button">View PDF</a>`;
+        } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+            return `<a href="${fileUrl}" target="_blank" class="view-button">View Image</a>`;
+        } else {
+            return `<a href="${fileUrl}" target="_blank" class="view-button">View File</a>`;
+        }
+    }
+    
+    function openApproveOverlay(internId, email) {
+        console.log("Opening overlay for Intern ID:", internId);
+        selectedInternId = internId;
+        selectedInternEmail = email;
+        console.log("selectedInternId set to:", selectedInternId);
+        document.getElementById("selectedIntern").textContent = `Approving SIP for Intern ID: ${internId}`;
+        document.getElementById("approveOverlay").style.display = "flex";
+    }
+    
+    function closeApproveOverlay() {
+        document.getElementById("approveOverlay").style.display = "none";
+        selectedInternId = null;
+        selectedInternEmail = null;
+    }
+    
+    document.getElementById("sendApprovedSIP").addEventListener("click", async () => {
+        const fileInput = document.getElementById("approvedSipFile");
+        const file = fileInput.files[0];
+    
+        if (!file) {
+            alert("Please select a file to send.");
+            return;
+        }
+    
+        console.log("Sending SIP file for Intern ID:", selectedInternId);
+        if (!selectedInternId) {
+            alert("Intern ID is missing.");
+            return;
+        }
+    
+        const formData = new FormData();
+        formData.append("sipFile", file);
+        formData.append("internId", selectedInternId);
+        formData.append("internEmail", selectedInternEmail);
+    
+        try {
+            const response = await fetch('/api/approve-sip-file', {
+                method: "POST",
+                body: formData,
+            });
+    
+            const data = await response.json();
+            if (data.success) {
+                alert("SIP Form Approved & Sent!");
+                closeApproveOverlay();
+                fetchInternsWithSIP();
+            } else {
+                alert("Failed to send SIP form.");
+            }
+        } catch (error) {
+            console.error("Error sending SIP form:", error);
+        }
+    });
+    
+    document.addEventListener('DOMContentLoaded', fetchInternsWithSIP);
+    document.addEventListener('DOMContentLoaded', async () => { 
+    try {
+        // Fetch pending SIP files count
+        const response = await fetch('/api/pending-sip-files');
+        const data = await response.json();
+
+        // Update UI with the count of pending SIP files
+        document.querySelector('#sipRequestCount').textContent = data.count;
+    } catch (error) {
+        console.error('Error fetching pending SIP files count:', error);
+    }
+});
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/api/school-profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            document.querySelector('.sidebar-menu-item-title-expanded').textContent = `SCHOOL ID: ${data.id}`;
+        } else {
+            console.error('Failed to load profile data');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+    </script>
+
+                
+                <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
+                <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>
+                <script src="style/schoolstyle/script.js"></script>
+                <script src="style/schoolstyle/schoolscript.js"></script>
+                
+                </body>
+                </html>
+                

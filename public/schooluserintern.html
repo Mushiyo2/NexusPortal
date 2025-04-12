@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style/schoolstyle/schoolstyle.css">
+    <link rel="stylesheet" href="style.css" />
+
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <title>Nexus|School (Users Intern)</title>
+</head>
+<style>
+     
+     #error-overlay {
+        display: none; 
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); 
+        color: white;
+        font-size: 18px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 1000; 
+    }
+
+    
+    #error-message-container {
+        background-color: #333; 
+        padding: 30px;
+        border-radius: 10px;
+        max-width: 90%;
+        width: 400px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+        text-align: center;
+    }
+
+    
+    #error-message {
+        margin-bottom: 20px;
+        font-size: 1.2em;
+    }
+
+    
+    #button-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    
+    #yes-button, #no-button {
+        padding: 12px 25px;
+        background-color: #68a9ff; 
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1em;
+        transition: background-color 0.3s;
+    }
+
+    
+    #yes-button:hover, #no-button:hover {
+        background-color: #4a85cc; 
+    }
+
+    
+    @media (max-width: 600px) {
+        #error-message-container {
+            width: 90%;
+        }
+        #error-message {
+            font-size: 1em;
+        }
+        #yes-button, #no-button {
+            padding: 10px 20px;
+            font-size: 1em;
+        }
+    }
+#internTableBody .rejectButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#internTableBody .rejectButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: #c82333;
+}
+
+#internTableBody .rejectButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.3);
+}
+
+#internTableBody .rejectButton:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+<body>
+    <!-- start: Sidebar -->
+    <div class="sidebar-overlay" data-dismiss="sidebar"></div>
+    <div class="sidebar">
+        <div class="sidebar-brand-wrapper">
+            <a href="#" class="sidebar-brand">
+                <img src="style/schoolstyle/logo.jpg" alt="" class="sidebar-brand-image" />
+                <span class="sidebar-brand-name">NEXUS </span>
+            </a>
+        </div>
+        <div class="sidebar-menu-wrapper">
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item-title">
+                    <span class="sidebar-menu-item-title-expanded">Menu</span>
+                    <span class="sidebar-menu-item-title-collapsed">
+                        <i class="ri-more-fill"></i>
+                    </span>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolindex.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bxs-dashboard'></i></i></span>
+                        <span class="sidebar-menu-item-link-text">Dashboard</span>
+                    </a>
+
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-group" style="color:  #6366f1; "></i></span>
+                        <span class="sidebar-menu-item-link-text" style="color:  #6366f1; ">User List</span>
+                        <span class="sidebar-menu-item-link-arrow"><i class="ri-arrow-right-s-line" style="color:  #6366f1; "></i></span>
+                    </a>
+                    <ul class="sidebar-submenu">
+                        <li class="sidebar-submenu-item">
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li class="sidebar-submenu-item">
+                                    <a href="#" class="sidebar-submenu-item-link">
+                                        <span class="sidebar-submenu-item-link-text">Test</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="schooluserintern.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text" style="color:  #6366f1; ">Interns</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-submenu-item">
+                            <a href="schoolusercomp.html" class="sidebar-submenu-item-link">
+                                <span class="sidebar-submenu-item-link-text">Company</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                <li class="sidebar-menu-item">
+                    <a href="schoolfeed.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-book-open'></i></span>
+                        <span class="sidebar-menu-item-link-text">Feed</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolrequestintern.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon">  <i class='bx bxs-user-plus' ></i>   </span>
+                        <span class="sidebar-menu-item-link-text">Intern Requests</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolforms.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"> <i class="bx bxs-file"></i></i></span>
+                        <span class="sidebar-menu-item-link-text">Forms Requests</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="/chat/index.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class="bx bxs-message-dots"></i></span>
+                        <span class="sidebar-menu-item-link-text">Message</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="schoolprofile.html" class="sidebar-menu-item-link">
+                        <span class="sidebar-menu-item-link-icon"><i class='bx bx-happy-alt'></i></span>
+                        <span class="sidebar-menu-item-link-text">Profile</span>
+                    </a>
+                </li>
+                </li>
+            </ul>
+
+        </div>
+        <div class="forced-vertical-text">NEXUS</div>
+    </div>
+    <!-- end: Sidebar -->
+
+    <!-- start: Main -->
+
+    <div class="main">
+        <div class="topbar">
+            <a href="#" class="topbar-brand">
+                <img src="style/schoolstyle/logo.jpg" alt="" class="topbar-brand-image" />
+            </a>
+            <button type="button" class="topbar-button topbar-toggle" data-toggle="sidebar">
+                <i class="ri-menu-line"></i>
+            </button>
+            <div class="topbar-search-form-wrapper" id="topbar-search-form-wrapper">
+                <form action="" class="topbar-search-form">
+                    <h3 class="username">Name : ? ? ? </h3>
+                    <span class="topbar-search-form-icon"></i></span>
+                    <div class="topbar-search-form-autocomplete" id="topbar-search-autocomplete">
+                        <div class="topbar-search-form-autocomplete-wrapper">
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p class="topbar-search-form-autocomplete-box-title">
+                                    Recent Searches
+                                </p>
+                                <div class="topbar-search-form-autocomplete-recent">
+                                </div>
+                            </div>
+                            <!--invisible-->
+                            <div class="topbar-search-form-autocomplete-box">
+                                <p>Products
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>
+                                    Users
+                                </p>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="topbar-right">
+                <div class="dropdown">
+                    <button type="button" class="topbar-button" data-toggle="dropdown">
+                        <i class="ri-notification-3-line"></i>
+                        <span class="topbar-button-total topbar-button-total-notification">3</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-notification">
+                        <div class="dropdown-menu-header">
+                            <p class="dropdown-menu-title">Notifications</p>
+                            <span class="badge badge-primary">3 items</span>
+                        </div>
+                        <div class="dropdown-menu-notification-wrapper">
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon success">
+                                    <i class="ri-check-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon danger">
+                                    <i class="ri-alert-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                            <a href="#" class="dropdown-menu-notification-item">
+                                <span class="dropdown-menu-notification-item-icon warning">
+                                    <i class="ri-alarm-warning-line"></i>
+                                </span>
+                                <div class="dropdown-menu-notification-item-right">
+                                    <p class="dropdown-menu-notification-item-text">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing.
+                                    </p>
+                                    <p class="dropdown-menu-notification-item-time">
+                                        3 days ago
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <!-- Your code here -->
+            <section id="content">
+
+                <main>
+                    <div class="head-title">
+                        <div class="left">
+                            <h1><i class="bx bxs-group" style="color:  #6366f1; "></i> | User List </h1>
+                            <ul class="breadcrumb">
+                                <li>
+                                    <a href="#">User List</a>
+                                </li>
+                                <li><i class='bx bx-chevron-right'></i><i class='bx bx-chevron-right'></i></li>
+                                <li>
+                                    <a class="active" href="#">Interns </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                    <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i>
+                        <i class='bx bx-dots-horizontal bx-flashing' style="color: #68a9ff;" ></i> 
+                    </div>
+                    <br>
+                    <h2>Total: Interns</h2>
+                    <ul class="box-info">
+                        <li>
+                            <i class='bx bxs-face'></i>
+                            <span class="text">
+                                <h3 id="internUserCount">0</h3>
+                                <p>Interns</p>
+                            </span>
+                        </li>
+                    </ul>
+                    <br>
+                    <h1>List</h1>
+                    <div class="table-data">
+                        <div class="order">
+                            <div class="head">
+                                <h3>Interns</h3>
+                                <i class='bx bxs-download'></i>
+                            </div>  
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Department</th>
+                                        <th>School ID</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="internTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        </div>
+        </main>
+        <div id="error-overlay" style="display: none;">
+            <div id="error-message-container">
+                <p id="error-message"></p>
+                <div id="button-container">
+                    <button id="yes-button">Yes</button>
+                    <button id="no-button">No</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- MAIN -->
+        </section>
+    </div>
+    </div>
+    <!-- end: Main -->
+    <script>
+        async function fetchInternCount() {
+        try {
+            const response = await fetch('/api/intern/count');
+            const data = await response.json();
+            document.querySelector('#internUserCount').textContent = data.total;
+        } catch (error) {
+            console.error('Error fetching intern count:', error);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', fetchInternCount);
+
+    async function fetchInternUsers() {
+        try {
+            const response = await fetch('/api/intern');
+            const internUsers = await response.json();
+
+            const internTableBody = document.getElementById('internTableBody');
+            internTableBody.innerHTML = ''; // Clear existing rows
+
+            internUsers.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.department}</td>
+                    <td>${user.school_id}</td>
+                    <td><button class="view-button" class="action-btn" onclick="viewProfile('${user.email}')">View</button>
+                    <button  class="rejectButton" class="delete-button action-btn" onclick="removeUser('${user.email}')">Remove</button></td>
+                `;
+                internTableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error fetching intern users:', error);
+        }
+    }
+    async function removeUser(userEmail) {
+    const confirmed = await showConfirmationOverlay(
+        `Are you sure you want to remove the user with email: ${userEmail}?`
+    );
+
+    if (confirmed) {
+        try {
+            const response = await fetch(`/api/intern/${userEmail}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                // Show success message overlay without Yes/No buttons
+                showMessageOverlay('User removed successfully.').then(() => {
+                    fetchInternUsers(); // Refresh the user list
+                });
+            } else {
+                const error = await response.json();
+                showMessageOverlay(`Failed to remove user: ${error.message}`);
+            }
+        } catch (error) {
+            console.error('Error removing user:', error);
+            showMessageOverlay('An error occurred while removing the user.');
+        }
+    }
+}
+
+    document.addEventListener('DOMContentLoaded', fetchInternUsers);
+    function showMessageOverlay(message) {
+    const overlay = document.getElementById('error-overlay');
+    const messageContainer = document.getElementById('error-message-container');
+    const messageElement = document.getElementById('error-message');
+
+    // Set the message
+    messageElement.textContent = message;
+
+    // Show the overlay
+    overlay.style.display = 'flex';
+
+    // Auto-close after 3 seconds
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            resolve();
+        }, 3000); // Hide after 3 seconds
+    });
+}
+
+    // Function to handle "View" button click and redirect to intern's profile page
+    function viewProfile(internEmail) {
+        window.location.href = `/internprofile2.html?email=${internEmail}`; // Redirect to intern's profile page with email query parameter
+    }
+
+
+    function showConfirmationOverlay(message) {
+    return new Promise((resolve) => {
+        const overlay = document.getElementById('error-overlay');
+        const messageElement = document.getElementById('error-message');
+        const yesButton = document.getElementById('yes-button');
+        const noButton = document.getElementById('no-button');
+
+        // Ensure elements exist
+        if (!overlay || !messageElement || !yesButton || !noButton) {
+            console.error('Overlay elements are missing in the DOM.');
+            resolve(false);
+            return;
+        }
+
+        messageElement.textContent = message;
+        overlay.style.display = 'flex'; // Show overlay
+
+        const handleYesClick = () => {
+            resolve(true);
+            closeOverlay();
+        };
+
+        const handleNoClick = () => {
+            resolve(false);
+            closeOverlay();
+        };
+
+        // Add event listeners
+        yesButton.addEventListener('click', handleYesClick, { once: true });
+        noButton.addEventListener('click', handleNoClick, { once: true });
+
+        function closeOverlay() {
+            overlay.style.display = 'none'; // Hide overlay
+            yesButton.removeEventListener('click', handleYesClick);
+            noButton.removeEventListener('click', handleNoClick);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/api/school-profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            document.querySelector('.sidebar-menu-item-title-expanded').textContent = `SCHOOL ID: ${data.id}`;
+        } else {
+            console.error('Failed to load profile data');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10"></script>
+    <script src="style/schoolstyle/script.js"></script>
+    <script src="style/schoolstyle/schoolscript.js"></script>
+</body>
+
+</html>
