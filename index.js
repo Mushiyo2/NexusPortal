@@ -108,15 +108,10 @@ const checkApproval = async (req, res, next) => {
   }
 
   try {
-    const user = await pool.query(
-      "SELECT is_approved FROM school WHERE id = $1",
-      [userId]
-    );
+    const user = await pool.query("SELECT is_approved FROM school WHERE id = $1", [userId]);
 
     if (user.rows.length > 0 && !user.rows[0].is_approved) {
-      return res
-        .status(403)
-        .json({ message: "Wait for admin approval to enter the website." });
+      return res.status(403).json({ message: "Wait for admin approval to enter the website." });
     }
 
     next(); // Proceed to the next middleware or route handler if approved
@@ -182,26 +177,15 @@ app.post("/register-company", async (req, res) => {
   const { email, password, name, address, contact } = req.body;
 
   if (!name || !email || !password) {
-    return res
-      .status(400)
-      .json({ error: "Name, email, and password are required." });
+    return res.status(400).json({ error: "Name, email, and password are required." });
   }
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const query =
       "INSERT INTO company_requests (email, password, name, address, contact, status) VALUES ($1, $2, $3, $4, $5, $6)";
-    await pool.query(query, [
-      email,
-      hashedPassword,
-      name,
-      address,
-      contact,
-      "pending",
-    ]);
-    res
-      .status(201)
-      .json({ message: "Registration successful! Awaiting admin approval." });
+    await pool.query(query, [email, hashedPassword, name, address, contact, "pending"]);
+    res.status(201).json({ message: "Registration successful! Awaiting admin approval." });
   } catch (error) {
     console.error("Error registering company:", error);
     res.status(500).json({ error: "Error registering company." });
@@ -223,77 +207,65 @@ app.post("/register", async (req, res) => {
       "INSERT INTO school_requests (email,password, name, address, status) VALUES ($1, $2, $3, $4, $5)",
       [email, hashedPassword, name, address, "pending"]
     );
-    res
-      .status(201)
-      .json({ message: "Registration successful! Awaiting admin approval." });
+    res.status(201).json({ message: "Registration successful! Awaiting admin approval." });
   } catch (error) {
     console.error("Error registering school:", error);
     res.status(500).json({ error: "Error registering school." });
   }
 });
 
-app.post(
-  "/register-intern",
-  upload.single("school_id_image"),
-  async (req, res) => {
-    const { email, password, name, address, school_id } = req.body;
-    const schoolImage = req.file;
+app.post("/register-intern", upload.single("school_id_image"), async (req, res) => {
+  const { email, password, name, address, school_id } = req.body;
+  const schoolImage = req.file;
 
-    console.log("Received form data:", req.body);
-    console.log("Cloudinary Image:", schoolImage);
+  console.log("Received form data:", req.body);
+  console.log("Cloudinary Image:", schoolImage);
 
-    if (!name || !email || !password || !school_id || !schoolImage) {
-      return res.status(400).json({
-        error: "Name, email, password, school ID, and image are required.",
-      });
-    }
+  if (!name || !email || !password || !school_id || !schoolImage) {
+    return res.status(400).json({
+      error: "Name, email, password, school ID, and image are required.",
+    });
+  }
 
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Ensure Cloudinary URL is properly stored
-      const imageUrl = schoolImage ? schoolImage.path : null;
+    // Ensure Cloudinary URL is properly stored
+    const imageUrl = schoolImage ? schoolImage.path : null;
 
-      const query = `
+    const query = `
             INSERT INTO intern_requests (email, password, name, address, school_id, schoolid_img, status) 
             VALUES ($1, $2, $3, $4, $5, $6, $7)
         `;
-      await pool.query(query, [
-        email,
-        hashedPassword,
-        name,
-        address,
-        school_id,
-        imageUrl, // Save Cloudinary URL
-        "pending",
-      ]);
+    await pool.query(query, [
+      email,
+      hashedPassword,
+      name,
+      address,
+      school_id,
+      imageUrl, // Save Cloudinary URL
+      "pending",
+    ]);
 
-      // Fetch all approved schools
-      const schools = await pool.query(
-        "SELECT id FROM school WHERE is_approved = true"
+    // Fetch all approved schools
+    const schools = await pool.query("SELECT id FROM school WHERE is_approved = true");
+
+    // Insert notifications for all approved schools
+    const message = `A new intern request has been submitted by ${name}.`;
+    const notificationQueries = schools.rows.map((school) => {
+      return pool.query(
+        "INSERT INTO school_notifications (school_id, message, timestamp) VALUES ($1, $2, CURRENT_TIMESTAMP)",
+        [school.id, message]
       );
+    });
+    await Promise.all(notificationQueries);
 
-      // Insert notifications for all approved schools
-      const message = `A new intern request has been submitted by ${name}.`;
-      const notificationQueries = schools.rows.map((school) => {
-        return pool.query(
-          "INSERT INTO school_notifications (school_id, message, timestamp) VALUES ($1, $2, CURRENT_TIMESTAMP)",
-          [school.id, message]
-        );
-      });
-      await Promise.all(notificationQueries);
-
-      res
-        .status(201)
-        .json({ message: "Intern registration successful!", imageUrl });
-    } catch (error) {
-      console.error("Error registering intern:", error);
-      res
-        .status(500)
-        .json({ error: "An unexpected error occurred during registration." });
-    }
+    res.status(201).json({ message: "Intern registration successful!", imageUrl });
+  } catch (error) {
+    console.error("Error registering intern:", error);
+    res.status(500).json({ error: "An unexpected error occurred during registration." });
   }
-);
+});
 // Admin: Approve or reject a request
 app.put("/admin/requests/:id", async (req, res) => {
   const { status, type } = req.body; // Expecting { status: 'approved', type: 'school' } or { status: 'rejected', type: 'company' }
@@ -304,10 +276,7 @@ app.put("/admin/requests/:id", async (req, res) => {
 
   try {
     // Update the request status
-    await pool.query(`UPDATE ${tableName} SET status = $1 WHERE id = $2`, [
-      status,
-      requestId,
-    ]);
+    await pool.query(`UPDATE ${tableName} SET status = $1 WHERE id = $2`, [status, requestId]);
 
     // Fetch request data for further actions
     const requestData = await pool
@@ -315,51 +284,26 @@ app.put("/admin/requests/:id", async (req, res) => {
       .then((res) => res.rows[0]);
 
     if (status === "approved") {
-      const existingEntry = await pool.query(
-        `SELECT * FROM ${type} WHERE email = $1`,
-        [requestData.email]
-      );
+      const existingEntry = await pool.query(`SELECT * FROM ${type} WHERE email = $1`, [requestData.email]);
 
       if (existingEntry.rows.length > 0) {
         // Update existing entry to set approval status
-        await pool.query(
-          `UPDATE ${type} SET is_approved = true WHERE email = $1`,
-          [requestData.email]
-        );
+        await pool.query(`UPDATE ${type} SET is_approved = true WHERE email = $1`, [requestData.email]);
       } else {
         // Insert new entry into the main table with approval status set
         await pool.query(
           `INSERT INTO ${type} (email, password, name, address${
             type === "company" ? ", contact" : ""
-          }, is_approved) VALUES ($1, $2, $3, $4${
-            type === "company" ? ", $5" : ""
-          }, true)`,
+          }, is_approved) VALUES ($1, $2, $3, $4${type === "company" ? ", $5" : ""}, true)`,
           type === "company"
-            ? [
-                requestData.email,
-                requestData.password,
-                requestData.name,
-                requestData.address,
-                requestData.contact,
-              ]
-            : [
-                requestData.email,
-                requestData.password,
-                requestData.name,
-                requestData.address,
-              ]
+            ? [requestData.email, requestData.password, requestData.name, requestData.address, requestData.contact]
+            : [requestData.email, requestData.password, requestData.name, requestData.address]
         );
       }
     } else if (status === "rejected") {
-      const existingEntry = await pool.query(
-        `SELECT * FROM ${type} WHERE email = $1`,
-        [requestData.email]
-      );
+      const existingEntry = await pool.query(`SELECT * FROM ${type} WHERE email = $1`, [requestData.email]);
       if (existingEntry.rows.length > 0) {
-        await pool.query(
-          `UPDATE ${type} SET is_approved = false WHERE email = $1`,
-          [requestData.email]
-        );
+        await pool.query(`UPDATE ${type} SET is_approved = false WHERE email = $1`, [requestData.email]);
       }
     }
 
@@ -377,14 +321,10 @@ app.put("/admin/requests/:id", async (req, res) => {
           : "Company Registration Rejected",
       text:
         status === "approved"
-          ? `Dear ${
-              requestData.name
-            },\n\nCongratulations! Your registration for the ${
+          ? `Dear ${requestData.name},\n\nCongratulations! Your registration for the ${
               type === "school" ? "School" : "Company"
             } Portal has been successfully approved. You now have full access to manage your account and connect with interns.\n\nWe’re excited to have you on board and look forward to your active participation in the program.\n\nBest regards,\nThe Intern Portal Team`
-          : `Dear ${
-              requestData.name
-            },\n\nThank you for your interest in joining the ${
+          : `Dear ${requestData.name},\n\nThank you for your interest in joining the ${
               type === "school" ? "School" : "Company"
             } Portal. After careful review, we regret to inform you that your registration has not been approved at this time.\n\nIf you have any questions or believe this decision was made in error, please feel free to reach out for further clarification.\n\nBest regards,\nThe Intern Portal Team`,
     };
@@ -421,10 +361,7 @@ app.put("/school/requests/:id", async (req, res) => {
   const type = "intern";
 
   try {
-    await pool.query(`UPDATE intern_requests SET status = $1 WHERE id = $2`, [
-      status,
-      requestId,
-    ]);
+    await pool.query(`UPDATE intern_requests SET status = $1 WHERE id = $2`, [status, requestId]);
 
     // Fetch request data for further actions
     const requestData = await pool
@@ -432,40 +369,22 @@ app.put("/school/requests/:id", async (req, res) => {
       .then((res) => res.rows[0]);
 
     if (status === "approved") {
-      const existingEntry = await pool.query(
-        `SELECT * FROM intern WHERE email = $1`,
-        [requestData.email]
-      );
+      const existingEntry = await pool.query(`SELECT * FROM intern WHERE email = $1`, [requestData.email]);
 
       if (existingEntry.rows.length > 0) {
         // Update existing entry to set approval status
-        await pool.query(
-          `UPDATE intern SET is_approved = true WHERE email = $1`,
-          [requestData.email]
-        );
+        await pool.query(`UPDATE intern SET is_approved = true WHERE email = $1`, [requestData.email]);
       } else {
         // Insert new entry into the school table with approval status set
         await pool.query(
           `INSERT INTO intern (email, password, name, address, school_id, is_approved) VALUES ($1, $2, $3, $4, $5, true)`,
-          [
-            requestData.email,
-            requestData.password,
-            requestData.name,
-            requestData.address,
-            requestData.school_id,
-          ]
+          [requestData.email, requestData.password, requestData.name, requestData.address, requestData.school_id]
         );
       }
     } else if (status === "rejected") {
-      const existingEntry = await pool.query(
-        `SELECT * FROM intern WHERE email = $1`,
-        [requestData.email]
-      );
+      const existingEntry = await pool.query(`SELECT * FROM intern WHERE email = $1`, [requestData.email]);
       if (existingEntry.rows.length > 0) {
-        await pool.query(
-          `UPDATE intern SET is_approved = false WHERE email = $1`,
-          [requestData.email]
-        );
+        await pool.query(`UPDATE intern SET is_approved = false WHERE email = $1`, [requestData.email]);
       }
     }
 
@@ -474,9 +393,7 @@ app.put("/school/requests/:id", async (req, res) => {
       from: "lenujpagliawan@gmail.com",
       to: requestData.email,
       subject:
-        status === "approved"
-          ? "Internship Portal Registration Approved"
-          : "Internship Portal Registration Rejected",
+        status === "approved" ? "Internship Portal Registration Approved" : "Internship Portal Registration Rejected",
       text:
         status === "approved"
           ? `Dear ${requestData.name},\n\nCongratulations! Your registration for the Intern Portal Nexus has been approved. You now have access to explore opportunities, connect with companies, and manage your internship journey.\n\nWelcome aboard! We look forward to supporting you throughout your internship experience.\n\nBest regards,\nThe Intern Portal Team`
@@ -506,10 +423,7 @@ app.put("/admin/requests/:id", async (req, res) => {
   const tableName = type === "school" ? "school_requests" : "company_requests";
 
   try {
-    const result = await pool.query(
-      `UPDATE ${tableName} SET status = $1 WHERE id = $2`,
-      [status, id]
-    );
+    const result = await pool.query(`UPDATE ${tableName} SET status = $1 WHERE id = $2`, [status, id]);
 
     if (result.rowCount === 0) {
       return res.status(404).json({ message: "Request not found" });
@@ -525,9 +439,7 @@ app.put("/admin/requests/:id", async (req, res) => {
 // Fetch users
 app.get("/api/schools", async (req, res) => {
   try {
-    const result = await pool.query(
-      "SELECT name, email, address FROM school WHERE is_approved = true"
-    );
+    const result = await pool.query("SELECT name, email, address FROM school WHERE is_approved = true");
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching school users:", error);
@@ -536,9 +448,7 @@ app.get("/api/schools", async (req, res) => {
 });
 app.get("/api/company", async (req, res) => {
   try {
-    const result = await pool.query(
-      "SELECT name, email, address,contact FROM company WHERE is_approved = true"
-    );
+    const result = await pool.query("SELECT name, email, address,contact FROM company WHERE is_approved = true");
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching company users:", error);
@@ -559,26 +469,17 @@ app.get("/api/intern", async (req, res) => {
 
 // Fetch school requests
 app.get("/admin/school-requests", async (req, res) => {
-  const result = await pool.query(
-    "SELECT * FROM school_requests WHERE status = $1",
-    ["pending"]
-  );
+  const result = await pool.query("SELECT * FROM school_requests WHERE status = $1", ["pending"]);
   res.json(result.rows);
 });
 // Fetch company requests
 app.get("/admin/company-requests", async (req, res) => {
-  const result = await pool.query(
-    "SELECT * FROM company_requests WHERE status = $1",
-    ["pending"]
-  );
+  const result = await pool.query("SELECT * FROM company_requests WHERE status = $1", ["pending"]);
   res.json(result.rows);
 });
 // Fetch intern requests
 app.get("/school/intern-requests", async (req, res) => {
-  const result = await pool.query(
-    "SELECT * FROM intern_requests WHERE status = $1",
-    ["pending"]
-  );
+  const result = await pool.query("SELECT * FROM intern_requests WHERE status = $1", ["pending"]);
   res.json(result.rows);
 });
 
@@ -639,20 +540,14 @@ app.post("/login", async (req, res) => {
     console.log("User authenticated, checking SendBird user...");
     try {
       // Check if the user exists in SendBird
-      await axios.get(
-        `https://api-${process.env.SENDBIRD_APP_ID}.sendbird.com/v3/users/${user.id}`,
-        {
-          headers: {
-            "Api-Token": process.env.SENDBIRD_API_TOKEN,
-          },
-        }
-      );
+      await axios.get(`https://api-${process.env.SENDBIRD_APP_ID}.sendbird.com/v3/users/${user.id}`, {
+        headers: {
+          "Api-Token": process.env.SENDBIRD_API_TOKEN,
+        },
+      });
       console.log(`SendBird user already exists for user ID ${user.id}`);
     } catch (sendbirdError) {
-      if (
-        sendbirdError.response?.status === 400 ||
-        sendbirdError.response?.status === 404
-      ) {
+      if (sendbirdError.response?.status === 400 || sendbirdError.response?.status === 404) {
         console.log("SendBird user not found, creating user...");
         // Create the user in SendBird
         const createResponse = await axios.post(
@@ -675,24 +570,13 @@ app.post("/login", async (req, res) => {
         // Optional: Update the database with the SendBird ID if needed
         const sendbirdId = createResponse.data.user_id;
         if (userType === "intern") {
-          await pool.query("UPDATE intern SET sendbird_id = $1 WHERE id = $2", [
-            sendbirdId,
-            user.id,
-          ]);
+          await pool.query("UPDATE intern SET sendbird_id = $1 WHERE id = $2", [sendbirdId, user.id]);
         } else if (userType === "company") {
-          await pool.query(
-            "UPDATE company SET sendbird_id = $1 WHERE id = $2",
-            [sendbirdId, user.id]
-          );
+          await pool.query("UPDATE company SET sendbird_id = $1 WHERE id = $2", [sendbirdId, user.id]);
         }
       } else {
-        console.error(
-          "Error with SendBird API:",
-          sendbirdError.response?.data || sendbirdError.message
-        );
-        return res
-          .status(500)
-          .json({ error: "Failed to connect to SendBird." });
+        console.error("Error with SendBird API:", sendbirdError.response?.data || sendbirdError.message);
+        return res.status(500).json({ error: "Failed to connect to SendBird." });
       }
     }
 
@@ -715,9 +599,7 @@ app.post("/login", async (req, res) => {
           ? "/companyindex.html"
           : "/internindex.html";
 
-      console.log(
-        `User logged in as ${userType}, ID: ${user.id}, redirecting to ${redirectUrl}`
-      );
+      console.log(`User logged in as ${userType}, ID: ${user.id}, redirecting to ${redirectUrl}`);
       res.json({ redirect: redirectUrl });
     });
   } catch (error) {
@@ -743,9 +625,7 @@ app.get("/api/school-profile", async (req, res) => {
   }
 
   try {
-    const result = await pool.query("SELECT * FROM school WHERE id = $1", [
-      req.session.userId,
-    ]);
+    const result = await pool.query("SELECT * FROM school WHERE id = $1", [req.session.userId]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -798,9 +678,7 @@ app.get("/api/intern-profile", async (req, res) => {
   }
 
   try {
-    const result = await pool.query("SELECT * FROM intern WHERE id = $1", [
-      req.session.userId,
-    ]);
+    const result = await pool.query("SELECT * FROM intern WHERE id = $1", [req.session.userId]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -832,15 +710,7 @@ app.put("/api/update-intern-profile", async (req, res) => {
     // Execute the update query on the database
     const result = await pool.query(
       "UPDATE intern SET name = $1, school_id = $2, address = $3, email = $4, university = $5, department = $6 WHERE id = $7 RETURNING *",
-      [
-        name,
-        school_id,
-        address,
-        email,
-        university,
-        department,
-        req.session.userId,
-      ]
+      [name, school_id, address, email, university, department, req.session.userId]
     );
 
     if (result.rowCount === 0) {
@@ -864,10 +734,7 @@ app.put("/api/change-password", async (req, res) => {
   const { currentPassword, newPassword } = req.body;
 
   try {
-    const result = await pool.query(
-      "SELECT password FROM intern WHERE id = $1",
-      [req.session.userId]
-    );
+    const result = await pool.query("SELECT password FROM intern WHERE id = $1", [req.session.userId]);
 
     if (result.rowCount === 0) {
       return res.status(404).json({ error: "User not found" });
@@ -880,10 +747,7 @@ app.put("/api/change-password", async (req, res) => {
     }
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-    await pool.query("UPDATE intern SET password = $1 WHERE id = $2", [
-      hashedNewPassword,
-      req.session.userId,
-    ]);
+    await pool.query("UPDATE intern SET password = $1 WHERE id = $2", [hashedNewPassword, req.session.userId]);
 
     res.json({ message: "Password updated successfully" });
   } catch (error) {
@@ -898,9 +762,7 @@ app.get("/api/company-profile", async (req, res) => {
   }
 
   try {
-    const result = await pool.query("SELECT * FROM company WHERE id = $1", [
-      req.session.userId,
-    ]);
+    const result = await pool.query("SELECT * FROM company WHERE id = $1", [req.session.userId]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -917,16 +779,7 @@ app.put("/api/update-company-profile", async (req, res) => {
   }
 
   // Destructure the data from the request body
-  const {
-    name,
-    contact,
-    address,
-    email,
-    role,
-    department,
-    description,
-    is_available,
-  } = req.body;
+  const { name, contact, address, email, role, department, description, is_available } = req.body;
 
   try {
     console.log("Updating profile with data:", {
@@ -943,17 +796,7 @@ app.put("/api/update-company-profile", async (req, res) => {
     // Execute the update query on the database
     const result = await pool.query(
       "UPDATE company SET name = $1, contact = $2, address = $3, email = $4, role = $5, department = $6, description = $7, is_available=$8 WHERE id = $9 RETURNING *",
-      [
-        name,
-        contact,
-        address,
-        email,
-        role,
-        department,
-        description,
-        is_available,
-        req.session.userId,
-      ]
+      [name, contact, address, email, role, department, description, is_available, req.session.userId]
     );
 
     if (result.rowCount === 0) {
@@ -994,44 +837,37 @@ app.get("/api/posts", authenticateUser, async (req, res) => {
   }
 });
 
-app.post(
-  "/api/posts",
-  upload.single("image"),
-  authenticateUser,
-  async (req, res) => {
-    const { content } = req.body;
-    const userId = req.session.userId; // The ID of the currently logged-in user
-    const userType = req.session.userType; // 'school' or 'company'
+app.post("/api/posts", upload.single("image"), authenticateUser, async (req, res) => {
+  const { content } = req.body;
+  const userId = req.session.userId; // The ID of the currently logged-in user
+  const userType = req.session.userType; // 'school' or 'company'
 
-    let image_url = null;
+  let image_url = null;
 
-    // If an image is uploaded, get the Cloudinary secure URL
-    if (req.file) {
-      image_url = req.file.path; // Cloudinary provides the secure URL in `req.file.path`
-    }
-
-    try {
-      let query, values;
-      if (userType === "school") {
-        query =
-          "INSERT INTO posts (content, image_url, school_id) VALUES ($1, $2, $3) RETURNING *";
-        values = [content, image_url, userId];
-      } else if (userType === "company") {
-        query =
-          "INSERT INTO posts (content, image_url, company_id) VALUES ($1, $2, $3) RETURNING *";
-        values = [content, image_url, userId];
-      } else {
-        return res.status(400).json({ error: "Invalid user type" });
-      }
-
-      const result = await pool.query(query, values);
-      res.json(result.rows[0]);
-    } catch (err) {
-      console.error("Error while posting:", err);
-      res.status(500).send("Server error");
-    }
+  // If an image is uploaded, get the Cloudinary secure URL
+  if (req.file) {
+    image_url = req.file.path; // Cloudinary provides the secure URL in `req.file.path`
   }
-);
+
+  try {
+    let query, values;
+    if (userType === "school") {
+      query = "INSERT INTO posts (content, image_url, school_id) VALUES ($1, $2, $3) RETURNING *";
+      values = [content, image_url, userId];
+    } else if (userType === "company") {
+      query = "INSERT INTO posts (content, image_url, company_id) VALUES ($1, $2, $3) RETURNING *";
+      values = [content, image_url, userId];
+    } else {
+      return res.status(400).json({ error: "Invalid user type" });
+    }
+
+    const result = await pool.query(query, values);
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Error while posting:", err);
+    res.status(500).send("Server error");
+  }
+});
 
 // index.js
 function authenticateUser(req, res, next) {
@@ -1052,16 +888,11 @@ app.delete("/api/posts/:id", authenticateUser, async (req, res) => {
   try {
     // Restrict INTERN users
     if (userType === "intern") {
-      return res
-        .status(403)
-        .json({ error: "Interns are not allowed to delete posts." });
+      return res.status(403).json({ error: "Interns are not allowed to delete posts." });
     }
 
     // Existing logic: Check post ownership
-    const postResult = await pool.query(
-      "SELECT school_id, company_id FROM posts WHERE id = $1",
-      [postId]
-    );
+    const postResult = await pool.query("SELECT school_id, company_id FROM posts WHERE id = $1", [postId]);
 
     if (postResult.rows.length === 0) {
       return res.status(404).send("Post not found");
@@ -1072,9 +903,7 @@ app.delete("/api/posts/:id", authenticateUser, async (req, res) => {
       (userType === "school" && post.school_id !== userId) ||
       (userType === "company" && post.company_id !== userId)
     ) {
-      return res
-        .status(403)
-        .send("You do not have permission to delete this post");
+      return res.status(403).send("You do not have permission to delete this post");
     }
 
     // Delete post
@@ -1086,33 +915,28 @@ app.delete("/api/posts/:id", authenticateUser, async (req, res) => {
   }
 });
 
-app.post(
-  "/api/company-posts",
-  upload.single("image"),
-  authenticateUser,
-  async (req, res) => {
-    const { content } = req.body;
-    const companyId = req.session.userId; // Assuming `userId` holds the company ID
+app.post("/api/company-posts", upload.single("image"), authenticateUser, async (req, res) => {
+  const { content } = req.body;
+  const companyId = req.session.userId; // Assuming `userId` holds the company ID
 
-    let image_url = null;
+  let image_url = null;
 
-    // If an image is uploaded, get the Cloudinary secure URL
-    if (req.file) {
-      image_url = req.file.path; // Cloudinary provides the secure URL in `req.file.path`
-    }
-
-    try {
-      const result = await pool.query(
-        "INSERT INTO posts (content, image_url, company_id) VALUES ($1, $2, $3) RETURNING *",
-        [content, image_url, companyId]
-      );
-      res.json(result.rows[0]);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("Server error");
-    }
+  // If an image is uploaded, get the Cloudinary secure URL
+  if (req.file) {
+    image_url = req.file.path; // Cloudinary provides the secure URL in `req.file.path`
   }
-);
+
+  try {
+    const result = await pool.query(
+      "INSERT INTO posts (content, image_url, company_id) VALUES ($1, $2, $3) RETURNING *",
+      [content, image_url, companyId]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
 
 app.get("/api/company-posts", authenticateUser, async (req, res) => {
   try {
@@ -1137,16 +961,11 @@ app.delete("/api/posts/:id", authenticateUser, async (req, res) => {
   try {
     // Restrict INTERN users
     if (userType === "intern") {
-      return res
-        .status(403)
-        .json({ error: "Interns are not allowed to delete posts." });
+      return res.status(403).json({ error: "Interns are not allowed to delete posts." });
     }
 
     // Fetch the post to get the image URL
-    const postResult = await pool.query(
-      "SELECT school_id, company_id, image_url FROM posts WHERE id = $1",
-      [postId]
-    );
+    const postResult = await pool.query("SELECT school_id, company_id, image_url FROM posts WHERE id = $1", [postId]);
 
     if (postResult.rows.length === 0) {
       return res.status(404).send("Post not found");
@@ -1157,9 +976,7 @@ app.delete("/api/posts/:id", authenticateUser, async (req, res) => {
       (userType === "school" && post.school_id !== userId) ||
       (userType === "company" && post.company_id !== userId)
     ) {
-      return res
-        .status(403)
-        .send("You do not have permission to delete this post");
+      return res.status(403).send("You do not have permission to delete this post");
     }
 
     // Delete the image from Cloudinary if it exists
@@ -1181,9 +998,7 @@ app.delete("/api/posts/:id", authenticateUser, async (req, res) => {
 app.get("/api/intern-profile/:email", async (req, res) => {
   const { email } = req.params;
   try {
-    const result = await pool.query("SELECT * FROM intern WHERE email = $1", [
-      email,
-    ]);
+    const result = await pool.query("SELECT * FROM intern WHERE email = $1", [email]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Intern not found" });
     }
@@ -1198,10 +1013,7 @@ app.get("/api/company-profile/:email", async (req, res) => {
   email = decodeURIComponent(email).toLowerCase();
 
   try {
-    const result = await pool.query(
-      "SELECT * FROM company WHERE LOWER(email) = $1",
-      [email]
-    );
+    const result = await pool.query("SELECT * FROM company WHERE LOWER(email) = $1", [email]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Company not found" });
     }
@@ -1216,10 +1028,7 @@ app.get("/api/school-profile/:email", async (req, res) => {
   email = decodeURIComponent(email).toLowerCase();
 
   try {
-    const result = await pool.query(
-      "SELECT * FROM school WHERE LOWER(email) = $1",
-      [email]
-    );
+    const result = await pool.query("SELECT * FROM school WHERE LOWER(email) = $1", [email]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "School not found" });
     }
@@ -1239,16 +1048,11 @@ app.get("/api/tasks", async (req, res) => {
   }
 
   try {
-    const result = await pool.query(
-      "SELECT * FROM task_intern WHERE intern_id = $1",
-      [userId]
-    ); // Using userId for the query
+    const result = await pool.query("SELECT * FROM task_intern WHERE intern_id = $1", [userId]); // Using userId for the query
     res.json(result.rows);
   } catch (err) {
     console.error("Error fetching tasks:", err);
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: err.message });
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
 });
 
@@ -1272,9 +1076,7 @@ app.post("/api/tasks", async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error("Error creating task:", err);
-    res
-      .status(500)
-      .json({ message: "Failed to create task", error: err.message });
+    res.status(500).json({ message: "Failed to create task", error: err.message });
   }
 });
 
@@ -1284,25 +1086,18 @@ app.put("/api/tasks/:id", async (req, res) => {
   const { status } = req.body;
 
   try {
-    const result = await pool.query("SELECT * FROM task_intern WHERE id = $1", [
-      id,
-    ]);
+    const result = await pool.query("SELECT * FROM task_intern WHERE id = $1", [id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    const updatedTask = await pool.query(
-      "UPDATE task_intern SET status = $1 WHERE id = $2 RETURNING *",
-      [status, id]
-    );
+    const updatedTask = await pool.query("UPDATE task_intern SET status = $1 WHERE id = $2 RETURNING *", [status, id]);
 
     res.json(updatedTask.rows[0]);
   } catch (err) {
     console.error("Error updating task:", err);
-    res
-      .status(500)
-      .json({ message: "Failed to update task", error: err.message });
+    res.status(500).json({ message: "Failed to update task", error: err.message });
   }
 });
 
@@ -1311,10 +1106,7 @@ app.delete("/api/tasks/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query(
-      "DELETE FROM task_intern WHERE id = $1 RETURNING *",
-      [id]
-    );
+    const result = await pool.query("DELETE FROM task_intern WHERE id = $1 RETURNING *", [id]);
 
     if (result.rowCount === 0) {
       return res.status(404).json({ message: "Task not found" });
@@ -1323,9 +1115,7 @@ app.delete("/api/tasks/:id", async (req, res) => {
     res.json({ message: "Task deleted successfully" });
   } catch (err) {
     console.error("Error deleting task:", err);
-    res
-      .status(500)
-      .json({ message: "Failed to delete task", error: err.message });
+    res.status(500).json({ message: "Failed to delete task", error: err.message });
   }
 });
 
@@ -1353,10 +1143,7 @@ app.get("/api/company/countinfotech", async (req, res) => {
         `);
     res.json({ total: result.rows[0].count });
   } catch (error) {
-    console.error(
-      "Error fetching company count for Information Technology department:",
-      error
-    );
+    console.error("Error fetching company count for Information Technology department:", error);
     res.status(500).send("Server Error");
   }
 });
@@ -1385,10 +1172,7 @@ app.get("/api/company/countindustrytech", async (req, res) => {
         `);
     res.json({ total: result.rows[0].count });
   } catch (error) {
-    console.error(
-      "Error fetching company count for Industrial Technology department:",
-      error
-    );
+    console.error("Error fetching company count for Industrial Technology department:", error);
     res.status(500).send("Server Error");
   }
 });
@@ -1417,10 +1201,7 @@ app.get("/api/company/countcomputerengineer", async (req, res) => {
         `);
     res.json({ total: result.rows[0].count });
   } catch (error) {
-    console.error(
-      "Error fetching company count for Industrial Technology department:",
-      error
-    );
+    console.error("Error fetching company count for Industrial Technology department:", error);
     res.status(500).send("Server Error");
   }
 });
@@ -1492,9 +1273,7 @@ app.get("/api/company-internship-requests", async (req, res) => {
 });
 app.get("/api/pending-sip-files", async (req, res) => {
   try {
-    const result = await pool.query(
-      `SELECT COUNT(*) AS count FROM sip_files WHERE status = 'pending'`
-    );
+    const result = await pool.query(`SELECT COUNT(*) AS count FROM sip_files WHERE status = 'pending'`);
 
     res.json({ count: result.rows[0].count });
   } catch (error) {
@@ -1526,10 +1305,7 @@ app.delete("/api/remove-user", async (req, res) => {
 
   try {
     // Check if user exists
-    const userExists = await pool.query(
-      `SELECT * FROM ${tableName} WHERE email = $1`,
-      [email]
-    );
+    const userExists = await pool.query(`SELECT * FROM ${tableName} WHERE email = $1`, [email]);
     if (userExists.rowCount === 0) {
       return res.status(404).json({ error: "User not found." });
     }
@@ -1599,10 +1375,7 @@ app.get("/api/reports/approved-interns/:companyId", async (req, res) => {
 
   try {
     // Fetch company name
-    const companyResult = await pool.query(
-      `SELECT name FROM company WHERE id = $1`,
-      [companyId]
-    );
+    const companyResult = await pool.query(`SELECT name FROM company WHERE id = $1`, [companyId]);
 
     if (companyResult.rowCount === 0) {
       return res.status(404).json({ error: "Company not found" });
@@ -1628,29 +1401,14 @@ app.get("/api/reports/approved-interns/:companyId", async (req, res) => {
 
     // Create a PDF document
     const doc = new PDFDocument({ margin: 50, size: "A4" });
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="${companyName}_Approved_Interns.pdf"`
-    );
+    res.setHeader("Content-Disposition", `attachment; filename="${companyName}_Approved_Interns.pdf"`);
     res.setHeader("Content-Type", "application/pdf");
     doc.pipe(res);
 
     // Header Section
-    doc
-      .font("Helvetica-Bold")
-      .fontSize(18)
-      .text(`${companyName}`, { align: "center" });
-    doc
-      .fontSize(14)
-      .text("Approved Interns Report", { align: "center" })
-      .moveDown(1);
-    doc
-      .strokeColor("#000")
-      .lineWidth(2)
-      .moveTo(50, doc.y)
-      .lineTo(550, doc.y)
-      .stroke()
-      .moveDown(1);
+    doc.font("Helvetica-Bold").fontSize(18).text(`${companyName}`, { align: "center" });
+    doc.fontSize(14).text("Approved Interns Report", { align: "center" }).moveDown(1);
+    doc.strokeColor("#000").lineWidth(2).moveTo(50, doc.y).lineTo(550, doc.y).stroke().moveDown(1);
 
     // Table Header
     doc.fontSize(12).font("Helvetica-Bold");
@@ -1661,13 +1419,7 @@ app.get("/api/reports/approved-interns/:companyId", async (req, res) => {
       .text("Email", 200, headerY, { width: 180, align: "left" })
       .text("School", 380, headerY, { width: 120, align: "left" })
       .text("Accepted On", 500, headerY, { width: 80, align: "left" });
-    doc
-      .moveDown(0.5)
-      .strokeColor("#666")
-      .lineWidth(1)
-      .moveTo(50, doc.y)
-      .lineTo(570, doc.y)
-      .stroke();
+    doc.moveDown(0.5).strokeColor("#666").lineWidth(1).moveTo(50, doc.y).lineTo(570, doc.y).stroke();
 
     // Table Rows
     doc.font("Helvetica").fontSize(11).fillColor("#000000");
@@ -1686,27 +1438,14 @@ app.get("/api/reports/approved-interns/:companyId", async (req, res) => {
 
       // Add a separator line between rows
       if (index !== interns.length - 1) {
-        doc
-          .strokeColor("#ddd")
-          .lineWidth(0.5)
-          .moveTo(50, doc.y)
-          .lineTo(570, doc.y)
-          .stroke();
+        doc.strokeColor("#ddd").lineWidth(0.5).moveTo(50, doc.y).lineTo(570, doc.y).stroke();
       }
     });
 
     // Footer Section
     doc.moveDown(2);
-    doc
-      .strokeColor("#000")
-      .lineWidth(1)
-      .moveTo(50, doc.y)
-      .lineTo(570, doc.y)
-      .stroke();
-    doc
-      .fontSize(10)
-      .fillColor("#666")
-      .text(`Generated on: ${new Date().toLocaleString()}`, { align: "right" });
+    doc.strokeColor("#000").lineWidth(1).moveTo(50, doc.y).lineTo(570, doc.y).stroke();
+    doc.fontSize(10).fillColor("#666").text(`Generated on: ${new Date().toLocaleString()}`, { align: "right" });
 
     doc.end();
   } catch (error) {
@@ -1736,189 +1475,152 @@ async function notifyCompany(companyId, message) {
     );
     console.log("Notification inserted successfully for company:", companyId);
   } catch (error) {
-    console.error(
-      "Error inserting notification into company_notifications:",
-      error
-    );
+    console.error("Error inserting notification into company_notifications:", error);
   }
 }
-app.post(
-  "/api/intern/upload-files",
-  authenticateUser,
-  upload.array("files", 5),
-  async (req, res) => {
-    const internId = req.session.userId;
+app.post("/api/intern/upload-files", authenticateUser, upload.array("files", 5), async (req, res) => {
+  const internId = req.session.userId;
 
-    if (!internId || req.session.userType !== "intern") {
-      return res.status(401).json({ error: "Unauthorized" });
+  if (!internId || req.session.userType !== "intern") {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const { company_id } = req.body;
+
+    if (!company_id) {
+      return res.status(400).json({ error: "Company ID is required." });
     }
 
-    try {
-      const { company_id } = req.body;
+    console.log("Intern ID:", internId);
+    console.log("Company ID:", company_id);
+    console.log("Files received:", req.files);
 
-      if (!company_id) {
-        return res.status(400).json({ error: "Company ID is required." });
-      }
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: "No files uploaded." });
+    }
 
-      console.log("Intern ID:", internId);
-      console.log("Company ID:", company_id);
-      console.log("Files received:", req.files);
-
-      if (!req.files || req.files.length === 0) {
-        return res.status(400).json({ error: "No files uploaded." });
-      }
-
-      // Insert application request
-      await pool.query(
-        `INSERT INTO companyinternshiprequests (company_id, intern_id, application_status, applied_at)
+    // Insert application request
+    await pool.query(
+      `INSERT INTO companyinternshiprequests (company_id, intern_id, application_status, applied_at)
              VALUES ($1, $2, 'Pending', CURRENT_TIMESTAMP)`,
-        [company_id, internId]
-      );
+      [company_id, internId]
+    );
 
-      console.log("Internship request inserted successfully.");
+    console.log("Internship request inserted successfully.");
 
-      // Notify the company
-      await notifyCompany(
-        company_id,
-        `A new internship request has been received.`
-      );
+    // Notify the company
+    await notifyCompany(company_id, `A new internship request has been received.`);
 
-      // Process uploaded files
-      const query = `INSERT INTO uploaded_files (file_url, original_name, intern_id, company_id, uploaded_at) 
+    // Process uploaded files
+    const query = `INSERT INTO uploaded_files (file_url, original_name, intern_id, company_id, uploaded_at) 
              VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)`;
 
-      for (const file of req.files) {
-        console.log("Processing file:", file);
+    for (const file of req.files) {
+      console.log("Processing file:", file);
 
-        await pool.query(query, [
-          file.path, // Cloudinary provides the URL in `file.path`
-          file.originalname,
-          internId,
-          company_id,
-        ]);
-      }
-
-      console.log("Files uploaded successfully.");
-
-      res.json({
-        success: true,
-        message: "Application and files uploaded successfully!",
-      });
-    } catch (error) {
-      console.error("Error processing application and file upload:", error);
-      res
-        .status(500)
-        .json({ error: "Failed to process application and file upload." });
-    }
-  }
-);
-
-app.post(
-  "/api/intern/upload-sip-file",
-  authenticateUser,
-  upload.single("sipFile"),
-  async (req, res) => {
-    try {
-      const internId = req.session.userId;
-      if (!internId || !req.file) {
-        return res.status(400).json({ error: "No file uploaded." });
-      }
-
-      // Get the intern's name
-      const internResult = await pool.query(
-        "SELECT name FROM intern WHERE id = $1",
-        [internId]
-      );
-      if (internResult.rows.length === 0) {
-        return res.status(404).json({ error: "Intern not found." });
-      }
-      const internName = internResult.rows[0].name;
-
-      // Get Cloudinary file URL
-      const fileUrl = req.file.path; // Cloudinary auto-generates URL
-
-      // Store Cloudinary file URL in PostgreSQL
-      await pool.query(
-        `INSERT INTO sip_files (file_name, original_name, intern_id, file_url)
-             VALUES ($1, $2, $3, $4) RETURNING *`,
-        [req.file.path, req.file.originalname, internId, req.file.path]
-      );
-
-      console.log(`SIP file uploaded successfully by ${internName}.`);
-
-      // Notify approved schools
-      const schools = await pool.query(
-        "SELECT id FROM school WHERE is_approved = true"
-      );
-      const message = `Intern ${internName} has submitted a new SIP form.`;
-      const notificationQueries = schools.rows.map((school) => {
-        return pool.query(
-          "INSERT INTO school_notifications (school_id, message, timestamp) VALUES ($1, $2, CURRENT_TIMESTAMP)",
-          [school.id, message]
-        );
-      });
-      await Promise.all(notificationQueries);
-
-      res.json({
-        success: true,
-        message: `SIP file uploaded successfully by ${internName}.`,
-        fileUrl,
-      });
-    } catch (error) {
-      console.error("Error processing SIP file upload:", error);
-      res.status(500).json({ error: "Failed to process SIP file upload." });
-    }
-  }
-);
-
-app.delete(
-  "/api/intern/cancel-sip-file",
-  authenticateUser,
-  async (req, res) => {
-    try {
-      const internId = req.session.userId;
-
-      // Check if an SIP file exists
-      const fileCheck = await pool.query(
-        "SELECT file_name FROM sip_files WHERE intern_id = $1",
-        [internId]
-      );
-
-      if (fileCheck.rows.length === 0) {
-        return res.status(404).json({ error: "No SIP file found to cancel." });
-      }
-
-      const fileName = fileCheck.rows[0].file_name;
-
-      // Delete from Cloudinary
-      await cloudinary.uploader.destroy(fileName);
-
-      // Delete from PostgreSQL
-      await pool.query("DELETE FROM sip_files WHERE intern_id = $1", [
+      await pool.query(query, [
+        file.path, // Cloudinary provides the URL in `file.path`
+        file.originalname,
         internId,
+        company_id,
       ]);
-
-      console.log(
-        `SIP file deleted from Cloudinary and database for intern ID: ${internId}`
-      );
-      res.json({
-        success: true,
-        message: "SIP file submission canceled successfully.",
-      });
-    } catch (error) {
-      console.error("Error canceling SIP file:", error);
-      res.status(500).json({ error: "Failed to cancel SIP file." });
     }
+
+    console.log("Files uploaded successfully.");
+
+    res.json({
+      success: true,
+      message: "Application and files uploaded successfully!",
+    });
+  } catch (error) {
+    console.error("Error processing application and file upload:", error);
+    res.status(500).json({ error: "Failed to process application and file upload." });
   }
-);
+});
+
+app.post("/api/intern/upload-sip-file", authenticateUser, upload.single("sipFile"), async (req, res) => {
+  try {
+    const internId = req.session.userId;
+    if (!internId || !req.file) {
+      return res.status(400).json({ error: "No file uploaded." });
+    }
+
+    // Get the intern's name
+    const internResult = await pool.query("SELECT name FROM intern WHERE id = $1", [internId]);
+    if (internResult.rows.length === 0) {
+      return res.status(404).json({ error: "Intern not found." });
+    }
+    const internName = internResult.rows[0].name;
+
+    // Get Cloudinary file URL
+    const fileUrl = req.file.path; // Cloudinary auto-generates URL
+
+    // Store Cloudinary file URL in PostgreSQL
+    await pool.query(
+      `INSERT INTO sip_files (file_name, original_name, intern_id, file_url)
+             VALUES ($1, $2, $3, $4) RETURNING *`,
+      [req.file.path, req.file.originalname, internId, req.file.path]
+    );
+
+    console.log(`SIP file uploaded successfully by ${internName}.`);
+
+    // Notify approved schools
+    const schools = await pool.query("SELECT id FROM school WHERE is_approved = true");
+    const message = `Intern ${internName} has submitted a new SIP form.`;
+    const notificationQueries = schools.rows.map((school) => {
+      return pool.query(
+        "INSERT INTO school_notifications (school_id, message, timestamp) VALUES ($1, $2, CURRENT_TIMESTAMP)",
+        [school.id, message]
+      );
+    });
+    await Promise.all(notificationQueries);
+
+    res.json({
+      success: true,
+      message: `SIP file uploaded successfully by ${internName}.`,
+      fileUrl,
+    });
+  } catch (error) {
+    console.error("Error processing SIP file upload:", error);
+    res.status(500).json({ error: "Failed to process SIP file upload." });
+  }
+});
+
+app.delete("/api/intern/cancel-sip-file", authenticateUser, async (req, res) => {
+  try {
+    const internId = req.session.userId;
+
+    // Check if an SIP file exists
+    const fileCheck = await pool.query("SELECT file_name FROM sip_files WHERE intern_id = $1", [internId]);
+
+    if (fileCheck.rows.length === 0) {
+      return res.status(404).json({ error: "No SIP file found to cancel." });
+    }
+
+    const fileName = fileCheck.rows[0].file_name;
+
+    // Delete from Cloudinary
+    await cloudinary.uploader.destroy(fileName);
+
+    // Delete from PostgreSQL
+    await pool.query("DELETE FROM sip_files WHERE intern_id = $1", [internId]);
+
+    console.log(`SIP file deleted from Cloudinary and database for intern ID: ${internId}`);
+    res.json({
+      success: true,
+      message: "SIP file submission canceled successfully.",
+    });
+  } catch (error) {
+    console.error("Error canceling SIP file:", error);
+    res.status(500).json({ error: "Failed to cancel SIP file." });
+  }
+});
 
 app.get("/api/intern/sip-file-status", authenticateUser, async (req, res) => {
   try {
     const internId = req.session.userId;
-    const result = await pool.query(
-      "SELECT file_name FROM sip_files WHERE intern_id = $1",
-      [internId]
-    );
+    const result = await pool.query("SELECT file_name FROM sip_files WHERE intern_id = $1", [internId]);
 
     if (result.rows.length > 0) {
       res.json({ exists: true, file_name: result.rows[0].file_name });
@@ -2010,10 +1712,7 @@ app.post("/api/approve-sip-file", uploadApprovedSIP, async (req, res) => {
     }
 
     // Update status in sip_files
-    await pool.query("UPDATE sip_files SET status = $1 WHERE intern_id = $2", [
-      "approved",
-      internId,
-    ]);
+    await pool.query("UPDATE sip_files SET status = $1 WHERE intern_id = $2", ["approved", internId]);
 
     // Store approved file (if you still need this table)
     await pool.query(
@@ -2078,34 +1777,27 @@ app.get("/api/company-notifications", authenticateUser, async (req, res) => {
 });
 
 // Route: Delete a Company Notification
-app.delete(
-  "/api/company-notifications/:id",
-  authenticateUser,
-  async (req, res) => {
-    const notificationId = parseInt(req.params.id, 10);
+app.delete("/api/company-notifications/:id", authenticateUser, async (req, res) => {
+  const notificationId = parseInt(req.params.id, 10);
 
-    if (!req.session.userId || req.session.userType !== "company") {
-      return res.status(403).json({ error: "Unauthorized access" });
-    }
-
-    try {
-      const result = await pool.query(
-        `DELETE FROM company_notifications WHERE id = $1`,
-        [notificationId]
-      );
-
-      if (result.rowCount === 0) {
-        return res.status(404).json({ error: "Notification not found" });
-      }
-
-      console.log("Notification deleted successfully:", notificationId);
-      res.json({ message: "Notification deleted successfully." });
-    } catch (error) {
-      console.error("Error deleting notification:", error);
-      res.status(500).json({ error: "Failed to delete notification." });
-    }
+  if (!req.session.userId || req.session.userType !== "company") {
+    return res.status(403).json({ error: "Unauthorized access" });
   }
-);
+
+  try {
+    const result = await pool.query(`DELETE FROM company_notifications WHERE id = $1`, [notificationId]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Notification not found" });
+    }
+
+    console.log("Notification deleted successfully:", notificationId);
+    res.json({ message: "Notification deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting notification:", error);
+    res.status(500).json({ error: "Failed to delete notification." });
+  }
+});
 // Fetch School Notifications
 app.get("/api/school-notifications", authenticateUser, async (req, res) => {
   const schoolId = req.session.userId;
@@ -2131,122 +1823,105 @@ app.get("/api/school-notifications", authenticateUser, async (req, res) => {
 });
 
 // Route to delete a school notification
-app.delete(
-  "/api/school-notifications/:id",
-  authenticateUser,
-  async (req, res) => {
-    const notificationId = parseInt(req.params.id, 10);
-    const schoolId = req.session.userId;
+app.delete("/api/school-notifications/:id", authenticateUser, async (req, res) => {
+  const notificationId = parseInt(req.params.id, 10);
+  const schoolId = req.session.userId;
 
-    if (!schoolId || req.session.userType !== "school") {
-      return res.status(403).json({ error: "Unauthorized access" });
-    }
-
-    try {
-      const result = await pool.query(
-        "DELETE FROM school_notifications WHERE id = $1 AND school_id = $2",
-        [notificationId, schoolId]
-      );
-
-      if (result.rowCount === 0) {
-        return res.status(404).json({ error: "Notification not found" });
-      }
-
-      res.json({ message: "Notification deleted successfully." });
-    } catch (error) {
-      console.error("Error deleting notification:", error);
-      res.status(500).json({ error: "Failed to delete notification." });
-    }
+  if (!schoolId || req.session.userType !== "school") {
+    return res.status(403).json({ error: "Unauthorized access" });
   }
-);
 
-app.get(
-  "/api/company-internship-status/:companyId",
-  authenticateUser,
-  async (req, res) => {
-    const internId = req.session.userId;
-    const { companyId } = req.params;
+  try {
+    const result = await pool.query("DELETE FROM school_notifications WHERE id = $1 AND school_id = $2", [
+      notificationId,
+      schoolId,
+    ]);
 
-    if (!internId || req.session.userType !== "intern") {
-      return res.status(401).json({ error: "Unauthorized" });
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Notification not found" });
     }
 
-    try {
-      const result = await pool.query(
-        `SELECT id, application_status 
+    res.json({ message: "Notification deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting notification:", error);
+    res.status(500).json({ error: "Failed to delete notification." });
+  }
+});
+
+app.get("/api/company-internship-status/:companyId", authenticateUser, async (req, res) => {
+  const internId = req.session.userId;
+  const { companyId } = req.params;
+
+  if (!internId || req.session.userType !== "intern") {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT id, application_status 
              FROM companyinternshiprequests 
              WHERE intern_id = $1 AND company_id = $2 
              ORDER BY applied_at DESC LIMIT 1`,
-        [internId, companyId]
-      );
+      [internId, companyId]
+    );
 
-      if (result.rows.length > 0) {
-        const { id, application_status } = result.rows[0];
-        const canReapply = application_status === "Rejected"; // Allow reapplication if status is "Rejected"
-        res.json({
-          applied: application_status !== "Rejected", // Consider "Rejected" as not actively applied
-          applicationId: id,
-          applicationStatus: application_status,
-          canReapply,
-        });
-      } else {
-        res.json({ applied: false, canReapply: true }); // No previous application, can apply
-      }
-    } catch (error) {
-      console.error("Error checking application status:", error);
-      res.status(500).json({ error: "Failed to check application status." });
-    }
-  }
-);
-
-app.delete(
-  "/api/intern/cancel-application/:applicationId",
-  authenticateUser,
-  async (req, res) => {
-    const internId = req.session.userId;
-    const { applicationId } = req.params;
-
-    if (!internId || req.session.userType !== "intern") {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
-    try {
-      // Fetch the application details to delete associated files
-      const applicationResult = await pool.query(
-        `SELECT * FROM companyinternshiprequests WHERE id = $1 AND intern_id = $2`,
-        [applicationId, internId]
-      );
-
-      if (applicationResult.rowCount === 0) {
-        return res
-          .status(404)
-          .json({ error: "Application not found or not authorized." });
-      }
-
-      const { company_id } = applicationResult.rows[0];
-
-      // Delete associated files from uploaded_files
-      await pool.query(
-        `DELETE FROM uploaded_files WHERE intern_id = $1 AND company_id = $2`,
-        [internId, company_id]
-      );
-
-      // Delete the application from companyinternshiprequests
-      await pool.query(
-        `DELETE FROM companyinternshiprequests WHERE id = $1 AND intern_id = $2`,
-        [applicationId, internId]
-      );
-
+    if (result.rows.length > 0) {
+      const { id, application_status } = result.rows[0];
+      const canReapply = application_status === "Rejected"; // Allow reapplication if status is "Rejected"
       res.json({
-        success: true,
-        message: "Application and associated files deleted successfully.",
+        applied: application_status !== "Rejected", // Consider "Rejected" as not actively applied
+        applicationId: id,
+        applicationStatus: application_status,
+        canReapply,
       });
-    } catch (error) {
-      console.error("Error cancelling application:", error);
-      res.status(500).json({ error: "Failed to cancel application." });
+    } else {
+      res.json({ applied: false, canReapply: true }); // No previous application, can apply
     }
+  } catch (error) {
+    console.error("Error checking application status:", error);
+    res.status(500).json({ error: "Failed to check application status." });
   }
-);
+});
+
+app.delete("/api/intern/cancel-application/:applicationId", authenticateUser, async (req, res) => {
+  const internId = req.session.userId;
+  const { applicationId } = req.params;
+
+  if (!internId || req.session.userType !== "intern") {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    // Fetch the application details to delete associated files
+    const applicationResult = await pool.query(
+      `SELECT * FROM companyinternshiprequests WHERE id = $1 AND intern_id = $2`,
+      [applicationId, internId]
+    );
+
+    if (applicationResult.rowCount === 0) {
+      return res.status(404).json({ error: "Application not found or not authorized." });
+    }
+
+    const { company_id } = applicationResult.rows[0];
+
+    // Delete associated files from uploaded_files
+    await pool.query(`DELETE FROM uploaded_files WHERE intern_id = $1 AND company_id = $2`, [internId, company_id]);
+
+    // Delete the application from companyinternshiprequests
+    await pool.query(`DELETE FROM companyinternshiprequests WHERE id = $1 AND intern_id = $2`, [
+      applicationId,
+      internId,
+    ]);
+
+    res.json({
+      success: true,
+      message: "Application and associated files deleted successfully.",
+    });
+  } catch (error) {
+    console.error("Error cancelling application:", error);
+    res.status(500).json({ error: "Failed to cancel application." });
+  }
+});
 
 const PDFDocument = require("pdfkit");
 const moment = require("moment");
@@ -2276,9 +1951,7 @@ app.get("/api/tasks/report/pdf", async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No tasks found for this intern" });
+      return res.status(404).json({ message: "No tasks found for this intern" });
     }
 
     const internName = result.rows[0].intern_name;
@@ -2287,10 +1960,7 @@ app.get("/api/tasks/report/pdf", async (req, res) => {
     // Create a PDF document
     const doc = new PDFDocument({ size: "A4", margin: 50 });
 
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename=task_report_${internId}.pdf`
-    );
+    res.setHeader("Content-Disposition", `attachment; filename=task_report_${internId}.pdf`);
     res.setHeader("Content-Type", "application/pdf");
 
     doc.pipe(res); // Send the PDF as response
@@ -2332,12 +2002,7 @@ app.get("/api/tasks/report/pdf", async (req, res) => {
         width: colWidths[2],
         align: "left",
       })
-      .text(
-        "Deadline",
-        startX + colWidths[0] + colWidths[1] + colWidths[2],
-        y,
-        { width: colWidths[3], align: "left" }
-      );
+      .text("Deadline", startX + colWidths[0] + colWidths[1] + colWidths[2], y, { width: colWidths[3], align: "left" });
 
     doc
       .moveTo(startX, doc.y + 5)
@@ -2372,12 +2037,10 @@ app.get("/api/tasks/report/pdf", async (req, res) => {
         width: colWidths[2],
         align: "left",
       });
-      doc.text(
-        moment(task.deadline).format("YYYY-MM-DD"),
-        startX + colWidths[0] + colWidths[1] + colWidths[2],
-        y,
-        { width: colWidths[3], align: "left" }
-      );
+      doc.text(moment(task.deadline).format("YYYY-MM-DD"), startX + colWidths[0] + colWidths[1] + colWidths[2], y, {
+        width: colWidths[3],
+        align: "left",
+      });
 
       y = doc.y + 5; // Add consistent spacing between rows
     });
@@ -2385,25 +2048,18 @@ app.get("/api/tasks/report/pdf", async (req, res) => {
     doc.end();
   } catch (err) {
     console.error("Error generating PDF report:", err);
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: err.message });
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
 });
 
 app.get("/api/reports/pdf", async (req, res) => {
   try {
-    const result = await pool.query(
-      "SELECT name, email, address FROM school WHERE is_approved = true"
-    );
+    const result = await pool.query("SELECT name, email, address FROM school WHERE is_approved = true");
     const schools = result.rows;
 
     // Create a PDF document
     const doc = new PDFDocument();
-    res.setHeader(
-      "Content-Disposition",
-      'attachment; filename="school-report.pdf"'
-    );
+    res.setHeader("Content-Disposition", 'attachment; filename="school-report.pdf"');
     res.setHeader("Content-Type", "application/pdf");
 
     doc.pipe(res);
@@ -2430,9 +2086,7 @@ const ExcelJS = require("exceljs");
 app.get("/api/reports/excel", async (req, res) => {
   try {
     // 1. Retrieve Data from Database
-    const result = await pool.query(
-      "SELECT name, email, address, created_at FROM school WHERE is_approved = true"
-    );
+    const result = await pool.query("SELECT name, email, address, created_at FROM school WHERE is_approved = true");
     const schools = result.rows;
 
     // 2. Create a New Workbook and Worksheet
@@ -2514,14 +2168,8 @@ app.get("/api/reports/excel", async (req, res) => {
     });
 
     // 8. Set the Response Headers for a Downloadable Excel File
-    res.setHeader(
-      "Content-Disposition",
-      'attachment; filename="school-report.xlsx"'
-    );
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    );
+    res.setHeader("Content-Disposition", 'attachment; filename="school-report.xlsx"');
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
     // 9. Write the Workbook to the Response
     await workbook.xlsx.write(res);
@@ -2616,14 +2264,8 @@ app.get("/api/reportsintern/excel", async (req, res) => {
       });
     });
 
-    res.setHeader(
-      "Content-Disposition",
-      'attachment; filename="intern-report.xlsx"'
-    );
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    );
+    res.setHeader("Content-Disposition", 'attachment; filename="intern-report.xlsx"');
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
     await workbook.xlsx.write(res);
     res.end();
@@ -2715,14 +2357,8 @@ app.get("/api/reportscompany/excel", async (req, res) => {
       });
     });
 
-    res.setHeader(
-      "Content-Disposition",
-      'attachment; filename="company-report.xlsx"'
-    );
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    );
+    res.setHeader("Content-Disposition", 'attachment; filename="company-report.xlsx"');
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
     await workbook.xlsx.write(res);
     res.end();
@@ -2742,10 +2378,7 @@ app.get("/api/intern-uploads/:email", authenticateUser, async (req, res) => {
 
   try {
     // Fetch intern_id based on the email
-    const internResult = await pool.query(
-      "SELECT id FROM intern WHERE email = $1",
-      [email]
-    );
+    const internResult = await pool.query("SELECT id FROM intern WHERE email = $1", [email]);
 
     if (internResult.rows.length === 0) {
       return res.status(404).json({ error: "Intern not found" });
@@ -2760,9 +2393,7 @@ app.get("/api/intern-uploads/:email", authenticateUser, async (req, res) => {
     );
 
     if (filesResult.rows.length === 0) {
-      return res
-        .status(404)
-        .json({ error: "No files uploaded for your company" });
+      return res.status(404).json({ error: "No files uploaded for your company" });
     }
 
     res.json(filesResult.rows);
@@ -2800,10 +2431,7 @@ app.put("/api/company-internship-requests/:id/accept", async (req, res) => {
     const { company_id, intern_id, email, name } = requestResult.rows[0];
 
     // Fetch the company name
-    const companyResult = await pool.query(
-      `SELECT name FROM company WHERE id = $1`,
-      [company_id]
-    );
+    const companyResult = await pool.query(`SELECT name FROM company WHERE id = $1`, [company_id]);
 
     if (companyResult.rowCount === 0) {
       return res.status(404).json({ error: "Company not found" });
@@ -2852,8 +2480,7 @@ app.put("/api/company-internship-requests/:id/accept", async (req, res) => {
     });
 
     res.json({
-      message:
-        "Internship request accepted, notification sent, and email delivered.",
+      message: "Internship request accepted, notification sent, and email delivered.",
     });
   } catch (error) {
     console.error("Error accepting internship request:", error);
@@ -2910,42 +2537,36 @@ app.delete("/api/company-internship-requests/:id/reject", async (req, res) => {
     });
 
     res.json({
-      message:
-        "Internship request rejected and deleted, email sent successfully.",
+      message: "Internship request rejected and deleted, email sent successfully.",
     });
   } catch (error) {
     console.error("Error rejecting and deleting internship request:", error);
-    res
-      .status(500)
-      .json({ error: "Failed to reject and delete internship request." });
+    res.status(500).json({ error: "Failed to reject and delete internship request." });
   }
 });
 
-app.get(
-  "/api/company-assignment-status/:internId/:companyId",
-  async (req, res) => {
-    const internId = parseInt(req.params.internId, 10);
-    const companyId = parseInt(req.params.companyId, 10);
+app.get("/api/company-assignment-status/:internId/:companyId", async (req, res) => {
+  const internId = parseInt(req.params.internId, 10);
+  const companyId = parseInt(req.params.companyId, 10);
 
-    if (isNaN(internId) || isNaN(companyId)) {
-      return res.status(400).json({ error: "Invalid intern or company ID" });
-    }
+  if (isNaN(internId) || isNaN(companyId)) {
+    return res.status(400).json({ error: "Invalid intern or company ID" });
+  }
 
-    try {
-      const result = await pool.query(
-        `SELECT 1 
+  try {
+    const result = await pool.query(
+      `SELECT 1 
              FROM company_interns 
              WHERE intern_id = $1 AND company_id = $2`,
-        [internId, companyId]
-      );
+      [internId, companyId]
+    );
 
-      res.json({ assigned: result.rowCount > 0 });
-    } catch (error) {
-      console.error("Error checking assignment status:", error);
-      res.status(500).json({ error: "Failed to check assignment status." });
-    }
+    res.json({ assigned: result.rowCount > 0 });
+  } catch (error) {
+    console.error("Error checking assignment status:", error);
+    res.status(500).json({ error: "Failed to check assignment status." });
   }
-);
+});
 
 app.get("/api/notifications", authenticateUser, async (req, res) => {
   const internId = req.session.userId;
@@ -2973,9 +2594,7 @@ app.delete("/api/notifications/:id", async (req, res) => {
   }
 
   try {
-    const result = await pool.query("DELETE FROM notifications WHERE id = $1", [
-      notificationId,
-    ]);
+    const result = await pool.query("DELETE FROM notifications WHERE id = $1", [notificationId]);
 
     if (result.rowCount === 0) {
       return res.status(404).json({ error: "Notification not found" });
@@ -3023,22 +2642,19 @@ app.delete("/api/company-dismiss-intern/:internId", async (req, res) => {
     const companyName = companyResult.rows[0].name;
 
     // Delete associated files in `uploaded_files`
-    await pool.query(
-      `DELETE FROM uploaded_files WHERE intern_id = $1 AND company_id = $2`,
-      [internId, companyId]
-    );
+    await pool.query(`DELETE FROM uploaded_files WHERE intern_id = $1 AND company_id = $2`, [internId, companyId]);
 
     // Delete internship request in `companyinternshiprequests`
-    await pool.query(
-      `DELETE FROM companyinternshiprequests WHERE intern_id = $1 AND company_id = $2`,
-      [internId, companyId]
-    );
+    await pool.query(`DELETE FROM companyinternshiprequests WHERE intern_id = $1 AND company_id = $2`, [
+      internId,
+      companyId,
+    ]);
 
     // Remove the intern from `company_interns`
-    const deleteResult = await pool.query(
-      `DELETE FROM company_interns WHERE intern_id = $1 AND company_id = $2`,
-      [internId, companyId]
-    );
+    const deleteResult = await pool.query(`DELETE FROM company_interns WHERE intern_id = $1 AND company_id = $2`, [
+      internId,
+      companyId,
+    ]);
 
     if (deleteResult.rowCount === 0) {
       return res.status(404).json({
@@ -3097,9 +2713,7 @@ app.get("/api/intern/company", async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res
-        .status(404)
-        .json({ error: "No company assigned to the intern." });
+      return res.status(404).json({ error: "No company assigned to the intern." });
     }
 
     res.json(result.rows[0]);
@@ -3112,10 +2726,7 @@ app.delete("/api/intern/:email", async (req, res) => {
   const email = req.params.email;
 
   try {
-    const deleteResult = await pool.query(
-      "DELETE FROM intern WHERE email = $1",
-      [email]
-    );
+    const deleteResult = await pool.query("DELETE FROM intern WHERE email = $1", [email]);
 
     if (deleteResult.rowCount === 0) {
       return res.status(404).json({ error: "User not found." });
