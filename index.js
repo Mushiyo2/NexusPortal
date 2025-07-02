@@ -1476,64 +1476,56 @@ async function notifyCompany(companyId, message) {
     console.error("Error inserting notification into company_notifications:", error);
   }
 }
-app.post("/api/intern/upload-files", authenticateUser, upload.array("files", 5), async (req, res) => {
+app.post("/api/intern/upload-files", authenticateUser, upload.array("files"), async (req, res) => {
   const internId = req.session.userId;
+  const companyId = req.body.companyId;
 
-  if (!internId || req.session.userType !== "intern") {
-    return res.status(401).json({ error: "Unauthorized" });
+  console.log("Intern ID:", internId);
+  console.log("Company ID:", companyId);
+  console.log("Files received:", req.files);
+
+  if (!internId || !companyId || !req.files || req.files.length === 0) {
+    return res.status(400).json({ error: "Missing required data." });
   }
 
   try {
-    const { company_id } = req.body;
-
-    if (!company_id) {
-      return res.status(400).json({ error: "Company ID is required." });
-    }
-
-    console.log("Intern ID:", internId);
-    console.log("Company ID:", company_id);
-    console.log("Files received:", req.files);
-
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ error: "No files uploaded." });
-    }
-
-    // Insert application request
+    // Insert internship request
     await pool.query(
-      `INSERT INTO companyinternshiprequests (company_id, intern_id, application_status, applied_at)
-             VALUES ($1, $2, 'Pending', CURRENT_TIMESTAMP)`,
-      [company_id, internId]
+      `INSERT INTO companyinternshiprequests (intern_id, company_id, application_status, applied_at)
+         VALUES ($1, $2, 'Pending', CURRENT_TIMESTAMP)`,
+      [internId, companyId]
     );
 
     console.log("Internship request inserted successfully.");
 
-    // Notify the company
-    await notifyCompany(company_id, `A new internship request has been received.`);
+    // Notify company
+    await pool.query(
+      `INSERT INTO company_notifications (company_id, message)
+         VALUES ($1, $2)`,
+      [companyId, "You have a new internship application."]
+    );
 
-    // Process uploaded files
-    const query = `INSERT INTO uploaded_files (file_url, original_name, intern_id, company_id, uploaded_at) 
-             VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)`;
+    console.log("Notification inserted successfully for company:", companyId);
 
+    // Insert each uploaded file
     for (const file of req.files) {
       console.log("Processing file:", file);
 
-      await pool.query(query, [
-        file.path, // Cloudinary provides the URL in `file.path`
-        file.originalname,
-        internId,
-        company_id,
-      ]);
+      const fileName = file.filename?.split("/").pop(); // clean file name
+      const originalName = file.originalname;
+      const fileUrl = file.path;
+
+      await pool.query(
+        `INSERT INTO uploaded_files (file_name, original_name, intern_id, company_id, file_url)
+           VALUES ($1, $2, $3, $4, $5)`,
+        [fileName, originalName, internId, companyId, fileUrl]
+      );
     }
 
-    console.log("Files uploaded successfully.");
-
-    res.json({
-      success: true,
-      message: "Application and files uploaded successfully!",
-    });
+    res.json({ success: true, message: "Application and files uploaded successfully." });
   } catch (error) {
     console.error("Error processing application and file upload:", error);
-    res.status(500).json({ error: "Failed to process application and file upload." });
+    res.status(500).json({ error: "Internal server error during upload." });
   }
 });
 

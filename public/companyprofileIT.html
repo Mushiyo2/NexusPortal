@@ -391,70 +391,79 @@ input[readonly]:hover, textarea[readonly]:hover, select[readonly]:hover {
             }
         });
     
-        document.querySelector('.edit-button').addEventListener('click', async (event) => {
-            const button = event.target;
-            const companyId = button.dataset.companyId;
-            const applied = button.dataset.applied === 'true';
-    
-            if (applied) {
-                // Cancel application
-                const applicationId = button.dataset.applicationId;
-                if (!applicationId) {
-                    alert('Application ID is missing. Please refresh the page and try again.');
-                    return;
-                }
-    
-                try {
-                    const response = await fetch(`/api/intern/cancel-application/${applicationId}`, {
-                        method: 'DELETE',
-                    });
-    
-                    if (response.ok) {
-                        alert('Application cancelled successfully.');
-                        button.textContent = 'Apply';
-                        button.dataset.applied = 'false';
-                        button.removeAttribute('data-applicationId');
-                    } else {
-                        const error = await response.json();
-                        alert(error.message || 'Failed to cancel application.');
-                    }
-                } catch (error) {
-                    console.error('Error cancelling application:', error);
-                }
+       document.querySelector('.edit-button').addEventListener('click', async (event) => {
+    const button = event.target;
+    const companyId = button.dataset.companyId;
+    const applied = button.dataset.applied === 'true';
+
+    if (applied) {
+        // Cancel application
+        const applicationId = button.dataset.applicationId;
+
+        if (!applicationId) {
+            alert('Application ID is missing. Please refresh the page and try again.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/intern/cancel-application/${applicationId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert('Application cancelled successfully.');
+                button.textContent = 'Apply';
+                button.dataset.applied = 'false';
+                button.removeAttribute('data-applicationId');
             } else {
-                // Apply
-                const files = document.getElementById('fileUpload').files;
-    
-                if (!files.length) {
-                    alert('Please select at least one file.');
-                    return;
-                }
-    
-                const formData = new FormData();
-                formData.append('company_id', companyId);
-                for (const file of files) {
-                    formData.append('files', file);
-                }
-    
-                try {
-                    const response = await fetch('/api/intern/upload-files', {
-                        method: 'POST',
-                        body: formData,
-                    });
-    
-                    const data = await response.json();
-                    if (data.success) {
-                        alert('Application submitted successfully!');
-                        button.textContent = 'Cancel Application';
-                        button.dataset.applied = 'true';
-                    } else {
-                        alert(data.error || 'Failed to apply.');
-                    }
-                } catch (error) {
-                    console.error('Error applying:', error);
-                }
+                const error = await response.json();
+                alert(error.message || 'Failed to cancel application.');
             }
-        });
+        } catch (error) {
+            console.error('Error cancelling application:', error);
+            alert('An error occurred while cancelling the application.');
+        }
+    } else {
+        // Apply with file upload
+        const files = document.getElementById('fileUpload').files;
+
+        if (!files.length) {
+            alert('Please select at least one file.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('companyId', companyId); // ← Match backend: companyId not company_id
+
+        for (const file of files) {
+            formData.append('files', file); // multiple files
+        }
+
+        try {
+            const response = await fetch('/api/intern/upload-files', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert('Application submitted successfully!');
+                button.textContent = 'Cancel Application';
+                button.dataset.applied = 'true';
+
+                // Optional: Set application ID if your backend returns it
+                // button.dataset.applicationId = data.applicationId;
+            } else {
+                alert(data.error || 'Failed to apply.');
+            }
+        } catch (error) {
+            console.error('Error applying:', error);
+            alert('An error occurred while applying.');
+        }
+    }
+});
+
         document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch('/api/intern-profile', {
