@@ -1502,7 +1502,7 @@ app.post("/api/intern/upload-files", authenticateUser, upload.array("files"), as
     await pool.query(
       `INSERT INTO company_notifications (company_id, message)
          VALUES ($1, $2)`,
-      [companyId, "You have a new internship application."]
+      [companyId, "A new internship request has been received."]
     );
 
     console.log("Notification inserted successfully for company:", companyId);
