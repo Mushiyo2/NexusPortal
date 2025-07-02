@@ -21,13 +21,11 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: (req, file) => {
-    const fileExtension = file.originalname.split(".").pop();
-
     return {
       folder: "uploads",
       allowed_formats: ["jpg", "png", "jpeg", "pdf"],
-      public_id: `intern_${Date.now()}.${fileExtension}`,
-      resource_type: "auto",
+      public_id: `intern_${Date.now()}`, // <-- FIXED
+      resource_type: "auto", // still OK
       type: "upload",
     };
   },
